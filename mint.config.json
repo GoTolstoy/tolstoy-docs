@@ -1,0 +1,106 @@
+{
+  "name": "Tolstoy",
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "favicon": "/favicon.png",
+  "colors": {
+    "primary": "#FA536E",
+    "light": "#FD90A2",
+    "dark": "#2A39D5",
+    "ultraLight": "#FBDAE0",
+    "ultraDark": "#090a0b"
+  },
+  "api": {
+    "baseUrl": "https://api.gotolstoy.com",
+    "auth": {
+      "method": "key",
+      "name": "Authentication"
+    }
+  },
+  "topbarLinks": [
+    {
+      "name": "Contact sales",
+      "url": "https://www.gotolstoy.com/contact-sales"
+    },
+    {
+      "name": "Sign in",
+      "url": "https://app.gotolstoy.com/login"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Get Tolstoy for free",
+    "url": "https://app.gotolstoy.com/signup"
+  },
+  "anchors": [
+    {
+      "name": "Partners",
+      "icon": "handshake",
+      "color": "#fd7830",
+      "url": "https://www.gotolstoy.com/partners"
+    },
+    {
+      "name": "Affiliate program",
+      "icon": "chart-network",
+      "color": "#ffc728",
+      "url": "https://www.gotolstoy.com/affiliate-program"
+    },
+    {
+      "name": "Help center",
+      "icon": "circle-question",
+      "color": "#01be81",
+      "url": "https://help.gotolstoy.com/en/"
+    },
+    {
+      "name": "Guides",
+      "icon": "book",
+      "color": "#fa536e",
+      "url": "https://www.gotolstoy.com/guides"
+    },
+    {
+      "name": "Blog",
+      "icon": "newspaper",
+      "color": "#3d4fe0",
+      "url": "https://www.gotolstoy.com/blog"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Home",
+      "pages": ["welcome"]
+    },
+    {
+      "group": "JavaScript SDK",
+      "pages": [
+        "javascript-sdk/installation",
+        "javascript-sdk/configuration",
+        "javascript-sdk/identify",
+        "javascript-sdk/events"
+      ]
+    },
+    {
+      "group": "API Reference",
+      "pages": [
+        "api-reference/get-me",
+        "api-reference/upload-video",
+        "api-reference/list-webhooks",
+        "api-reference/add-webhook",
+        "api-reference/delete-webhook",
+        "api-reference/create-project",
+        "api-reference/create-step",
+        "api-reference/get-project",
+        "api-reference/delete-project",
+        "api-reference/list-projects",
+        "api-reference/update-project",
+        "api-reference/update-step",
+        "api-reference/delete-step"
+      ]
+    }
+  ],
+  "footerSocials": {
+    "linkedin": "https://www.linkedin.com/company/gotolstoy",
+    "twitter": "https://twitter.com/gotolstoy",
+    "instagram": "https://www.instagram.com/gotolstoy/?hl=en"
+  }
+}

@@ -1,0 +1,31 @@
+---
+title: "Update Step"
+api: "PUT /projects/steps/{id}"
+---
+
+### Parameters
+
+<Param path="id" type="string" required>
+
+The id of the Tolstoy step to be updated
+
+</Param>
+
+<Param body="description" type="string"></Param>
+
+<Param body="answers" type="array"></Param>
+
+<Param body="videoId" type="string"></Param>
+
+<Param body="overlayText" type="string"></Param>
+
+<Param body="answerTime" type="number"></Param>
+
+<RequestExample>
+
+```bash Request
+curl -X PUT https://api.gotolstoy.com/projects/steps/{id} \
+  --header 'Authentication: <API_KEY>'
+```
+
+</RequestExample>

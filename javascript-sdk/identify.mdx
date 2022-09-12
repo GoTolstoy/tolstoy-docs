@@ -1,0 +1,59 @@
+---
+title: "Identify"
+description: "Identify users in your application for widget rules"
+---
+
+## identify(data)
+
+Identifying your users will help you find their sessions in the Tolstoy dashboard, and apply specific rules and behaviours on their widget's display.
+
+It's recommended to call identify right after your user's signup/login, when you have identifying data to use (such as email, signup date, etc.).
+
+### Parameters
+
+<Param query="data" type="Data" required>
+
+Required params for identifying the user, one or both of the following:
+
+<Expandable title="Data">
+
+<Param query="userId" type="string" required>
+
+Your system userId.
+
+</Param>
+
+<Param query="email" type="string" required>
+
+Your user's email address
+
+</Param>
+
+</Expandable>
+
+</Param>
+
+<Param query="signedUpAt" type="string">
+
+Your user's sign up date.
+
+For example: `2021-08-27`.
+
+</Param>
+
+<Param query="customAttributes" type="Object">
+
+Add any additional attributes (maximum of 100 attributes)
+
+<Note>Date format must be `YYYY-MM-DD`</Note>
+
+</Param>
+
+```javascript
+window.tolstoyWidget.identify({
+  userId: "123",
+  email: "user@test.com",
+  signedUpAt: "2021-09-01",
+  customAttributes: { package: "free", age: 28, activationDate: "2021-09-10" },
+});
+```

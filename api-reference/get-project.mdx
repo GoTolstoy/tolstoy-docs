@@ -1,0 +1,29 @@
+---
+title: "Get Project"
+api: "GET /projects/{id}"
+---
+
+### Parameters
+
+<Param path="id" type="string" required>
+
+Project id
+
+</Param>
+
+<RequestExample>
+
+```bash Request
+curl -X POST https://api.gotolstoy.com/projects/{id} \
+  --header 'Authentication: <API_KEY>'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Response
+{ "project" : { ... } }
+```
+
+</ResponseExample>

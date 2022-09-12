@@ -1,0 +1,54 @@
+---
+title: "Events"
+description: "Subscribe to JS events from your Tolstoy Widget or Embedded Player"
+---
+
+Tolstoy's player uses `window.postMessage()` to post event from the embedded iframe to the parent hosting site, for more information see [Window.postMessage()](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage)
+
+Example of using an event:
+
+```javascript
+window.addEventListener("message", (message) => {
+  if (message.data.name === "tolstoyStarted") {
+    console.log("Tolsoty Started", message.data);
+  }
+});
+```
+
+All events will send the event name in the `name` attribute, In addition all events will send:
+
+- `accountId` - Your account ID
+- `projectId` - Your project ID
+- `videoName` - The name of the first video
+- `anonymousId` - Viewer ID
+
+## Events
+
+### tolstoyStarted
+
+Tolstoy Started - Start button clicked for the first time
+
+### tolstoyAnswerClicked
+
+Answer Button Clicked - One of the question's answers was clicked
+
+- text: The text content of the clicked answer
+
+### tolstoyInputSubmit
+
+Free Text Submit - The free text form was submitted
+
+- text: The free text form or date picker form was submitted
+
+### tolstoyLeadFormSubmit
+
+Lead Form Submit - One of the steps in the lead form was submitted
+
+- `email` (Nullable) - The email that the user submitted
+- `name` (Nullable) - The name that the user submitted
+- `phone` (Nullable) - The phone number that the user submitted
+- `customFields` (Nullable) - A list of the custom fields that you've added to the form (each object has the custom key and the user's input value)
+
+### tolstoyReachedEnd
+
+Tolsoty Ended - The user completed to watch the tolstoy and reached the end

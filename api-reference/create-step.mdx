@@ -1,0 +1,36 @@
+---
+title: "Create Step"
+description: "Create new Tolstoy's part"
+api: "POST /projects/steps"
+---
+
+### Parameters
+
+<Param body="" type="object">
+
+Part details
+
+**Example**:
+`{ "step": { "projectId": "f4828e6b-849f-4794-b3ec-c365f331506a", "description": "description", "answers": [{ "next": "rqAvg", "text": "hey how are you?" }, { "next": "rqAvg", "text": "what is your age?" }], "videoId": "e899d07e-da6d-41f1-ba2f-e546e97c3a7e", "overlayText": "This is the overlay text" } }`
+
+</Param>
+
+<RequestExample>
+
+```bash Request
+curl -X POST https://api.gotolstoy.com/projects/steps \
+  --header 'Authentication: <API_KEY>'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Response
+{
+  "id": "7ea4e34c-8185-4f9f-a835-d1d3b05c54e6",
+  "name": "pHB58"
+}
+```
+
+</ResponseExample>

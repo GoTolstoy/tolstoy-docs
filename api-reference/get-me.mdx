@@ -1,0 +1,28 @@
+---
+title: "Get Me"
+description: "User operations"
+api: "GET /users/me"
+---
+
+This endpoint allows you to get free cakes.
+
+<RequestExample>
+
+```bash Request
+curl -X GET https://api.gotolstoy.com/users/me \
+  --header 'Authentication: <API_KEY>'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Response
+{
+  "id": "user-id",
+  "email": "user-email",
+  "appKey": "app-key"
+}
+```
+
+</ResponseExample>

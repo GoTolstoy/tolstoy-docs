@@ -1,0 +1,34 @@
+---
+title: "Upload Video"
+description: "Video (Tolstoy) operations"
+api: "POST https://3hpkygnwnd.us-east-1.awsapprunner.com/videos"
+---
+
+This endpoint allows you to upload a video file, and receive a videoAsset ID that can be used while creating a projectStep.
+
+### Parameters
+
+<Param body="videoBlob" type="object">
+
+The video file to upload.
+
+</Param>
+
+<RequestExample>
+
+```bash Request
+curl -X POST https://3hpkygnwnd.us-east-1.awsapprunner.com/videos \
+  --header 'Authentication: <API_KEY>'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Response
+{
+  "id": "1242d2ad-8179-47d2-b6a1-ce0ee8cdc359"
+}
+```
+
+</ResponseExample>

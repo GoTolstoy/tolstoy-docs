@@ -1,0 +1,36 @@
+---
+title: "Create Project"
+description: "Create new Tolstoy"
+api: "POST /projects"
+---
+
+### Parameters
+
+<Param body="project" type="object" required>
+
+Project details
+
+**Example**:
+`{ "project": { "name": "my new project" } }`
+
+</Param>
+
+<RequestExample>
+
+```bash Request
+curl -X POST https://api.gotolstoy.com/projects \
+  --header 'Authentication: <API_KEY>'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Response
+{
+  "id": "1242d2ad-8179-47d2-b6a1-ce0ee8cdc359",
+  "tolstoy": "https://player.gotolstoy.com/wc9gat7q75fu8?sneakpeek"
+}
+```
+
+</ResponseExample>

@@ -1,0 +1,27 @@
+---
+title: "Update Project"
+api: "PUT /projects/{id}"
+---
+
+### Parameters
+
+<Param path="id" type="string" required>
+
+The project id to be updated
+
+</Param>
+
+<Param body="name" type="string"></Param>
+
+<Param body="emailNotifications" type="array"></Param>
+
+<Param body="stepsOrder" type="array"></Param>
+
+<RequestExample>
+
+```bash Request
+curl -X PUT https://api.gotolstoy.com/projects/{id} \
+  --header 'Authentication: <API_KEY>'
+```
+
+</RequestExample>
