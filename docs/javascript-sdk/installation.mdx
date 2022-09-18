@@ -11,9 +11,8 @@ Replace `{{APP_KEY}}` with your account App Key.
 
 ```javascript
 <script>
-  window.tolstoyAppKey='{{ APP_KEY }}';
-  var s = document.createElement('script');
-  s.type = 'text/javascript'; s.async = true;
+  window.tolstoyAppKey='{{ APP_KEY }}'; var s =
+  document.createElement('script'); s.type = 'text/javascript'; s.async = true;
   s.src = 'https://widget.gotolstoy.com/widget/widget.js';
   document.head.appendChild(s);
 </script>
@@ -27,7 +26,7 @@ Replace `{{APP_KEY}}` with your account App Key.
 
 If you want only a single widget on a single page you can also load just the Widget ID
 
-<Caution>By using this you won't be able to use rules and conditions.</Caution>
+<Warning>By using this you won't be able to use rules and conditions.</Warning>
 
 ```javascript
 # Replace the window.tolstoyAppKey='{{APP_KEY}}';
