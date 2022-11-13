@@ -80,19 +80,25 @@
       ]
     },
     {
+      "group": "Webhooks",
+      "pages": [
+        "webhooks/list-webhooks",
+        "webhooks/add-webhook",
+        "webhooks/delete-webhook"
+      ]
+    },
+    {
       "group": "API Reference",
       "pages": [
         "api-reference/get-me",
+        "api-reference/list-videos",
         "api-reference/upload-video",
-        "api-reference/list-webhooks",
-        "api-reference/add-webhook",
-        "api-reference/delete-webhook",
-        "api-reference/create-project",
-        "api-reference/create-step",
-        "api-reference/get-project",
-        "api-reference/delete-project",
         "api-reference/list-projects",
+        "api-reference/get-project",
+        "api-reference/create-project",
         "api-reference/update-project",
+        "api-reference/delete-project",
+        "api-reference/create-step",
         "api-reference/update-step",
         "api-reference/delete-step"
       ]

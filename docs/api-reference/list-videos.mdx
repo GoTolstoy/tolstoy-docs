@@ -1,0 +1,23 @@
+---
+title: "List Videos"
+api: "GET /videos"
+---
+
+Return a list of all videos
+
+<RequestExample>
+
+```bash Request
+curl -X GET https://api.gotolstoy.com/videos/videos \
+  --header 'Authorization: Bearer <API_KEY>'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Response
+{ "videos": [{id: 'id', name: 'name', createdAt: '2022-04-30T15:25:25.319Z'}] }
+```
+
+</ResponseExample>
