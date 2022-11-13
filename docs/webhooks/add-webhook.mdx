@@ -1,0 +1,50 @@
+---
+title: "Add Webhook"
+description: "Add a Webhook for an event"
+api: "POST /webhooks"
+---
+
+Available events:
+
+- `response_summary`
+- `collected_info`
+- `conversion`
+
+### Parameters
+
+<Param body="event" type="string">
+
+The event you want to subscribe to
+
+</Param>
+
+<Param body="url" type="string">
+
+The url to send the event to
+
+</Param>
+
+<RequestExample>
+
+```bash Request
+curl -X POST https://api.gotolstoy.com/webhooks \
+  --header 'Authorization: Bearer <API_KEY>'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Response
+{
+  "id": "8fde3c42-0d34-4d51-8b48-6930c1a5bf80",
+  "url": "https://my.web.hook.url",
+  "event": "response_summary",
+  "owner": "43a7bd93-c302-4c18-93bc-d7151c586336",
+  "__typename": "webhook",
+  "createdAt": "2021-05-23T13:44:05.854Z",
+  "updatedAt": "2021-05-23T13:44:05.854Z"
+}
+```
+
+</ResponseExample>
