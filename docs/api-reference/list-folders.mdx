@@ -1,0 +1,23 @@
+---
+title: "List Folders"
+api: "GET /projects/actions/folders"
+---
+
+Return a list of all Folders
+
+<RequestExample>
+
+```bash Request
+curl -X GET https://api.gotolstoy.com/projects/actions/folders \
+  --header 'Authorization: Bearer <API_KEY>'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Response
+{ "folders": [{id: 'id', name: 'name', createdAt: '2022-04-30T15:25:25.319Z'}] }
+```
+
+</ResponseExample>
