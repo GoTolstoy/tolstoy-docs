@@ -1,0 +1,35 @@
+---
+title: "Create Video by url"
+description: "Create new Tolstoy's video"
+api: "POST /videos/video"
+---
+
+### Parameters
+
+<Param body="" type="object">
+
+Video details
+
+**Example**:
+`{ "video": { "name": "video name", "videoUrl": "https://hosted.video.com/abc.mp4", "posterUrl": "https://hosted.video.com/abc.jpg", "gifUrl": "https://hosted.video.com/abc.gif" } }`
+
+</Param>
+
+<RequestExample>
+
+```bash Request
+curl -X POST https://api.gotolstoy.com/videos/video \
+  --header 'Authorization: Bearer <API_KEY>'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Response
+{
+  "id": "7ea4e34c-8185-4f9f-a835-d1d3b05c54e6",
+}
+```
+
+</ResponseExample>
