@@ -1,0 +1,180 @@
+---
+title: "Subscriptions"
+description: "Learn how to subscribe to events fired by Tolstoy widget."
+---
+
+## Before you dive in
+
+Check if `window.tolstoyWidget` is already initialized or wait for the `tolstoyWidgetReady` event before doing anything. This will make sure Tolstoy's widget is set for action:
+
+```javascript
+if (window.tolstoyWidget) {
+  // Your next steps go here
+} else {
+  window.addEventListener("tolstoyWidgetReady", () => {
+    // Your next steps go here
+  });
+}
+```
+
+## Product card click
+
+The "product card" is a component shown on a Swipeable Tolstoy's mobile layout:
+
+<Frame>
+    <img height="640" width="320" src="../assets/images/product_card_preview.png">
+</Frame>
+
+<br />
+
+It's possible to subscribe to the components' `onClick` event like so:
+
+```javascript
+const subscribeToTolstoyProductCardClick = () => {
+  const myCallback = (payload) => {
+    // Your logic here
+  };
+
+  const options = {};
+
+  window.tolstoyWidget.subscribe(
+    "tolstoy_product_card_click",
+    myCallback,
+    options
+  );
+};
+
+if (window.tolstoyWidget) {
+  subscribeToTolstoyProductCardClick();
+} else {
+  window.addEventListener("tolstoyWidgetReady", () => {
+    subscribeToTolstoyProductCardClick();
+    // Additional logic...
+  });
+}
+```
+
+📌 _When done correctly, `Subscribe to event tolstoy_product_card_click` will appear in your logs._
+
+### Callback
+
+Once the event is fired, `myCallback` will be triggered with the following payload:
+
+```javascript
+{
+    eventName: "tolstoy_product_card_click",
+    productId, // The tagged product's ID
+    variantId, // Will be passed if a variant was specifically tagged
+}
+```
+
+### Options
+
+By default, subscribing to the `tolstoy_product_card_click` event prevents the product modal from opening:
+
+<Frame>
+    <img height="640" width="320" src="../assets/images/product_modal_preview.png">
+</Frame>
+
+<br />
+
+If you'd still like the product modal to open, you can pass the following option to `window.tolstoyWidget.subscribe`:
+
+```javascript
+const options = {
+  disableProductModal: false, // true by default
+};
+```
+
+## Add to cart
+
+The "Add to cart" button is shown in the product modal:
+
+<Frame>
+    <img height="640" width="320" src="../assets/images/product_modal_preview.png">
+</Frame>
+
+<br />
+
+It's possible to subscribe to button's `onClick` event like so:
+
+```javascript
+const subscribeToTolstoyAddToCartClick = () => {
+  const myCallback = (payload) => {
+    // Your logic here
+  };
+
+  window.tolstoyWidget.subscribe("tolstoy_add_to_cart", myCallback);
+};
+
+if (window.tolstoyWidget) {
+  subscribeToTolstoyAddToCartClick();
+} else {
+  window.addEventListener("tolstoyWidgetReady", () => {
+    subscribeToTolstoyAddToCartClick();
+    // Additional logic...
+  });
+}
+```
+
+📌 _When done correctly, `Subscribe to event tolstoy_add_to_cart` will appear in your logs._
+
+### Callback
+
+Once the event is fired, `myCallback` will be triggered with the following payload:
+
+```javascript
+{
+  eventName: "tolstoy_add_to_cart",
+  variantId,
+}
+```
+
+The payload sent to the callback contains a `variantId` property, which is either the product's `variantId` or the `productId` if no variant exists.
+
+#### Report Add to cart Success or Failure
+
+- **Success Scenario** (product added successfully to the cart)
+
+```javascript
+const myCallback = (payload) => {
+  const { variantId } = payload;
+
+  // Your add to cart logic here
+
+  window.tolstoyWidget.postMessage({
+    ...payload, // Make sure to include this line
+    eventName: "tolstoy_add_to_cart_success",
+  });
+};
+```
+
+- **Failure/Error Scenario**
+
+```javascript
+const myCallback = (payload) => {
+  const { variantId } = payload;
+
+  // Your add to cart logic here
+
+  window.tolstoyWidget.postMessage({
+    ...payload, // Make sure to include this line
+    eventName: "tolstoy_add_to_cart_error",
+    description: "itemSoldOut", // Optional description
+  });
+};
+```
+
+🛈 Note 1: Tolstoy expects some data from `payload` to be sent back within the message, so make sure to spread `payload` in your message.
+
+🛈 Note 2: The `description` field is optional. Use it to specify an error like `itemSoldOut`. If you skip it, you'll get a general "Error adding to cart" message.
+
+## Unsubscribing from an event
+
+If you'd like to stop listening to an event, you can do it like so:
+
+```javascript
+window.tolstoyWidget.unsubscribe(eventName, myCallback);
+```
+
+🛈 Note: `myCallback` should be the original callback passed to `window.tolstoyWidget.subscribe`
