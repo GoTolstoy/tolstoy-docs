@@ -76,7 +76,8 @@
         "javascript-sdk/installation",
         "javascript-sdk/configuration",
         "javascript-sdk/identify",
-        "javascript-sdk/events"
+        "javascript-sdk/events",
+        "javascript-sdk/subscriptions"
       ]
     },
     {
