@@ -20,6 +20,14 @@ if (window.tolstoyWidget) {
 ## Product card click
 
 The "product card" is a component shown on a Swipeable Tolstoy's mobile layout
+
+<img
+  alt="product_card_preview"
+  height="640"
+  width="320"
+  src="/assets/images/product_card_preview.png"
+/>
+
 <br />
 
 It's possible to subscribe to the components' `onClick` event like so:
@@ -67,6 +75,13 @@ Once the event is fired, `myCallback` will be triggered with the following paylo
 
 By default, subscribing to the `tolstoy_product_card_click` event prevents the product modal from opening:
 
+<img
+  alt="product_modal_preview"
+  height="640"
+  width="320"
+  src="/assets/images/product_modal_preview.png"
+/>
+
 <br />
 
 If you'd still like the product modal to open, you can pass the following option to `window.tolstoyWidget.subscribe`:
@@ -80,6 +95,13 @@ const options = {
 ## Add to cart
 
 The "Add to cart" button is shown in the product modal:
+
+<img
+  alt="product_modal_preview"
+  height="640"
+  width="320"
+  src="/assets/images/product_modal_preview.png"
+/>
 
 <br />
 
@@ -165,5 +187,3 @@ window.tolstoyWidget.unsubscribe(eventName, myCallback);
 ```
 
 🛈 Note: `myCallback` should be the original callback passed to `window.tolstoyWidget.subscribe`
-
-
