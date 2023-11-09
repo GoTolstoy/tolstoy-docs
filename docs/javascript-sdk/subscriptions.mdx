@@ -66,7 +66,8 @@ Once the event is fired, `myCallback` will be triggered with the following paylo
 ```javascript
 {
     eventName: "tolstoy_product_card_click",
-    productId, // The tagged product's ID
+    productId, // Product ID of the specific product that has been clicked
+    taggedProductIds, // A list of Product IDs that are tagged on the video, including productId
     variantId, // Will be passed if a variant was specifically tagged
 }
 ```
@@ -135,11 +136,10 @@ Once the event is fired, `myCallback` will be triggered with the following paylo
 ```javascript
 {
   eventName: "tolstoy_add_to_cart",
+  productId,
   variantId,
 }
 ```
-
-The payload sent to the callback contains a `variantId` property, which is either the product's `variantId` or the `productId` if no variant exists.
 
 #### Report Add to cart Success or Failure
 
