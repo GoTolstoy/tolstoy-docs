@@ -114,7 +114,9 @@ const subscribeToTolstoyAddToCartClick = () => {
     // Your logic here
   };
 
-  window.tolstoyWidget.subscribe("tolstoy_add_to_cart", myCallback);
+  const options = {};
+
+  window.tolstoyWidget.subscribe("tolstoy_add_to_cart", myCallback, options);
 };
 
 if (window.tolstoyWidget) {
