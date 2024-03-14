@@ -107,6 +107,14 @@
         "api-reference/update-step",
         "api-reference/delete-step"
       ]
+    },
+    {
+      "group": "Partners API",
+      "pages": [
+        "partners api/get-assets",
+        "partners api/create-assets",
+        "partners api/delete-asset"
+      ]
     }
   ],
   "footerSocials": {
