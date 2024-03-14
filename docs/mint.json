@@ -77,7 +77,9 @@
         "javascript-sdk/configuration",
         "javascript-sdk/identify",
         "javascript-sdk/events",
-        "javascript-sdk/subscriptions"
+        "javascript-sdk/subscriptions",
+        "javascript-sdk/stories"
+
       ]
     },
     {
