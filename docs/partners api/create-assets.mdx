@@ -1,0 +1,43 @@
+---
+title: "Create assets"
+api: "POST /partners/assets"
+---
+
+### Parameters
+
+<Param body="assets" type="array" required initialValue="">
+  The list of assets to store
+</Param>
+
+<RequestExample>
+
+```bash Request
+curl --location 'https://api.gotolstoy.com/partners/assets' \
+--header 'Authorization: Bearer <API_KEY>' \
+--header 'Content-Type: application/json' \
+--data '{
+  "assets": [
+    {
+      "externalId": "1",
+      "videoUrl": "https://cdn.shopify.com/video.mp4",
+      "posterUrl": "https://cdn.shopify.com/image.jpg",
+      "shopId": "gid://shopify/Shop/123",
+      "productIds": [
+        "gid://shopify/Product/1",
+        "gid://shopify/Product/2"
+      ]
+    }
+  ]
+}'
+```
+
+</RequestExample>
+
+<ResponseExample>
+```json Response
+{
+  "newAssetsCount": 1,
+  "userErrors": []
+}
+```
+</ResponseExample>

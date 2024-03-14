@@ -1,0 +1,25 @@
+---
+title: "Delete asset"
+api: "DELETE /partners/assets/"
+---
+
+### Parameters
+
+<Param path="externalId" type="string" required>
+  The asset id to delete
+</Param>
+
+<RequestExample>
+
+```bash Request
+curl --location --request DELETE 'https://api.gotolstoy.com/partners/assets/1' \
+--header 'Authorization: Bearer <API_KEY>'
+```
+
+</RequestExample>
+
+<ResponseExample>
+```json Response
+{"message":"Asset deleted"}
+```
+</ResponseExample>
