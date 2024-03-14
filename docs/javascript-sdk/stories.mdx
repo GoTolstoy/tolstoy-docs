@@ -1,0 +1,19 @@
+---
+title: 'Stories'
+description: 'Tolstoy Stories extra options'
+---
+
+
+Add the following script at the head on your site:
+
+Replace `{{PUBLISH_ID}}` with your project publish id.
+
+Replace `{{PRODUCT_ID}}` with your product id.
+
+Replace `{{VARIANT_ID}}` with your variant id to sort the videos by the variant id (works if videos were tagged with variants and not just the product).
+
+
+
+```javascript
+  window.tolstoyWidget?.['{{PUBLISH_ID}}']?.init('{{PROUDUCT_ID}},{{VARIANT_ID}}')
+```
