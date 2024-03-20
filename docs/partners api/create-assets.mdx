@@ -1,12 +1,55 @@
 ---
-title: "Create assets"
-api: "POST /partners/assets"
+title: 'Create assets'
+api: 'POST /partners/assets'
 ---
 
 ### Parameters
 
-<Param body="assets" type="array" required initialValue="">
+<Param body="assets" type="Asset[]" required initialValue="">
   The list of assets to store
+
+## Asset structure
+
+```ts
+type Asset = {
+  externalId: string;
+  videoUrl: string;
+  posterUrl: string;
+  shopId: string;
+  products: Product[];
+};
+
+type Product = {
+  id: string;
+  title?: string;
+  imageUrls?: string[];
+};
+```
+
+## Example
+
+```json
+{
+  "externalId": "1",
+  "videoUrl": "https://cdn.shopify.com/video.mp4",
+  // video preview image (must be hosted on Shopify cdn)
+  "posterUrl": "https://cdn.shopify.com/image.jpg",
+  // Shopify store id
+  "shopId": "gid://shopify/Shop/123",
+  // a list of products linked to the video
+  "products": [
+    {
+      // Shopify product id (required)
+      "id": "gid://shopify/Product/1",
+      // product title (optional)
+      "title": "Product title",
+      // an array of product images (optional)
+      "imageUrls": ["https://test.myshopify.com/81f3345adfd6.jpg"]
+    }
+  ]
+}
+```
+
 </Param>
 
 <RequestExample>
@@ -22,9 +65,9 @@ curl --location 'https://api.gotolstoy.com/partners/assets' \
       "videoUrl": "https://cdn.shopify.com/video.mp4",
       "posterUrl": "https://cdn.shopify.com/image.jpg",
       "shopId": "gid://shopify/Shop/123",
-      "productIds": [
-        "gid://shopify/Product/1",
-        "gid://shopify/Product/2"
+      "products": [
+        {"id": "gid://shopify/Product/1", "title": "Product title", "imageUrls": https://test.myshopify.com/81f3345adfd6.jpg"]},
+        {"id": "gid://shopify/Product/2"}
       ]
     }
   ]
