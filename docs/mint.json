@@ -83,6 +83,12 @@
       ]
     },
     {
+      "group": "Other",
+      "pages": [
+        "other/csv-sync"
+      ]
+    },
+    {
       "group": "Webhooks",
       "pages": [
         "webhooks/list-webhooks",
