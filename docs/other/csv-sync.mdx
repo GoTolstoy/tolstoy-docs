@@ -1,0 +1,28 @@
+---
+title: 'CSV assets sync'
+description: 'Sync assets to a csv file'
+---
+
+## Activation
+
+Provide **url** to fetch csv from to partner of tolstoy
+
+#### CSV columns schema
+
+```json
+{
+  "externalId": "1",
+  "appUrl": "1.myshopify.com",
+  "shopId": "gid://shopify/Store/22222222222",
+  "posterUrl": "https://my-poster.com/poster.webp",
+  "videoUrl": "https://my-video.com/video.webm",
+  "products": "[{\"id\":\"gid://shopify/Product/1111111111111\"}]"
+ }
+```
+
+#### CSV Example
+
+```csv
+externalId,appUrl,shopId,posterUrl,videoUrl,products
+1,1.myshopify.com,gid://shopify/Store/22222222222,https://my-poster.com/poster.webp,https://my-video.com/video.webm,"[{""id"":""gid://shopify/Product/1111111111111""}]"
+```
