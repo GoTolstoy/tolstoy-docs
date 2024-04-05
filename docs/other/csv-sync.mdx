@@ -12,11 +12,15 @@ Provide **url** to fetch csv from to partner of tolstoy
 ```json
 {
   "externalId": "1",
-  "appUrl": "1.myshopify.com",
+  "appUrl": "tolstoy.myshopify.com",
   "shopId": "gid://shopify/Store/22222222222",
   "posterUrl": "https://my-poster.com/poster.webp",
   "videoUrl": "https://my-video.com/video.webm",
-  "products": "[{\"id\":\"gid://shopify/Product/1111111111111\"}]"
+  "products": "[ {
+      \"id\": \"gid://shopify/Product/1111111111111\",
+      \"title\": \"product name\",
+      \"description\": \"product description\"
+    }]"
  }
 ```
 
@@ -24,5 +28,5 @@ Provide **url** to fetch csv from to partner of tolstoy
 
 ```csv
 externalId,appUrl,shopId,posterUrl,videoUrl,products
-1,1.myshopify.com,gid://shopify/Store/22222222222,https://my-poster.com/poster.webp,https://my-video.com/video.webm,"[{""id"":""gid://shopify/Product/1111111111111""}]"
+1,tolstoy.myshopify.com,gid://shopify/Store/22222222222,https://my-poster.com/poster.webp,https://my-video.com/video.webm,"[ { ""id"": ""gid://shopify/Product/1111111111111"", ""title"": ""product name"", ""description"": ""product description"" }]"
 ```
