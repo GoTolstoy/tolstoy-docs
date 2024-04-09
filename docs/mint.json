@@ -83,12 +83,6 @@
       ]
     },
     {
-      "group": "Other",
-      "pages": [
-        "other/csv-sync"
-      ]
-    },
-    {
       "group": "Webhooks",
       "pages": [
         "webhooks/list-webhooks",
@@ -119,7 +113,8 @@
       "pages": [
         "partners api/get-assets",
         "partners api/create-assets",
-        "partners api/delete-asset"
+        "partners api/delete-asset",
+        "partners api/csv-sync"
       ]
     }
   ],
