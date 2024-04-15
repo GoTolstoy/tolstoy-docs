@@ -22,33 +22,34 @@ All events will send the event name in the `name` attribute, In addition all eve
 - `videoName` - The name of the first video
 - `anonymousId` - Viewer ID
 
-## Events
+## General Events
 
-### tolstoyStarted
+`tolstoyStarted` - Start button clicked for the first time
 
-Tolstoy Started - Start button clicked for the first time
+##  Swipeable Tolstoy Events
 
-### tolstoyAnswerClicked
+`videoLoaded` - Video starts to play
 
-Answer Button Clicked - One of the question's answers was clicked
+`feedScroll` - Swipe to next video
+
+`clickViewProduct` - Click to view product detials
+
+##  Branching Tolstoy Events
+
+`tolstoyAnswerClicked` - One of the question's answers was clicked
 
 - text: The text content of the clicked answer
 
-### tolstoyInputSubmit
-
-Free Text Submit - The free text form was submitted
+`tolstoyInputSubmit` - The free text form was submitted
 
 - text: The free text form or date picker form was submitted
 
-### tolstoyLeadFormSubmit
 
-Lead Form Submit - One of the steps in the lead form was submitted
+`tolstoyLeadFormSubmit` - One of the steps in the lead form was submitted
 
 - `email` (Nullable) - The email that the user submitted
 - `name` (Nullable) - The name that the user submitted
 - `phone` (Nullable) - The phone number that the user submitted
 - `customFields` (Nullable) - A list of the custom fields that you've added to the form (each object has the custom key and the user's input value)
 
-### tolstoyReachedEnd
-
-Tolsoty Ended - The user completed to watch the tolstoy and reached the end
+`tolstoyReachedEnd` - The user completed to watch the tolstoy and reached the end
