@@ -1,0 +1,120 @@
+---
+title: "Widget (Bubble)"
+description: "Learn how to configure your Tolstoy widget to perform different functions on your site."
+---
+
+## Settings
+
+We support the following additional configurations for the floating widget:
+
+<Param query="alwaysShow" type="boolean" default="true">
+
+In case a user closed the widget and you want to keep showing it to him.
+
+</Param>
+
+<Param query="loadHidden" type="boolean" default="true">
+
+Load the widget without showing it.
+
+</Param>
+
+<Param query="stopPreviewLoop" type="boolean" default="true">
+
+Stop the preview window from endlessly looping.
+
+</Param>
+
+<Param query="noCloseOption" type="boolean" default="true">
+
+No option to close the widget.
+
+</Param>
+
+Add the following code to the page in oder to set the settings:
+
+```javascript
+window.tolstoySettings = {
+  alwaysShow: true,
+  loadHidden: true,
+  stopPreviewLoop: true,
+  noCloseOption: true,
+};
+```
+
+## start()
+
+Start the widget, open it expanded and plays immediately
+
+```javascript
+window.tolstoyWidget.start();
+```
+
+## startPart(partNumber)
+
+Start the widget at a specific part number, open it expanded and plays immediately. If the widget is already open it will start to play the given part.
+
+```javascript
+window.tolstoyWidget.startPart(partNumber);
+```
+
+## show()
+
+Show the widget bubble if it was loaded hidden or closed
+
+```javascript
+window.tolstoyWidget.show();
+```
+
+### hide()
+
+Hide the widget bubble from screen
+
+```javascript
+window.tolstoyWidget.hide();
+```
+
+## recreate(tolstoyWidgetId, settings)
+
+Load a new widget with a different Tolstoy Id, remember to replace the \{\{TOLSTOY_ID}}
+
+```javascript
+window.tolstoyWidget.recreate("{{TOLSTOY_ID}}");
+```
+
+## on(eventType, callback)
+
+Trigger a callback on a specific event
+
+Params:
+
+<Param query="eventType" type='"onWidgetOpen" | "onWidgetClose" | "onWidgetReady" | "onTolstoyClose"'>
+
+**Supported events**:
+
+onWidgetOpen - triggers when the widget is opened <br />
+onWidgetClose - triggers when the widget is closed <br />
+onWidgetReady - triggers when the widget is ready <br />
+onTolstoyClose - triggers when the tolstoy bubble is closed
+
+</Param>
+
+<Param query="callback" type="function">
+
+A function to trigger
+
+</Param>
+
+```javascript
+window.tolstoyWidget.on("onWidgetOpen", () => {
+  console.log("Widget Opened");
+});
+```
+
+## Reject Cookie Policy
+
+This can be used when a user rejects the cookie policy.
+
+```javascript
+window.tolstoyWidget.postMessage({ eventName: "tolstoy_reject_cookie_policy" });
+```
