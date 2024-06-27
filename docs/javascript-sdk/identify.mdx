@@ -57,3 +57,30 @@ window.tolstoyWidget.identify({
   customAttributes: { package: "free", age: 28, activationDate: "2021-09-10" },
 });
 ```
+
+
+## Single Tolstoy Code
+
+If you want only a single widget on a single page you can also load just the Widget ID
+
+<Warning>By using this you won't be able to use rules and conditions.</Warning>
+
+```javascript
+# Replace the window.tolstoyAppKey='{{APP_KEY}}';
+window.tolstoyWidgetId='{{TOLSTOY_ID}}'
+```
+
+### Tolstoy users
+
+If you know the logged in user you can add his email for better tracking.
+
+If you want to add specific Rules & Triggers on users you can skip this and use [Identify](/javascript-sdk/installation).
+
+```javascript
+window.tolstoyUser = "{{email}}";
+``` 
+
+
+
+
+
