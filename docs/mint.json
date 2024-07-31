@@ -75,6 +75,7 @@
       "pages": [
         "javascript-sdk/installation",
         "javascript-sdk/widget",
+        "javascript-sdk/configuration",
         "javascript-sdk/events",
         "javascript-sdk/subscriptions",
         "javascript-sdk/stories"
