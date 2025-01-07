@@ -7,29 +7,21 @@ description: "Learn how to configure your Tolstoy widget to perform different fu
 
 We support the following additional configurations for the floating widget:
 
-<Param query="alwaysShow" type="boolean" default="true">
+<ParamField query="alwaysShow" type="boolean" default="true">
+  In case a user closed the widget and you want to keep showing it to him.
+</ParamField>
 
-In case a user closed the widget and you want to keep showing it to him.
+<ParamField query="loadHidden" type="boolean" default="true">
+  Load the widget without showing it.
+</ParamField>
 
-</Param>
+<ParamField query="stopPreviewLoop" type="boolean" default="true">
+  Stop the preview window from endlessly looping.
+</ParamField>
 
-<Param query="loadHidden" type="boolean" default="true">
-
-Load the widget without showing it.
-
-</Param>
-
-<Param query="stopPreviewLoop" type="boolean" default="true">
-
-Stop the preview window from endlessly looping.
-
-</Param>
-
-<Param query="noCloseOption" type="boolean" default="true">
-
-No option to close the widget.
-
-</Param>
+<ParamField query="noCloseOption" type="boolean" default="true">
+  No option to close the widget.
+</ParamField>
 
 Add the following code to the page in order to set the settings:
 
@@ -76,7 +68,7 @@ window.tolstoyWidget.hide();
 
 ## recreate(tolstoyWidgetId, settings)
 
-Load a new widget with a different Tolstoy Id, remember to replace the \{\{TOLSTOY_ID}}
+Load a new widget with a different Tolstoy Id, remember to replace the \{\{TOLSTOY\_ID}}
 
 ```javascript
 window.tolstoyWidget.recreate("{{TOLSTOY_ID}}");
@@ -88,22 +80,18 @@ Trigger a callback on a specific event
 
 Params:
 
-<Param query="eventType" type='"onWidgetOpen" | "onWidgetClose" | "onWidgetReady" | "onTolstoyClose"'>
+<ParamField query="eventType" type="&#x22;onWidgetOpen&#x22; | &#x22;onWidgetClose&#x22; | &#x22;onWidgetReady&#x22; | &#x22;onTolstoyClose&#x22;">
+  **Supported events**:
 
-**Supported events**:
+  onWidgetOpen - triggers when the widget is opened <br />
+  onWidgetClose - triggers when the widget is closed <br />
+  onWidgetReady - triggers when the widget is ready <br />
+  onTolstoyClose - triggers when the tolstoy bubble is closed
+</ParamField>
 
-onWidgetOpen - triggers when the widget is opened <br />
-onWidgetClose - triggers when the widget is closed <br />
-onWidgetReady - triggers when the widget is ready <br />
-onTolstoyClose - triggers when the tolstoy bubble is closed
-
-</Param>
-
-<Param query="callback" type="function">
-
-A function to trigger
-
-</Param>
+<ParamField query="callback" type="function">
+  A function to trigger
+</ParamField>
 
 ```javascript
 window.tolstoyWidget.on("onWidgetOpen", () => {
