@@ -11,43 +11,43 @@ It's recommended to call identify right after your user's signup/login, when you
 
 ### Parameters
 
-<Param query="data" type="Data" required>
+<ParamField query="data" type="Data" required>
 
 Required params for identifying the user, one or both of the following:
 
 <Expandable title="Data">
 
-<Param query="userId" type="string" required>
+<ParamField query="userId" type="string" required>
 
 Your system userId.
 
-</Param>
+</ParamField>
 
-<Param query="email" type="string" required>
+<ParamField query="email" type="string" required>
 
 Your user's email address
 
-</Param>
+</ParamField>
 
 </Expandable>
 
-</Param>
+</ParamField>
 
-<Param query="signedUpAt" type="string">
+<ParamField query="signedUpAt" type="string">
 
 Your user's sign up date.
 
 For example: `2021-08-27`.
 
-</Param>
+</ParamField>
 
-<Param query="customAttributes" type="Object">
+<ParamField query="customAttributes" type="Object">
 
 Add any additional attributes (maximum of 100 attributes)
 
 <Note>Date format must be `YYYY-MM-DD`</Note>
 
-</Param>
+</ParamField>
 
 ```javascript
 window.tolstoyWidget.identify({
