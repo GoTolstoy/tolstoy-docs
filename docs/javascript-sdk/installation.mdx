@@ -10,15 +10,19 @@ Add the following script at the head on your site:
 Replace `{{APP_KEY}}` with your account App Key.
 
 ```javascript
-<script>
-  window.tolstoyAppKey='{{ APP_KEY }}'; var s =
-  document.createElement('script'); s.type = 'text/javascript'; s.async = true;
-  s.src = 'https://widget.gotolstoy.com/widget/widget.js';
-  document.head.appendChild(s);
-</script>
+<script>tolstoyAppKey="{{ APP_KEY }}"</script>
+<script type="module"
+  async
+  src="https://widget.gotolstoy.com/we/widget.js"
+></script>
+<script
+  type="text/javascript"
+  nomodule
+  async
+  src="https://widget.gotolstoy.com/widget/widget.js"
+></script>
 ```
 
 <Note>
   For Shopify users the script is added automatically using the ScriptTag API
 </Note>
-
