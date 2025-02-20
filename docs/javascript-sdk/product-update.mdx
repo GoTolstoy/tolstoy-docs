@@ -1,0 +1,113 @@
+# Product Update Guide
+
+When updating product information through the API, especially when dealing with variants, there are specific rules that must be followed to ensure successful updates.
+
+## Key Rules for Variant Updates
+
+1. **Maintain Original Order**: The variants array must maintain the exact same order as received from Shopify
+2. **Complete Array Required**: You must provide the entire variants array, even when updating a single variant
+3. **Position Matters**: Each variant must remain in its original position in the array
+
+## Allowed Fields
+
+### Product Fields
+
+You can only update these fields for products:
+
+- `id`
+- `description_html` (or `descriptionHtml` for backward compatibility)
+- `variants`
+- `price`
+- `compare_at_price`
+- `title`
+
+### Variant Fields
+
+You can only update these fields for variants:
+
+- `id`
+- `price`
+- `compare_at_price`
+- `title`
+
+## Examples
+
+### ❌ Incorrect Approach
+
+This will not work - sending only the variant you want to update:
+
+```javascript
+window.tolstoyWidget.postMessage({
+  product: {
+    id: "prod_123",
+    variants: [
+      {
+        id: "var_2", // Second variant
+        price: 29.99,
+      },
+    ],
+  },
+  eventName: "tolstoy_product_update",
+});
+```
+
+### ✅ Correct Approach
+
+Do this - send all variants in their original order:
+
+```javascript
+window.tolstoyWidget.postMessage({
+  product: {
+    id: "prod_123",
+    title: "Updated Product Title",
+    description_html: "<p>New product description</p>",
+    variants: [
+      {
+        id: "var_1", // Include first variant even if unchanged
+      },
+      {
+        id: "var_2",
+        price: 29.99, // Your update here
+      },
+      {
+        id: "var_3", // Include third variant even if unchanged
+      },
+    ],
+  },
+  eventName: "tolstoy_product_update",
+});
+```
+
+## Important Notes
+
+- **Variant Order**: Must exactly match what you received from Shopify
+- **All Variants Required**: Include all variants in the array, even ones you're not updating
+- **Minimal Updates**: For unchanged variants, you only need to include their `id`
+- **Field Validation**: Including fields not listed in the allowed fields will cause the update to fail
+
+## Best Practice Example
+
+Here's a complete example showing how to properly update a variant:
+
+```javascript
+// Original product from Shopify has 3 variants
+const originalVariants = [
+  { id: "var_1", title: "Small", price: 19.99 },
+  { id: "var_2", title: "Medium", price: 19.99 },
+  { id: "var_3", title: "Large", price: 19.99 },
+];
+
+// To update product title and medium variant's price
+window.tolstoyWidget.postMessage({
+  product: {
+    id: "prod_123",
+    title: "Updated Product Name",
+    variants: [
+      { id: "var_1" }, // Keep first variant
+      { id: "var_2", price: 24.99, title: "Medium Updated" }, // Update second variant
+      { id: "var_3" }, // Keep third variant
+    ],
+  },
+  eventName: "tolstoy_product_update",
+});
+```
