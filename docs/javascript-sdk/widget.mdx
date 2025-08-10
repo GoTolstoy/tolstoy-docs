@@ -7,19 +7,19 @@ description: "Learn how to configure your Tolstoy widget to perform different fu
 
 We support the following additional configurations for the floating widget:
 
-<ParamField query="alwaysShow" type="boolean" default="true">
+<ParamField query="alwaysShow" default="true" type="boolean">
   In case a user closed the widget and you want to keep showing it to him.
 </ParamField>
 
-<ParamField query="loadHidden" type="boolean" default="true">
+<ParamField query="loadHidden" default="true" type="boolean">
   Load the widget without showing it.
 </ParamField>
 
-<ParamField query="stopPreviewLoop" type="boolean" default="true">
+<ParamField query="stopPreviewLoop" default="true" type="boolean">
   Stop the preview window from endlessly looping.
 </ParamField>
 
-<ParamField query="noCloseOption" type="boolean" default="true">
+<ParamField query="noCloseOption" default="true" type="boolean">
   No option to close the widget.
 </ParamField>
 
@@ -68,7 +68,7 @@ window.tolstoyWidget.hide();
 
 ## recreate(tolstoyWidgetId, settings)
 
-Load a new widget with a different Tolstoy Id, remember to replace the \{\{TOLSTOY\_ID}}
+Load a new widget with a different Tolstoy Id, remember to replace the {{TOLSTOY_ID}}
 
 ```javascript
 window.tolstoyWidget.recreate("{{TOLSTOY_ID}}");
@@ -80,12 +80,15 @@ Trigger a callback on a specific event
 
 Params:
 
-<ParamField query="eventType" type="&#x22;onWidgetOpen&#x22; | &#x22;onWidgetClose&#x22; | &#x22;onWidgetReady&#x22; | &#x22;onTolstoyClose&#x22;">
+<ParamField query="eventType" type='"onWidgetOpen" | "onWidgetClose" | "onWidgetReady" | "onTolstoyClose"'>
   **Supported events**:
 
-  onWidgetOpen - triggers when the widget is opened <br />
-  onWidgetClose - triggers when the widget is closed <br />
-  onWidgetReady - triggers when the widget is ready <br />
+  onWidgetOpen - triggers when the widget is opened \
+  
+  onWidgetClose - triggers when the widget is closed \
+  
+  onWidgetReady - triggers when the widget is ready \
+  
   onTolstoyClose - triggers when the tolstoy bubble is closed
 </ParamField>
 
@@ -97,12 +100,4 @@ Params:
 window.tolstoyWidget.on("onWidgetOpen", () => {
   console.log("Widget Opened");
 });
-```
-
-## Reject Cookie Policy
-
-This can be used when a user rejects the cookie policy.
-
-```javascript
-window.tolstoyWidget.postMessage({ eventName: "tolstoy_reject_cookie_policy" });
 ```
