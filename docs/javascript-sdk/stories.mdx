@@ -21,9 +21,11 @@ Replace `{{VARIANT_ID}}` with your variant id to sort the videos by the variant 
 
 or hybrid collection/product pages where you need to update both product ID and Shopify tags:
 
+Replace `{{SHOPIFY_TAGS}}` with one or comma seperated list of shopify tags.
+
 ```
 window.tolstoyWidget?.['{{PUBLISH_ID}}']?.init({
   productId: '{{PRODUCT_ID}}',
-  tags: 'tag1,tag2,tag3'
+  tags: '{{SHOPIFY_TAGS}}'
 });
 ```
