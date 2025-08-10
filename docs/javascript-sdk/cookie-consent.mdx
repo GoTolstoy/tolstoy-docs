@@ -3,8 +3,9 @@ title: "Cookie Consent"
 description: "This document explains how the Tolstoy Widget handles cookie consent, how it integrates with Shopify’s Customer Privacy API, and how to control acceptance or rejection programmatically."
 ---
 
+   
 
-## How Tolstoy Handles Consent with Shopify
+### How Tolstoy Handles Consent with Shopify
 
 When Tolstoy runs on a Shopify store:
 
@@ -13,7 +14,9 @@ When Tolstoy runs on a Shopify store:
   - Analytics will be **blocked** when Shopify’s analytics state is 'no'.
 - If Shopify’s API is **not** present, Tolstoy allows analytics by default unless you explicitly default to reject (see last section).
 
-## Reject Cookie Conset programmatically
+   
+
+### Reject Cookie Conset programmatically
 
 You can programmatically reject cookies when a user doenst accept analytics cooikes policy like this:
 
@@ -23,7 +26,9 @@ You can programmatically reject cookies when a user doenst accept analytics cooi
 window.tolstoyWidget?.postMessage({ eventName: 'tolstoy_reject_cookie_policy' });
 ```
 
-## Default Reject (No Cookies Until Accept)
+   
+
+### Default Reject (No Cookies Until Accept)
 
 If you want Tolstoy to start in a **rejected** state until the user explicitly accepts, set the following before loading the Tolstoy widget script:
 
