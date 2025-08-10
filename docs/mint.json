@@ -74,7 +74,7 @@
       "group": "JavaScript SDK",
       "pages": [
         "javascript-sdk/installation",
-        "javascript-sdk/cookie-policy",
+        "javascript-sdk/cookie-consent",
         "javascript-sdk/widget",
         "javascript-sdk/configuration",
         "javascript-sdk/events",
