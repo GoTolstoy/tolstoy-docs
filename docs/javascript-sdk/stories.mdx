@@ -1,7 +1,10 @@
 ---
-title: 'Stories'
-description: 'Tolstoy Stories extra options'
+title: "Stories"
+description: "Tolstoy Stories extra options"
 ---
+
+### Standard Usage 
+
 Use this script in case you want to make the stories relaunch and get it by new product id:
 
 Replace `{{PUBLISH_ID}}` with your project publish id.
@@ -10,8 +13,17 @@ Replace `{{PRODUCT_ID}}` with your product id.
 
 Replace `{{VARIANT_ID}}` with your variant id to sort the videos by the variant id (works if videos were tagged with variants and not just the product).
 
-
-
 ```javascript
   window.tolstoyWidget?.['{{PUBLISH_ID}}']?.init('{{PROUDUCT_ID}},{{VARIANT_ID}}')
+```
+
+### Enhanced Usage with Data-Tag Support
+
+or hybrid collection/product pages where you need to update both product ID and Shopify tags:
+
+```
+window.tolstoyWidget?.['{{PUBLISH_ID}}']?.init({
+  productId: '{{PRODUCT_ID}}',
+  tags: 'tag1,tag2,tag3'
+});
 ```
