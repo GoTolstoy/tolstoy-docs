@@ -111,3 +111,16 @@ window.tolstoyWidget.postMessage({
   eventName: "tolstoy_product_update",
 });
 ```
+
+## Request product  update
+
+Async products update can be made with tolstoy_request_products_update event. This could be used for example after language change:
+
+```javascript
+const handle = '{{ product.handle }}';
+
+window.tolstoyWidget.postMessage({
+    eventName: 'tolstoy_request_products_update',
+    handles: [handle],
+});
+```
