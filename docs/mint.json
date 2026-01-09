@@ -90,6 +90,50 @@
         "webhooks/add-webhook",
         "webhooks/delete-webhook"
       ]
+    },
+    {
+      "group": "Company",
+      "pages": [
+        "company/overview",
+        {
+          "group": "Finance",
+          "pages": [
+            "company/finance/overview",
+            "company/finance/expenses",
+            "company/finance/budget"
+          ]
+        },
+        {
+          "group": "Human Resources",
+          "pages": [
+            "company/hr/overview",
+            "company/hr/policies",
+            "company/hr/benefits"
+          ]
+        },
+        {
+          "group": "Legal",
+          "pages": [
+            "company/legal/overview",
+            "company/legal/contracts",
+            "company/legal/compliance"
+          ]
+        },
+        {
+          "group": "Investor Relations",
+          "pages": [
+            "company/investor-relations/overview",
+            "company/investor-relations/updates",
+            "company/investor-relations/fundraising"
+          ]
+        },
+        {
+          "group": "Administration",
+          "pages": [
+            "company/admin/overview"
+          ]
+        }
+      ]
     }
   ],
   "footerSocials": {
