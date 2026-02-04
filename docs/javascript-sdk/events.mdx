@@ -19,60 +19,28 @@ All events will send the event name in the `name` attribute, In addition all eve
 
 - `accountId` - Your account ID
 - `projectId` - Your project ID
-- `videoName` - The name of the first video
 - `anonymousId` - Viewer ID
 
-## General Events
-
-`tolstoyStarted` - Start button clicked for the first time
-
-##  Swipeable Tolstoy Events
-
-`videoLoaded` - Video starts to play
-
-`feedScroll` - Swipe to next video
-
-`clickViewProduct` - Click to view product detials
-
-##  Branching Tolstoy Events
-
-`tolstoyAnswerClicked` - One of the question's answers was clicked
-
-- text: The text content of the clicked answer
-
-`tolstoyInputSubmit` - The free text form was submitted
-
-- text: The free text form or date picker form was submitted
-
-
-`tolstoyLeadFormSubmit` - One of the steps in the lead form was submitted
-
-- `email` (Nullable) - The email that the user submitted
-- `name` (Nullable) - The name that the user submitted
-- `phone` (Nullable) - The phone number that the user submitted
-- `customFields` (Nullable) - A list of the custom fields that you've added to the form (each object has the custom key and the user's input value)
-
-`tolstoyReachedEnd` - The user completed to watch the tolstoy and reached the end
-
-
-### Core Analytics Events
+## Events
 
 | Event Name | Description |
 |------------|-------------|
-| `tolstoyStarted` | Session started |
+| `tolstoyStarted` | Start button clicked for the first time |
 | `pageView` | Page viewed |
-| `videoPause` | Video paused |
+| `videoLoaded` | Video starts to play |
 | `videoStart` | Video started |
+| `videoPause` | Video paused |
 | `videoResume` | Video resumed |
 | `videoReplay` | Video replayed |
 | `videoSeeked` | Video seeked |
-| `shareClick` | Share clicked |
-
-### Feed Events
-
-| Event Name | Description |
-|------------|-------------|
+| `videoUnmuted` | Video unmuted |
 | `feedPlay` | Feed started playing |
 | `feedPause` | Feed paused |
-| `videoUnmuted` | Video unmuted |
-| `showFeedProductModal` | Product modal shown |
+| `feedScroll` | Swipe to next video |
+| `clickViewProduct` | Click to view product details |
+| `shareClick` | Share clicked |
+| `tolstoyProductCardClick` | Product card clicked |
+| `tolstoyAddToCart` | Add to cart triggered |
+
+
+
