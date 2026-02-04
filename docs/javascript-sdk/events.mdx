@@ -21,19 +21,20 @@ All events will send the event name in the `name` attribute, In addition all eve
 - `projectId` - Your project ID
 - `anonymousId` - Viewer ID
 
-## Events
+## Core Events
 
 | Event Name | Description |
 |------------|-------------|
 | `tolstoyStarted` | Start button clicked for the first time |
 | `pageView` | Page viewed |
+| `embedView` | Element in view |
 | `videoLoaded` | Video starts to play |
-| `videoStart` | Video started |
 | `videoPause` | Video paused |
 | `videoResume` | Video resumed |
 | `videoReplay` | Video replayed |
 | `videoSeeked` | Video seeked |
 | `videoUnmuted` | Video unmuted |
+| `videoWatched` | Video watched completion event |
 | `feedPlay` | Feed started playing |
 | `feedPause` | Feed paused |
 | `feedScroll` | Swipe to next video |
@@ -41,6 +42,25 @@ All events will send the event name in the `name` attribute, In addition all eve
 | `shareClick` | Share clicked |
 | `tolstoyProductCardClick` | Product card clicked |
 | `tolstoyAddToCart` | Add to cart triggered |
+
+## Widget Lifecycle Events
+
+| Event Name | Description |
+|------------|-------------|
+| `tolstoyWidgetReady` | Widget ready |
+| `tolstoyWidgetOpen` | Widget opened |
+| `tolstoyWidgetClose` | Widget closed |
+| `tolstoyModalClose` | Modal closed |
+
+## Interactive Events
+
+| Event Name | Description |
+|------------|-------------|
+| `tolstoyAnswerClicked` | CTA button clicked |
+| `tolstoyInputSubmit` | Form input submitted |
+| `tolstoyLeadFormSubmit` | Lead form submitted |
+| `tolstoyReachedEnd` | User reached end |
+
 
 
 
