@@ -1,0 +1,89 @@
+---
+title: "Chat Assistant"
+description: "Programmatically open, close, and observe the Tolstoy AI chat assistant bubble from your site."
+---
+
+The chat assistant exposes a JS API on `window.tolstoyAssistant` once the Tolstoy widget script has loaded. Use it to open, close, minimize, or observe the assistant modal from your own UI (custom CTAs, product pages, exit-intent triggers, etc.).
+
+<Note>
+  The API only controls the assistant modal state. The assistant must already be installed and enabled on the store. If the chat bubble is not rendered on the page, state changes are still tracked but have no visual effect.
+</Note>
+
+## open()
+
+Open the assistant modal.
+
+```javascript
+window.tolstoyAssistant.open();
+```
+
+## close()
+
+Close the assistant modal. The bubble stays visible (unless configured to hide on close).
+
+```javascript
+window.tolstoyAssistant.close();
+```
+
+## minimize()
+
+Minimize the assistant modal. The bubble stays visible; the conversation is preserved.
+
+```javascript
+window.tolstoyAssistant.minimize();
+```
+
+## isOpen()
+
+Returns `true` when the assistant modal is currently open.
+
+```javascript
+if (!window.tolstoyAssistant.isOpen()) {
+  window.tolstoyAssistant.open();
+}
+```
+
+## getState()
+
+Returns the current assistant state.
+
+<ParamField query="returns" type='"open" | "minimized" | "closed"' />
+
+```javascript
+const state = window.tolstoyAssistant.getState();
+```
+
+## subscribe(listener)
+
+Subscribe to state changes. Returns an unsubscribe function.
+
+<ParamField query="listener" type="(state: 'open' | 'minimized' | 'closed') => void">
+  Called every time the assistant state changes.
+</ParamField>
+
+```javascript
+const unsubscribe = window.tolstoyAssistant.subscribe((state) => {
+  console.log("Assistant state:", state);
+});
+
+// Later, to stop listening:
+unsubscribe();
+```
+
+## Waiting for the API
+
+The Tolstoy script may not be ready on first paint. Guard with a small polling helper when binding from your own page scripts:
+
+```javascript
+function withTolstoyAssistant(callback) {
+  if (window.tolstoyAssistant) return callback(window.tolstoyAssistant);
+  const id = setInterval(() => {
+    if (window.tolstoyAssistant) {
+      clearInterval(id);
+      callback(window.tolstoyAssistant);
+    }
+  }, 100);
+}
+
+withTolstoyAssistant((assistant) => assistant.open());
+```

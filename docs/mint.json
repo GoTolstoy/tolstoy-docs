@@ -76,6 +76,7 @@
         "javascript-sdk/installation",
         "javascript-sdk/cookie-consent",
         "javascript-sdk/widget",
+        "javascript-sdk/chat-assistant",
         "javascript-sdk/configuration",
         "javascript-sdk/events",
         "javascript-sdk/subscriptions",
