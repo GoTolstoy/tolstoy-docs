@@ -83,14 +83,6 @@
         "javascript-sdk/stories",
         "javascript-sdk/product-update"
       ]
-    },
-    {
-      "group": "Webhooks",
-      "pages": [
-        "webhooks/list-webhooks",
-        "webhooks/add-webhook",
-        "webhooks/delete-webhook"
-      ]
     }
   ],
   "footerSocials": {
