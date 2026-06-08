@@ -1,0 +1,44 @@
+---
+title: "Overview"
+description: "Connect any AI client to Tolstoy and run your shoppable video workspace from chat — via the Model Context Protocol (MCP)."
+---
+
+Tolstoy exposes its platform to AI clients over the **Model Context Protocol (MCP)** — the open standard for connecting assistants like Claude, ChatGPT, and Cursor to external tools. Connect once, then run your **shoppable video** workspace right from chat: generate content, manage your media library, build and publish shoppable widgets, tag products, and track ad performance.
+
+There are **two remote MCP servers**, both served over Streamable HTTP and secured with OAuth 2.1 + PKCE. There are no API keys to paste — your client runs the OAuth sign-in on first connect, and the connection is bound to the Tolstoy workspace you authorize with.
+
+| Server | Endpoint | What it does |
+| --- | --- | --- |
+| **Tolstoy Library** | `https://apilb.gotolstoy.com/mcp/v1/library/mcp` | Run your shoppable video workspace — media library, shoppable widgets (Stories, Carousel, Spotlight), product tagging, multi-store, and Meta ads. |
+| **Tolstoy Studio** | `https://apilb.gotolstoy.com/mcp/v1/mcp` | Generate and iterate on marketing videos and images with Tolstoy Studio's AI creative director. |
+
+<CardGroup cols={2}>
+  <Card title="Connect a client" icon="plug" href="/mcp/connect">
+    Step-by-step setup for ChatGPT, Claude, Cursor, and more.
+  </Card>
+  <Card title="Tolstoy Library tools" icon="photo-film" href="/mcp/library">
+    Assets, shoppable widgets, products, stores, and ads.
+  </Card>
+  <Card title="Tolstoy Studio tools" icon="wand-magic-sparkles" href="/mcp/studio">
+    Generate and iterate on videos and images.
+  </Card>
+  <Card title="MCP Registry" icon="box-archive" href="https://registry.modelcontextprotocol.io">
+    Published as io.github.GoTolstoy/library and /studio.
+  </Card>
+</CardGroup>
+
+## Authentication
+
+OAuth 2.1 with PKCE, backed by Amazon Cognito. Clients discover the flow via RFC 9728 protected-resource metadata at each server's `/.well-known` endpoints — there is nothing to configure beyond adding the server URL and signing in.
+
+<Note>
+  Each connection operates on the Tolstoy workspace you sign in with. Accounts with multiple stores can target any connected store from the widget, product, and ads tools.
+</Note>
+
+## App-aware clients
+
+In clients that support interactive MCP apps (ChatGPT, Claude), tool results render as inline views — a shoppable-widget card grid, asset previews, and widget detail with the actual videos a widget shows. Plain clients receive the same data as text, so every tool works everywhere.
+
+## Get started
+
+The fastest path is the published **Tolstoy Library** app in ChatGPT — search "Tolstoy Library" and click Connect. For every other client, see [Connect a client](/mcp/connect). Per-client setup is also available in the Tolstoy platform under **Settings → MCP**.
