@@ -45,6 +45,24 @@ claude mcp add --transport http tolstoy-studio  https://apilb.gotolstoy.com/mcp/
 gemini mcp add --transport http tolstoy-library https://apilb.gotolstoy.com/mcp/v1/library/mcp
 ```
 
+### Codex CLI
+
+Codex CLI's `codex mcp add` targets STDIO servers, so add the remote server to `~/.codex/config.toml` directly, then run the OAuth login:
+
+```toml
+[mcp_servers.tolstoy-library]
+url = "https://apilb.gotolstoy.com/mcp/v1/library/mcp"
+
+[mcp_servers.tolstoy-studio]
+url = "https://apilb.gotolstoy.com/mcp/v1/mcp"
+```
+
+```bash
+codex mcp login tolstoy-library
+```
+
+The first login opens a browser tab to sign in with your Tolstoy account; the token is cached for future sessions. Repeat `codex mcp login tolstoy-studio` if you added the Studio server too.
+
 ## Generic config
 
 Most clients accept a JSON config like:
