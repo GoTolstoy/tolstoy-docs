@@ -1,0 +1,27 @@
+---
+title: "Tolstoy Studio"
+description: "Generate and iterate on marketing videos and images in chat with Tolstoy Studio's AI creative director."
+---
+
+The **Tolstoy Studio** MCP server lets an AI client create marketing content — product videos and images for shoppable experiences, social/UGC, and ads — using Tolstoy Studio's creative-director agent server-side.
+
+```
+https://apilb.gotolstoy.com/mcp/v1/mcp
+```
+
+See [Connect a client](/mcp/connect) to add it.
+
+## Tools
+
+| Tool | What it does |
+| --- | --- |
+| `generate_studio_content` | Start a new Studio generation (image or video) from a prompt, optional reference images, and an aspect ratio. |
+| `iterate_studio_content` | Continue and refine an existing Studio generation in the same session. |
+
+## Working principle
+
+Tolstoy Studio runs a full creative-director agent server-side — scriptwriting, model casting, and brand-safe generation. Pass the user's intent directly and pick the output format (`assetType`, `aspectRatio`); refine with `iterate_studio_content` reusing the session rather than regenerating from scratch.
+
+<Note>
+  Content generated in Studio lands in your Tolstoy library, where the [Tolstoy Library](/mcp/library) tools can tag products on it, drop it into a shoppable widget, or push it to your Meta ads library.
+</Note>

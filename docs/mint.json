@@ -71,6 +71,15 @@
       "pages": ["welcome"]
     },
     {
+      "group": "MCP",
+      "pages": [
+        "mcp/overview",
+        "mcp/connect",
+        "mcp/library",
+        "mcp/studio"
+      ]
+    },
+    {
       "group": "JavaScript SDK",
       "pages": [
         "javascript-sdk/installation",
