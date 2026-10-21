@@ -1,0 +1,71 @@
+---
+title: "Tolstoy CLI"
+description: "Use the Tolstoy CLI to work with your workspace from a terminal, a script, or an AI coding agent."
+---
+
+The Tolstoy CLI is the `@tolstoy-ai/cli` package on npm. It gives you your products, brand context, media library, Studio assets, and more from the command line.
+
+## Create an API key
+
+API keys are available on paid plans.
+
+<Steps>
+  <Step title="Open the API keys page">
+    In Tolstoy, go to **Settings** → **API, MCP & CLI**.
+  </Step>
+  <Step title="Create a key">
+    Click **Create API Key**. Give the key a name, for example "CI pipeline", and select when it expires.
+  </Step>
+  <Step title="Copy the key">
+    Copy the key immediately. Tolstoy shows it only one time.
+  </Step>
+</Steps>
+
+<Warning>
+  A key acts as the person who created it, and it can get to all stores in the workspace. Keep it secret, as you keep a password.
+</Warning>
+
+## Install and sign in
+
+```bash
+npm install -g @tolstoy-ai/cli
+tolstoy auth login <api-key>
+```
+
+To run the CLI without installing it, use `npx @tolstoy-ai/cli` in place of `tolstoy`.
+
+In a script or a CI pipeline, set the `TOLSTOY_API_KEY` environment variable, or add `--api-key <key>` to a command.
+
+## Run commands
+
+A command has the form `tolstoy <service> <command> [flags]`:
+
+```bash
+tolstoy products search-products --json
+tolstoy brand get-brand-context
+```
+
+To see all services, run `tolstoy --help`. To see the commands of a service, run `tolstoy <service> --help`. To see the flags of a command, run `tolstoy <service> <command> --help`.
+
+| Flag | What it does |
+| - | - |
+| `--json` | Writes raw JSON. Without it, the output is formatted for reading. |
+| `--dry-run` | Shows the HTTP request, and does not send it. |
+| `--verbose` | Shows the request and response headers. |
+| `--api-key <key>` | Uses this key for the command. |
+
+| Command | What it does |
+| - | - |
+| `tolstoy auth status` | Shows the account that you are signed in with. |
+| `tolstoy auth logout` | Removes the saved key. |
+
+## Use it with an AI coding agent
+
+The CLI includes skills that teach an AI coding agent how to use it:
+
+```bash
+tolstoy skills list
+tolstoy skills add tolstoy-products --provider claude
+```
+
+The `--provider` flag accepts `claude`, `opencode` or `agents`. The command installs the skill into the current project. To install it for all your projects, add `-g`.
