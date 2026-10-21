@@ -1,0 +1,75 @@
+---
+title: "Installation"
+description: "Add Tolstoy to your site, put a widget on a page, and measure the sales that your widgets bring."
+---
+
+Tolstoy gives you the code for each step with your app key already in it. In Tolstoy, open a widget, click its status button (**Publish**, **Live** or **Paused**), and then click **Website setup & tracking**.
+
+## Shopify
+
+<Steps>
+  <Step title="Turn on Tolstoy in your theme">
+    In **Website setup & tracking**, click **Open Shopify theme**. In the theme editor, turn **Tolstoy** on in **App embeds**, and then click **Save**. You do this one time for each store.
+  </Step>
+  <Step title="Publish the widget">
+    Open the widget in Tolstoy and click **Publish**. The publish panel then shows the embed code.
+  </Step>
+  <Step title="Put the widget on a page">
+    Copy the embed code. In the theme editor, add a **Tolstoy Builder** block where you want the widget. Paste the embed code into the block and click **Save**.
+  </Step>
+</Steps>
+
+The Tolstoy app records the orders from your Shopify store. You do not have to add conversion tracking.
+
+## Other websites
+
+<Steps>
+  <Step title="Add the site code">
+    Copy the code from **Website setup & tracking** and paste it into the `<head>` of every page of your site. You do this one time.
+
+    On product pages, set `data-product-id` to the ID of the product. On other pages, remove `data-product-id`.
+  </Step>
+  <Step title="Publish the widget">
+    Open the widget in Tolstoy and click **Publish**. The publish panel then shows the embed code.
+  </Step>
+  <Step title="Put the widget on a page">
+    Paste the embed code into your page where you want the widget. If the embed code contains `PRODUCT_ID`, replace it with the ID of the product on that page.
+  </Step>
+</Steps>
+
+### Conversion tracking
+
+Conversion tracking tells Tolstoy about each order, so that Tolstoy can show the sales that your widgets bring. It is optional.
+
+Copy the tracking code from **Conversion tracking** in **Website setup & tracking**. Paste it into your order confirmation page, and replace the placeholder values with the data of the order:
+
+```javascript
+window.tolstoyConversion = {
+  appKey: "YOUR_APP_KEY", // already set in the code that you copy
+  appUrl: "your-store.com",
+  orderId: "1001",
+  totalPrice: "84.00",
+  currency: "USD",
+  presentmentCurrency: "EUR", // optional: the currency that the shopper paid in
+  email: "shopper@example.com",
+  items: [
+    {
+      productId: "123",
+      variantId: "456",
+      title: "Classic Tee",
+      price: "42.00",
+      quantity: 2,
+      totalPrice: "84.00", // price × quantity − discounts
+      discounts: [{ amount: "0.00" }], // optional
+    },
+  ],
+};
+```
+
+The tracking code then loads `https://widget.gotolstoy.com/track.js`, which sends the order to Tolstoy.
+
+Tolstoy records an order only when:
+
+- The order has a `totalPrice`.
+- The shopper saw Tolstoy on your site in the same browser.
+- The shopper did not reject analytics cookies. See [Cookie Consent](/storefront/cookie-consent).

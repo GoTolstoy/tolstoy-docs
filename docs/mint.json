@@ -68,8 +68,13 @@
       ]
     },
     {
+      "group": "CLI",
+      "pages": ["cli/overview"]
+    },
+    {
       "group": "Storefront",
       "pages": [
+        "storefront/installation",
         "storefront/customize-your-widget",
         "storefront/cookie-consent",
         "storefront/chat-assistant"
@@ -92,7 +97,7 @@
     },
     {
       "source": "/javascript-sdk/installation",
-      "destination": "/storefront/customize-your-widget"
+      "destination": "/storefront/installation"
     },
     {
       "source": "/javascript-sdk/widget",
