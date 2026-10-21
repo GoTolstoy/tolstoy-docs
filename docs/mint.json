@@ -35,18 +35,6 @@
   },
   "anchors": [
     {
-      "name": "Partners",
-      "icon": "handshake",
-      "color": "#fd7830",
-      "url": "https://www.gotolstoy.com/partners"
-    },
-    {
-      "name": "Affiliate program",
-      "icon": "chart-network",
-      "color": "#ffc728",
-      "url": "https://www.gotolstoy.com/affiliate-program"
-    },
-    {
       "name": "Help center",
       "icon": "circle-question",
       "color": "#01be81",
