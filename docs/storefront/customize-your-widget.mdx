@@ -1,0 +1,86 @@
+---
+title: "Customize your widget"
+description: "Tell the widget agent what your widget must do, and the agent changes the widget's code. Tolstoy widgets have no JavaScript SDK."
+---
+
+Each Tolstoy widget has its own code. To change what a widget does, you do not call a JavaScript API from your theme. You tell the widget agent what you want, and the agent changes the widget's code.
+
+The agent can connect the widget to the code of your store: your cart drawer, your quick view, your buttons, and your analytics.
+
+## Change a widget
+
+<Steps>
+  <Step title="Open the widget">
+    In Tolstoy, go to **Widgets** and open the widget.
+  </Step>
+  <Step title="Tell the agent what you want">
+    Write your request in the chat.
+  </Step>
+  <Step title="Examine the preview">
+    The agent shows the result in **Widget Preview**. The **Code** tab shows the code. Ask for more changes until the widget does what you want.
+  </Step>
+  <Step title="Publish">
+    Click **Publish**. Your store does not change until you publish.
+  </Step>
+</Steps>
+
+## Write a good request
+
+- Write what the shopper does and what must happen. For example: "When a shopper clicks Add to cart, open my cart drawer."
+- Give the URL of a page where the widget shows. The agent can open your store in a browser and examine its code.
+- If you know the function, element, or event that your theme uses, give its name. Then the agent does not have to find it.
+- If mobile and desktop must be different, write what each one must do.
+
+## Examples
+
+Replace the names in these examples with the names that your store uses.
+
+### Use your cart drawer
+
+```text
+When a shopper clicks Add to cart, add the item through my theme's cart and open my cart drawer.
+My theme adds items with window.theme.cart.addItem(variantId, quantity) and opens the drawer with window.theme.cart.open().
+```
+
+### Open your quick view
+
+```text
+When a shopper clicks a product, open my theme's quick view for that product instead of the Tolstoy product details.
+My quick view opens when a "quickview:open" event with the product URL in its detail bubbles up from the page.
+```
+
+### Open the player from your button
+
+```text
+On product pages, open the videos in full screen when a shopper clicks my "Watch videos" button (id="watch-videos").
+```
+
+### Close the player when your cart opens
+
+```text
+When my cart drawer opens, close the full-screen player so that the shopper sees the cart.
+```
+
+### Send events to your analytics
+
+```text
+Push an event to my Google Tag Manager dataLayer when a shopper plays a video, clicks a product, or adds to cart.
+Name the events tolstoy_video_play, tolstoy_product_click and tolstoy_add_to_cart.
+```
+
+### Show the widget only on some pages
+
+```text
+Show the bubble only on collection pages, and only after the shopper scrolls down half of the page.
+```
+
+### Match your store design
+
+```text
+Use my store's fonts and button style. Make the product cards look like the product cards on this page:
+https://your-store.com/collections/all
+```
+
+## Cookie consent and the chat assistant
+
+Two features have a page API that your site code can call: [Cookie Consent](/storefront/cookie-consent) and the [Chat Assistant](/storefront/chat-assistant).

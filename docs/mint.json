@@ -82,6 +82,7 @@
     {
       "group": "Storefront",
       "pages": [
+        "storefront/customize-your-widget",
         "storefront/cookie-consent",
         "storefront/chat-assistant"
       ]
@@ -103,35 +104,35 @@
     },
     {
       "source": "/javascript-sdk/installation",
-      "destination": "/welcome"
+      "destination": "/storefront/customize-your-widget"
     },
     {
       "source": "/javascript-sdk/widget",
-      "destination": "/welcome"
+      "destination": "/storefront/customize-your-widget"
     },
     {
       "source": "/javascript-sdk/configuration",
-      "destination": "/welcome"
+      "destination": "/storefront/customize-your-widget"
     },
     {
       "source": "/javascript-sdk/events",
-      "destination": "/welcome"
+      "destination": "/storefront/customize-your-widget"
     },
     {
       "source": "/javascript-sdk/subscriptions",
-      "destination": "/welcome"
+      "destination": "/storefront/customize-your-widget"
     },
     {
       "source": "/javascript-sdk/stories",
-      "destination": "/welcome"
+      "destination": "/storefront/customize-your-widget"
     },
     {
       "source": "/javascript-sdk/product-update",
-      "destination": "/welcome"
+      "destination": "/storefront/customize-your-widget"
     },
     {
       "source": "/javascript-sdk/identify",
-      "destination": "/welcome"
+      "destination": "/storefront/customize-your-widget"
     }
   ]
 }
