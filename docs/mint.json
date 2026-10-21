@@ -35,18 +35,6 @@
   },
   "anchors": [
     {
-      "name": "Partners",
-      "icon": "handshake",
-      "color": "#fd7830",
-      "url": "https://www.gotolstoy.com/partners"
-    },
-    {
-      "name": "Affiliate program",
-      "icon": "chart-network",
-      "color": "#ffc728",
-      "url": "https://www.gotolstoy.com/affiliate-program"
-    },
-    {
       "name": "Help center",
       "icon": "circle-question",
       "color": "#01be81",
@@ -82,6 +70,7 @@
     {
       "group": "Storefront",
       "pages": [
+        "storefront/customize-your-widget",
         "storefront/cookie-consent",
         "storefront/chat-assistant"
       ]
@@ -103,35 +92,35 @@
     },
     {
       "source": "/javascript-sdk/installation",
-      "destination": "/welcome"
+      "destination": "/storefront/customize-your-widget"
     },
     {
       "source": "/javascript-sdk/widget",
-      "destination": "/welcome"
+      "destination": "/storefront/customize-your-widget"
     },
     {
       "source": "/javascript-sdk/configuration",
-      "destination": "/welcome"
+      "destination": "/storefront/customize-your-widget"
     },
     {
       "source": "/javascript-sdk/events",
-      "destination": "/welcome"
+      "destination": "/storefront/customize-your-widget"
     },
     {
       "source": "/javascript-sdk/subscriptions",
-      "destination": "/welcome"
+      "destination": "/storefront/customize-your-widget"
     },
     {
       "source": "/javascript-sdk/stories",
-      "destination": "/welcome"
+      "destination": "/storefront/customize-your-widget"
     },
     {
       "source": "/javascript-sdk/product-update",
-      "destination": "/welcome"
+      "destination": "/storefront/customize-your-widget"
     },
     {
       "source": "/javascript-sdk/identify",
-      "destination": "/welcome"
+      "destination": "/storefront/customize-your-widget"
     }
   ]
 }
