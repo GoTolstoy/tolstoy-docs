@@ -1,0 +1,36 @@
+---
+title: "How it works"
+description: "How the Tolstoy MCP and CLI divide the work, how workspaces, conversations and creative skills work, and what you pay for."
+---
+
+## One server, one workspace
+
+The Tolstoy MCP is one server at one URL. A connection is bound to the Tolstoy workspace that you signed in to. Product, media, model, template and project ids come only from that workspace's records.
+
+## Core tools in the MCP, the full toolset in the CLI
+
+The MCP carries the core tools: brand and catalog context, media search, and media creation. These are the same tools that the Tolstoy Agent uses in the Tolstoy platform.
+
+The [Tolstoy CLI](/agents/cli) carries the wider toolset: models, AI widgets, playlists, store settings, Meta ads and more. It is optional. Install it when your agent needs more than the MCP gives.
+
+## Your generator or Tolstoy's
+
+The context tools return ids and URLs: the exact product variant and its images, the brand's logos and colors, and the media in the Library. Your agent can give these to its own image or video tool. It can also create through Tolstoy with `generate_image`, `generate_video` and the other creation tools. Images and videos that Tolstoy creates are saved to the brand's media Library.
+
+## Creative skills before generation
+
+Before any generation, the agent finds the [creative skill](/agents/creative-skills) that matches the request, loads it, and follows it in the prompt. Creative skills are available only after you sign in.
+
+## One conversation per chat
+
+The first generation in a chat returns a `conversationId`. Every later call in that chat passes it. So the first call goes alone, before calls that run at the same time. Calls that start together before any result returns each start their own conversation.
+
+The images and videos of one conversation gather on one canvas. In clients that show MCP apps, such as ChatGPT and Claude, the user sees the canvas in the Tolstoy panel. Long runs continue after a call returns, and the panel shows their progress. `get_generation` reads the result of a run.
+
+## The Tolstoy Agent
+
+`run_agent` sends a message to the Tolstoy Agent and returns when the turn starts. The agent answers in text: it plans content and campaigns, and writes briefs and scripts. `get_agent_chat` reads the answer. Use it for planning and research. Use the creation tools to make media.
+
+## Pricing
+
+You pay for generation.
