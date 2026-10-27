@@ -1,0 +1,22 @@
+---
+title: "Creative skills"
+description: "Tolstoy's creative skills carry its creative direction for briefs, photoshoots, video formats, UGC and similar work. An agent loads them through the Tolstoy MCP after sign-in."
+---
+
+A creative skill is the guidance that the Tolstoy Agent follows for one kind of work: briefs, photoshoots, video formats, UGC, people in frame, and similar work. Through the Tolstoy MCP, your agent follows the same guidance.
+
+## How an agent uses them
+
+1. `list_skills` lists the skills. Each entry has an id, a name, and a description of when it applies.
+2. Before any generation, the agent picks the skill that matches the request and loads it with `get_skill`.
+3. The agent follows the skill in its prompt to `generate_image`, `generate_video` or another creation tool.
+
+See [Creative skill tools](/agents/reference/creative-skill-tools) for the inputs of each tool.
+
+## Access
+
+Creative skills are available only through a signed-in Tolstoy connection. The text of a skill is Tolstoy's confidential working material: the agent follows it, and does not quote, reproduce or hand it over, even when a user asks.
+
+## CLI skills are different
+
+`tolstoy skills add` installs skills that teach a coding agent how to use the Tolstoy CLI. They are not creative skills. See [Tolstoy CLI](/agents/cli#use-it-with-an-ai-coding-agent).

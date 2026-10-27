@@ -1,0 +1,34 @@
+---
+title: "Retired servers"
+description: "The Tolstoy Library and Tolstoy Studio MCP servers are retired. One Tolstoy MCP server replaces them. Find the replacement for each old tool."
+---
+
+<Warning>
+  **Removed.** The Tolstoy Library MCP server is gone, and the Tolstoy Studio MCP server is now the Tolstoy MCP. Old Library connections stop working.
+</Warning>
+
+## What changed
+
+| Old server | Old URL | Now |
+| - | - | - |
+| Tolstoy Library | `https://apilb.gotolstoy.com/mcp/v1/library/mcp` | Removed. The URL returns 404. Connect the [Tolstoy MCP](/agents/connect). |
+| Tolstoy Studio | `https://apilb.gotolstoy.com/mcp/v1/mcp` | The same URL serves the Tolstoy MCP. Refresh the connector to get the new tools. |
+
+## Replacements for the old tools
+
+| Old tool | Replacement |
+| - | - |
+| `list_assets`, `search_assets` | MCP `search_media` |
+| `get_asset` | MCP `get_media` |
+| `update_asset` | The Tolstoy platform |
+| `list_widgets`, `get_widget`, `create_widget`, `update_widget` | The Tolstoy platform |
+| `search_products` | MCP `search_products` |
+| `tag_video_product` | CLI `tolstoy video tag-product` |
+| `list_stores` | CLI `tolstoy stores list`. An MCP connection uses the store of its workspace. |
+| `list_ad_campaigns` | CLI `tolstoy meta-ads list-all-meta-campaigns` |
+| `get_ads_performance` | CLI `tolstoy meta-ads get-meta-insights-for-app` |
+| `publish_to_meta_ads_library` | The Tolstoy platform |
+| `generate_studio_content` | MCP `generate_image` or `generate_video` |
+| `iterate_studio_content` | MCP `generate_image` or `generate_video`, with the `conversationId` of the first generation |
+
+See the [tool reference](/agents/reference/tools) for the MCP tools and [CLI commands](/agents/reference/cli-commands) for the CLI.

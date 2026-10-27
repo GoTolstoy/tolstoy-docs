@@ -1,0 +1,12 @@
+{
+  "group": "Tool reference",
+  "pages": [
+    "agents/reference/tools",
+    "agents/reference/brand-products-and-media",
+    "agents/reference/create-media",
+    "agents/reference/creative-skill-tools",
+    "agents/reference/tolstoy-agent",
+    "agents/reference/uploads-and-workspace",
+    "agents/reference/cli-commands"
+  ]
+}

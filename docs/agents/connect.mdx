@@ -1,0 +1,96 @@
+---
+title: "Connect your agent"
+sidebarTitle: "Connect"
+description: "Add the Tolstoy MCP server to ChatGPT, Claude, Cursor, Claude Code, Codex or another MCP client, and sign in with your Tolstoy account."
+---
+
+The Tolstoy MCP is one server:
+
+```
+https://apilb.gotolstoy.com/mcp/v1/mcp
+```
+
+It uses Streamable HTTP and OAuth 2.1 with PKCE. You do not paste a key. Your client opens a Tolstoy sign-in the first time it connects. The connection is bound to the workspace that you sign in to: its store catalog, media Library, saved models and creative skills.
+
+<Note>
+  The Tolstoy platform also shows these steps, with copy buttons, in **Settings** → **API, MCP & CLI** → **MCP**.
+</Note>
+
+## ChatGPT
+
+1. In the Tolstoy platform, go to **Settings** → **API, MCP & CLI** → **MCP**, and select **ChatGPT**.
+2. Click **Open Tolstoy in ChatGPT**.
+3. Connect, sign in to Tolstoy, and approve access to your workspace.
+
+If your ChatGPT workspace restricts apps, ask its administrator to enable Tolstoy.
+
+## Claude
+
+1. In Claude, open **Settings** → **Connectors** and add a custom connector.
+2. Name it `Tolstoy`, and paste the server URL.
+3. Click **Connect**, and sign in to Tolstoy.
+
+On a Claude connection, Tolstoy lists the tools that generate media, and `run_agent`, only for workspaces that are allowed to generate media. The [tool reference](/agents/reference/tools) marks these tools. To ask for access, write to [support@gotolstoy.com](mailto:support@gotolstoy.com).
+
+## Cursor
+
+Add the server to `~/.cursor/mcp.json`, or click **Add to Cursor** on the Tolstoy platform's MCP page:
+
+```json
+{
+  "mcpServers": {
+    "tolstoy": { "url": "https://apilb.gotolstoy.com/mcp/v1/mcp" }
+  }
+}
+```
+
+The first tool call opens a browser tab. Sign in to Tolstoy there.
+
+## Claude Code
+
+```bash
+claude mcp add --transport http tolstoy https://apilb.gotolstoy.com/mcp/v1/mcp
+```
+
+Then run `/mcp` in Claude Code and sign in to Tolstoy.
+
+## Codex
+
+Codex CLI reads remote servers from `~/.codex/config.toml`:
+
+```toml
+[mcp_servers.tolstoy]
+url = "https://apilb.gotolstoy.com/mcp/v1/mcp"
+```
+
+Then sign in:
+
+```bash
+codex mcp login tolstoy
+```
+
+## Gemini CLI
+
+```bash
+gemini mcp add --transport http tolstoy https://apilb.gotolstoy.com/mcp/v1/mcp
+```
+
+The first tool call opens a browser tab. Sign in to Tolstoy there.
+
+## Other MCP clients
+
+Most clients accept this configuration:
+
+```json
+{
+  "mcpServers": {
+    "tolstoy": { "url": "https://apilb.gotolstoy.com/mcp/v1/mcp" }
+  }
+}
+```
+
+## After you connect
+
+- **Credits.** Each generation and each Tolstoy Agent turn spends the workspace's credits. A run that the balance cannot pay for is refused, and the result says so. `get_usage` reads the balance.
+- **Tool list.** A client keeps the tool list that it read when it connected. If a tool in the [tool reference](/agents/reference/tools) is missing in your client, refresh or reconnect the Tolstoy connector.
+- **Other work.** Work that no tool does is done in the [Tolstoy platform](https://app.gotolstoy.com).

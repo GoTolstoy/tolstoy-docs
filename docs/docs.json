@@ -1,0 +1,180 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Tolstoy",
+  "colors": {
+    "primary": "#FA536E",
+    "light": "#FD90A2",
+    "dark": "#2A39D5"
+  },
+  "favicon": "/favicon.png",
+  "navigation": {
+    "anchors": [
+      {
+        "anchor": "Documentation",
+        "icon": "book-open",
+        "groups": [
+          {
+            "group": "Home",
+            "pages": [
+              "welcome"
+            ]
+          },
+          {
+            "group": "Tolstoy for AI agents",
+            "pages": [
+              "agents/overview",
+              "agents/connect",
+              "agents/how-it-works",
+              {
+                "$ref": "./agents/reference/nav.json"
+              },
+              "agents/creative-skills",
+              "agents/cli",
+              "agents/retired-servers"
+            ]
+          },
+          {
+            "group": "Storefront",
+            "pages": [
+              "storefront/installation",
+              "storefront/customize-your-widget",
+              "storefront/cookie-consent",
+              "storefront/chat-assistant"
+            ]
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Help center",
+          "href": "https://help.gotolstoy.com/en/",
+          "icon": "circle-question",
+          "color": {
+            "light": "#01be81",
+            "dark": "#01be81"
+          }
+        },
+        {
+          "anchor": "Guides",
+          "href": "https://www.gotolstoy.com/guides",
+          "icon": "book",
+          "color": {
+            "light": "#fa536e",
+            "dark": "#fa536e"
+          }
+        },
+        {
+          "anchor": "Blog",
+          "href": "https://www.gotolstoy.com/blog",
+          "icon": "newspaper",
+          "color": {
+            "light": "#3d4fe0",
+            "dark": "#3d4fe0"
+          }
+        }
+      ]
+    }
+  },
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "api": {
+    "mdx": {
+      "server": "https://api.gotolstoy.com",
+      "auth": {
+        "method": "key",
+        "name": "Authentication"
+      }
+    }
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Contact sales",
+        "href": "https://www.gotolstoy.com/contact-sales"
+      },
+      {
+        "label": "Sign in",
+        "href": "https://app.gotolstoy.com/login"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Get Tolstoy",
+      "href": "https://app.gotolstoy.com/signup"
+    }
+  },
+  "footer": {
+    "socials": {
+      "linkedin": "https://www.linkedin.com/company/gotolstoy",
+      "twitter": "https://twitter.com/gotolstoy",
+      "instagram": "https://www.instagram.com/gotolstoy/?hl=en"
+    }
+  },
+  "redirects": [
+    {
+      "source": "/javascript-sdk/cookie-consent",
+      "destination": "/storefront/cookie-consent"
+    },
+    {
+      "source": "/javascript-sdk/chat-assistant",
+      "destination": "/storefront/chat-assistant"
+    },
+    {
+      "source": "/javascript-sdk/installation",
+      "destination": "/storefront/installation"
+    },
+    {
+      "source": "/javascript-sdk/widget",
+      "destination": "/storefront/customize-your-widget"
+    },
+    {
+      "source": "/javascript-sdk/configuration",
+      "destination": "/storefront/customize-your-widget"
+    },
+    {
+      "source": "/javascript-sdk/events",
+      "destination": "/storefront/customize-your-widget"
+    },
+    {
+      "source": "/javascript-sdk/subscriptions",
+      "destination": "/storefront/customize-your-widget"
+    },
+    {
+      "source": "/javascript-sdk/stories",
+      "destination": "/storefront/customize-your-widget"
+    },
+    {
+      "source": "/javascript-sdk/product-update",
+      "destination": "/storefront/customize-your-widget"
+    },
+    {
+      "source": "/javascript-sdk/identify",
+      "destination": "/storefront/customize-your-widget"
+    },
+    {
+      "source": "/mcp/overview",
+      "destination": "/agents/overview"
+    },
+    {
+      "source": "/mcp/connect",
+      "destination": "/agents/connect"
+    },
+    {
+      "source": "/mcp/library",
+      "destination": "/agents/retired-servers"
+    },
+    {
+      "source": "/mcp/studio",
+      "destination": "/agents/retired-servers"
+    },
+    {
+      "source": "/cli/overview",
+      "destination": "/agents/cli"
+    }
+  ]
+}
