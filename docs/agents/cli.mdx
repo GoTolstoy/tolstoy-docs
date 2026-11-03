@@ -41,11 +41,12 @@ In a script or a CI pipeline, set the `TOLSTOY_API_KEY` environment variable, or
 
 ## Run commands
 
-A command has the form `tolstoy <service> <command> [flags]`:
+A command has the form `tolstoy <service> <command> [flags]`. A command that reads or changes one store needs `--app-url`. `tolstoy stores list` shows the stores that your key can use; give one of its `appUrl` values as `<store>`:
 
 ```bash
-tolstoy products search-products --json
-tolstoy brand get-brand-context
+tolstoy stores list --json
+tolstoy brand get-brand-context --app-url <store>
+tolstoy products search-products --app-url <store> --json
 ```
 
 To see all services, run `tolstoy --help`. To see the commands of a service, run `tolstoy <service> --help`. To see the flags of a command, run `tolstoy <service> <command> --help`.
