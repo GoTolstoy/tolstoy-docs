@@ -39,6 +39,7 @@
             "pages": [
               "storefront/installation",
               "storefront/customize-your-widget",
+              "storefront/widgets-sdk",
               "storefront/cookie-consent",
               "storefront/chat-assistant"
             ]
