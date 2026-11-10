@@ -135,7 +135,7 @@ Key services: `products`, `brand`, `media`, `models`, `ai-widgets`, `billing`, `
 2. **Pick mode**: Text (prompt only), image (animate one still), keyframe (first→last interpolation), or reference (multi-image composition).
 3. **Load creative skill**: Call `list_skills`, find matching skill (e.g., "product video ad"), call `get_skill`.
 4. **Select model**: Check model capabilities in reference docs. Match mode to model (not every model runs every mode).
-5. **Prepare references**: If mode=image/keyframe/reference, gather URLs. For Seedance, structure audio in channels: (music), <sfx>, {dialogue}, 【subtitles】.
+5. **Prepare references**: If mode=image/keyframe/reference, gather URLs. For Seedance, structure audio in channels: `(music)`, `<sfx>`, `{dialogue}`, `【subtitles】`.
 6. **Generate**: Call `generate_video` with mode, prompt, references, duration, aspect ratio, model.
 7. **Analyze if needed**: Call `analyze_media` to extract pacing, motion, audio quality, visual beats.
 8. **Iterate**: Regenerate with updated prompt or different model. Do not chain edits; rebuild from original sources.
