@@ -1,35 +1,34 @@
 ---
 name: tolstoy-analytics
-description: Measure a storefront widget that Tolstoy did not build with the Tolstoy Ecom Analytics SDK, and read a store's analytics report through the Tolstoy CLI. Use when the user builds or edits their own widget and wants its shopper events, engagement and sales measured, or asks for store analytics numbers.
+description: Measure a storefront widget that Tolstoy did not build with the Tolstoy SDK, and read a store's analytics report through the Tolstoy CLI. Use when the user builds or edits their own widget and wants its shopper events, engagement and sales measured, or asks for store analytics numbers.
 ---
 
 # Store analytics and outside widgets
 
 An outside widget is a widget that Tolstoy did not build, on the merchant's own
-storefront pages. It records shopper events with the Tolstoy Ecom Analytics SDK. Its
-results come from the same report as the merchant's Analytics page, read for the
-outside widgets only.
+storefront pages. It records shopper events with the Tolstoy SDK. Its results
+come from the same report as the merchant's Analytics page, read for the outside
+widgets only.
 
 ## Prerequisites
 
 The Tolstoy CLI (https://developers.gotolstoy.com/agents/cli) or the Tolstoy MCP
 (https://developers.gotolstoy.com/agents/connect), signed in to the merchant's workspace.
-The developer guide is https://developers.gotolstoy.com/storefront/widgets-sdk.
+The developer guide is https://developers.gotolstoy.com/storefront/tolstoy-sdk.
 
-## Add the Ecom Analytics SDK to a widget
+## Add the Tolstoy SDK to a widget
 
-The SDK is an ES module on the Tolstoy CDN:
+The SDK is an ES module on the Tolstoy CDN. One SDK serves every widget on the
+page; `tolstoy.analytics.widget(widgetId)` returns the trackers of one widget:
 
 ```javascript
-import { TolstoySDK } from 'https://widgets-sdk.gotolstoy.com/widgets-sdk.js';
+import { TolstoySDK } from 'https://widgets-sdk.gotolstoy.com/tolstoy-sdk.js';
 
-const tolstoy = new TolstoySDK({
-  appKey: 'APP_KEY',
-  widgetId: '01JC8Z6Q4M3T9V2X7B5N1K0RWD',
-  analyticsSource: 'size-quiz',
-  viteDev: false,
-  outsideWidget: true,
-});
+const tolstoy = new TolstoySDK({ appKey: 'APP_KEY' });
+const sizeQuiz = tolstoy.analytics.widget('01JC8Z6Q4M3T9V2X7B5N1K0RWD');
+
+sizeQuiz.trackEmbedViewOnVisibility(widgetElement);
+sizeQuiz.trackSessionStartOnInteraction(widgetElement);
 ```
 
 - `appKey`: the workspace's app key. It is in the code that Tolstoy shows in
@@ -37,14 +36,12 @@ const tolstoy = new TolstoySDK({
 - `widgetId`: one id for each widget, chosen by the developer and kept the same
   across releases. The report groups numbers by it. It must be a ULID (26
   characters, upper case) or 13 lowercase letters and digits; the SDK throws for
-  any other shape when `outsideWidget` is `true`.
-- `outsideWidget: true` marks every event of the widget. Marked events never
-  count toward Shoppable Videos view billing and never enter the numbers of the
-  widgets that Tolstoy built.
-- `analyticsSource`: `trackEvent('click')` sends `<analyticsSource>.click`.
-- `viteDev: true` turns analytics off. In a Vite app pass `import.meta.env.DEV`.
-- Call `tolstoy.destroy()` when the widget leaves the page; it sends the queued
-  events.
+  any other shape. The same id returns the same trackers.
+- Every event of the SDK is marked as an outside-widget event. Marked events
+  never count toward Shoppable Videos view billing and never enter the numbers
+  of the widgets that Tolstoy built.
+- Call `tolstoy.destroy()` when the page no longer needs the SDK; it sends the
+  queued events.
 
 ## Consent
 
@@ -82,22 +79,23 @@ from that tool's consent callback.
 The report reads these SDK calls. A report number stays empty when its events
 are not sent.
 
-| SDK call | Report number |
+| Tracker of `tolstoy.analytics.widget(widgetId)` | Report number |
 |---|---|
 | `trackEmbedView()` or `trackEmbedViewOnVisibility(element)` | Impressions |
 | `trackSessionStart()` or `trackSessionStartOnInteraction(element)` | Opens. An order counts for the widget when the same shopper orders within the window after an open. |
-| `trackVideoWatched({ videoId, videoWatchedTime, ... })` or `createNativeVideoAnalyticsSession(...)` | Plays and engaged shoppers (watch time above 0) |
+| `trackVideoWatched({ videoId, videoWatchedTime, ... })` | Plays and engaged shoppers (watch time above 0) |
 | `trackAddToCart({ productId, variantId, ... })` | Add to carts, and in-video revenue for the ordered variant |
-| `productId`, `productIds` or `currentPageProductId` on `trackVideoLoaded` or `trackVideoWatched`, and `currentPageProductId` on `trackSessionStart` | Post-video revenue for the ordered product |
+| `productId`, `productIds` or `currentPageProductId` on `trackVideoLoaded({ videoId, ... })` or `trackVideoWatched`, and `currentPageProductId` on `trackSessionStart` | Post-video revenue for the ordered product |
 | `trackEvent(name, properties)` | Listed by name in the `events` of the details section |
 
-Product and variant ids are the store's ids; the SDK turns Shopify `gid://` ids
-into numbers. `videoId` must be a UUID: the event intake drops any other value.
+Product and variant ids are the store's ids. The video and cart trackers turn
+Shopify `gid://` ids into numbers; pass `currentPageProductId` to
+`trackSessionStart` as a number. `videoId` must be a UUID: the event intake drops any other value.
 
 ## Orders
 
 On a Shopify store with the Tolstoy app, the widget writes the SDK's shopper id,
-`tolstoy.Analytics.anonymousId`, to the cart attribute `__tolstoyAnonymousId`,
+`tolstoy.anonymousId`, to the cart attribute `__tolstoyAnonymousId`,
 and Tolstoy reads it from the order. Write it only when the shopper allowed
 analytics, after the SDK sent an event such as the open: at its first allowed
 event the SDK takes the id that another widget on the page stored first.
@@ -111,7 +109,7 @@ const linkCart = async () => {
   await fetch(`${window.Shopify.routes.root}cart/update.js`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ attributes: { __tolstoyAnonymousId: tolstoy.Analytics.anonymousId } }),
+    body: JSON.stringify({ attributes: { __tolstoyAnonymousId: tolstoy.anonymousId } }),
   });
 };
 
