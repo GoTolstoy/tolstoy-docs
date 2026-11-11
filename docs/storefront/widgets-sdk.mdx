@@ -55,11 +55,45 @@ Use the product and variant IDs of your store. The SDK changes a Shopify `gid://
 
 ## Shopper consent
 
-The SDK sends no event and stores no shopper ID until the shopper allows analytics. It drops the events from before that; it does not keep them for later. The SDK follows the Shopify Customer Privacy API, Cookiebot, OneTrust, and the `tolstoy-cookie-policy` value. See [Cookie Consent](/storefront/cookie-consent#the-widgets-sdk).
+The SDK sends no event and stores no shopper ID until the shopper allows analytics. It drops the events from before that; it does not keep them for later. At each event, the SDK reads the `tolstoy-cookie-policy` value in `localStorage`: `accepted` allows analytics, and `rejected` blocks it. Your widget sets this value from the consent tool of your store, before its first event and again when the shopper changes the answer. The SDK does not load a consent tool and does not wait for one. See [Cookie Consent](/storefront/cookie-consent#the-ecom-analytics-sdk) for what the SDK does without the value.
+
+On Shopify, get the answer from Shopify's [Customer Privacy API](https://shopify.dev/docs/api/customer-privacy):
+
+```javascript
+const passConsent = (analyticsAllowed) =>
+  localStorage.setItem('tolstoy-cookie-policy', analyticsAllowed ? 'accepted' : 'rejected');
+
+window.Shopify.loadFeatures([{ name: 'consent-tracking-api', version: '0.1' }], (error) => {
+  if (error) throw error;
+  passConsent(window.Shopify.customerPrivacy.analyticsProcessingAllowed());
+  startWidget(); // your code: create TolstoySDK and send the first events
+});
+
+document.addEventListener('visitorConsentCollected', (event) => passConsent(event.detail.analyticsAllowed));
+```
+
+Put this code after `startWidget` and the code that it uses, such as `linkCart` in [Orders](#orders): when the page already loaded the API, Shopify calls the callback at once. With a different consent tool, call `passConsent` from the consent callback of that tool.
 
 ## Orders
 
-- **Shopify**: Install the Tolstoy app on the store. At the first event that the shopper allows, the SDK writes the shopper ID to the cart attribute `__tolstoyAnonymousId`. Tolstoy reads it from the order.
+- **Shopify**: Install the Tolstoy app on the store. Your widget writes the shopper ID of the SDK, `tolstoy.Analytics.anonymousId`, to the cart attribute `__tolstoyAnonymousId`, and Tolstoy reads it from the order. Write it only when the shopper allows analytics, after the SDK sends an event such as the open: at its first allowed event, the SDK uses the shopper ID that a different widget on the page stored first.
+
+  ```javascript
+  let isCartLinked = false;
+
+  const linkCart = async () => {
+    if (isCartLinked || localStorage.getItem('tolstoy-cookie-policy') !== 'accepted') return;
+    isCartLinked = true;
+    await fetch(`${window.Shopify.routes.root}cart/update.js`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ attributes: { __tolstoyAnonymousId: tolstoy.Analytics.anonymousId } }),
+    });
+  };
+
+  document.querySelector('#size-quiz').addEventListener('click', linkCart);
+  ```
+
 - **Other platforms**: Add the [conversion tracking code](/storefront/installation#conversion-tracking) to your order confirmation page. It reads the shopper ID that the SDK stores.
 
 Tolstoy links an order only when the shopper used the widget in the same browser.

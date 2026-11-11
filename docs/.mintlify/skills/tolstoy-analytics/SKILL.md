@@ -49,10 +49,33 @@ const tolstoy = new TolstoySDK({
 ## Consent
 
 The SDK sends no event and stores no shopper id until the shopper allows
-analytics. Events from before that are dropped, not held. It follows Shopify's
-Customer Privacy API, Cookiebot and OneTrust, and the `tolstoy-cookie-policy`
-value in `localStorage`: `rejected` blocks analytics and `accepted` allows it.
-With no consent tool and no stored value, analytics is allowed.
+analytics. Events from before that are dropped, not held. At each event it reads
+the `tolstoy-cookie-policy` value in `localStorage`: `accepted` allows analytics
+and `rejected` blocks it. The widget sets this value from the store's consent
+tool, before its first event and again when the shopper changes the answer.
+Without the value, the SDK reads the consent tools that the page already loaded
+(Shopify's Customer Privacy API, Cookiebot, OneTrust); with none, analytics is
+allowed. The SDK does not load or wait for a consent tool.
+
+On Shopify, the answer comes from the Customer Privacy API:
+
+```javascript
+const passConsent = (analyticsAllowed) =>
+  localStorage.setItem('tolstoy-cookie-policy', analyticsAllowed ? 'accepted' : 'rejected');
+
+window.Shopify.loadFeatures([{ name: 'consent-tracking-api', version: '0.1' }], (error) => {
+  if (error) throw error;
+  passConsent(window.Shopify.customerPrivacy.analyticsProcessingAllowed());
+  startWidget(); // creates TolstoySDK and sends the first events
+});
+
+document.addEventListener('visitorConsentCollected', (event) => passConsent(event.detail.analyticsAllowed));
+```
+
+Shopify calls the `loadFeatures` callback at once when the page already loaded
+the API, so this code runs after `startWidget` and everything it uses (such as
+`linkCart` below) are defined. With another consent tool, call `passConsent`
+from that tool's consent callback.
 
 ## Events and what the report counts
 
@@ -73,12 +96,32 @@ into numbers. `videoId` must be a UUID: the event intake drops any other value.
 
 ## Orders
 
-On a Shopify store with the Tolstoy app, the SDK writes the shopper id to the
-cart attribute `__tolstoyAnonymousId` at the first event the shopper allows, and
-Tolstoy reads it from the order. On another platform, add the conversion
-tracking code to the order confirmation page (developers.gotolstoy.com,
-Storefront > Installation). An order links only when the shopper used the widget
-in the same browser.
+On a Shopify store with the Tolstoy app, the widget writes the SDK's shopper id,
+`tolstoy.Analytics.anonymousId`, to the cart attribute `__tolstoyAnonymousId`,
+and Tolstoy reads it from the order. Write it only when the shopper allowed
+analytics, after the SDK sent an event such as the open: at its first allowed
+event the SDK takes the id that another widget on the page stored first.
+
+```javascript
+let isCartLinked = false;
+
+const linkCart = async () => {
+  if (isCartLinked || localStorage.getItem('tolstoy-cookie-policy') !== 'accepted') return;
+  isCartLinked = true;
+  await fetch(`${window.Shopify.routes.root}cart/update.js`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ attributes: { __tolstoyAnonymousId: tolstoy.Analytics.anonymousId } }),
+  });
+};
+
+widgetElement.addEventListener('click', linkCart);
+```
+
+On another platform, add the conversion tracking code to the order confirmation
+page (developers.gotolstoy.com, Storefront > Installation); it reads the shopper
+id that the SDK stores. An order links only when the shopper used the widget in
+the same browser.
 
 ## Read the report
 

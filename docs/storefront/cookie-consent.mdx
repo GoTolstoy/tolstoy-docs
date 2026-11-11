@@ -47,13 +47,13 @@ window.tolstoyWidget?.postMessage({ eventName: 'tolstoy_accept_cookie_policy' })
 
 A widget that you build with the [Tolstoy Ecom Analytics SDK](/storefront/widgets-sdk) does not use `window.tolstoyWidget`. The SDK examines consent at each event, in this order:
 
-1. The `tolstoy-cookie-policy` value in `localStorage`: `rejected` blocks analytics, and `accepted` allows it.
-2. Shopify's Customer Privacy API: the analytics state `no` blocks analytics.
+1. The `tolstoy-cookie-policy` value in `localStorage`: `rejected` blocks analytics, and `accepted` allows it. Your widget sets this value from the consent tool of your store. On Shopify, see [Shopper consent](/storefront/widgets-sdk#shopper-consent).
+2. Shopify's Customer Privacy API, if the page already loaded it: the analytics state `no` blocks analytics.
 3. Cookiebot (the statistics category) and OneTrust (the performance category, `C0002`), after the shopper answers.
 4. If the page loads Cookiebot or OneTrust and the shopper did not answer, analytics stays blocked.
 5. With no consent tool and no stored value, analytics is allowed.
 
-When analytics is blocked, the SDK sends no event and stores no shopper ID. It drops the events from before consent; it does not send them later.
+The SDK does not load a consent tool and does not wait for one. When analytics is blocked, the SDK sends no event and stores no shopper ID. It drops the events from before consent; it does not send them later.
 
 To start in a rejected state with your own consent banner, set the value before the widget loads, and set it to `accepted` when the shopper accepts:
 
