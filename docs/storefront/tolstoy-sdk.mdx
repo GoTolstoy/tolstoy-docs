@@ -1,55 +1,39 @@
 ---
 title: "Tolstoy SDK"
-description: "Record the shopper events of a widget that you build yourself with the Tolstoy SDK, link them to your orders, and read the results with the Tolstoy CLI or MCP."
+description: "Send your own storefront events, such as clicks on a button, to Tolstoy analytics with the Tolstoy SDK, and read their counts with the Tolstoy CLI or MCP."
 ---
 
-An outside widget is a widget on your storefront that Tolstoy did not build: your own quiz, carousel, or video block. The Tolstoy SDK records its shopper events. Tolstoy then links those events to your orders and shows the results in the same report as the **Analytics** page, apart from the widgets that Tolstoy built.
+The Tolstoy SDK sends your own events to Tolstoy analytics. Use it to count anything that shoppers do on your storefront, for example how many times shoppers click **Expand product details**.
 
 <Note>
-  The SDK measures widgets on the pages of your own store. Its events never count toward Shoppable Videos view billing, and they never change the numbers of your Tolstoy widgets.
+  Your events never count toward Shoppable Videos view billing, and they never change the numbers of your Tolstoy widgets: they are not opens, engaged shoppers, try-ons, add to carts or revenue.
 </Note>
 
 ## Add the SDK
 
-The SDK is an ES module on the Tolstoy CDN. Create one SDK on the page, and get the trackers of each widget from `tolstoy.analytics.widget()`:
+The SDK is an ES module on the Tolstoy CDN. Create one SDK on the page, and send each event with `tolstoy.analytics.track()`:
 
 ```javascript
 import { TolstoySDK } from 'https://widgets-sdk.gotolstoy.com/tolstoy-sdk.js';
 
 const tolstoy = new TolstoySDK({ appKey: 'YOUR_APP_KEY' });
-const sizeQuiz = tolstoy.analytics.widget('01JC8Z6Q4M3T9V2X7B5N1K0RWD');
 
-sizeQuiz.trackEmbedViewOnVisibility(document.querySelector('#size-quiz'));
-sizeQuiz.trackSessionStartOnInteraction(document.querySelector('#size-quiz'));
+document.querySelector('#expand-details').addEventListener('click', () => {
+  tolstoy.analytics.track('expand_product_details', { productId: '123' });
+});
 ```
 
 | Value | What it is |
 |---|---|
 | `appKey` | The app key of your workspace. It is in the code that Tolstoy shows in **Website setup & tracking**: open a widget, click its status button, and then click **Website setup & tracking**. |
-| `widgetId` | One ID for each widget. You choose it, and you keep it the same in each release, because the report groups the numbers by it. It must be a [ULID](https://github.com/ulid/spec) (26 characters, upper case) or 13 lowercase letters and digits. The SDK throws an error for an ID of a different shape. The same ID gives the same trackers. |
+| `eventName` | The first argument of `track()`. Tolstoy records the event as `tolstoy-sdk.<eventName>`, for example `tolstoy-sdk.expand_product_details`. With its prefix, the name can have up to 200 characters. |
+| Parameters | The optional second argument of `track()`: an object of strings, numbers and booleans. Tolstoy keeps it with the event. As JSON, it can have up to about 10,000 characters. |
 
-Each event of the SDK is marked as an outside-widget event.
-
-Call `tolstoy.destroy()` when the page no longer needs the SDK. This sends the events that are in the queue.
-
-## Events and the numbers they give
-
-The report counts the events of these trackers. A number stays empty when its events are not sent.
-
-| Tracker of `tolstoy.analytics.widget(widgetId)` | Number in the report |
-|---|---|
-| `trackEmbedView()` or `trackEmbedViewOnVisibility(element)` | Impressions |
-| `trackSessionStart()` or `trackSessionStartOnInteraction(element)` | Opens. An order counts for the widget when the same shopper orders in the attribution window after an open. |
-| `trackVideoWatched({ videoId, videoWatchedTime })` | Plays, and engaged shoppers (watch time more than 0) |
-| `trackAddToCart({ productId, variantId })` | Add to carts, and in-video revenue for the variant that the shopper orders |
-| `productId`, `productIds` or `currentPageProductId` on `trackVideoLoaded({ videoId })` or `trackVideoWatched`, and `currentPageProductId` on `trackSessionStart` | Post-video revenue for the product that the shopper orders |
-| `trackEvent(name, properties)` | Your own events, listed by name in the details of the report |
-
-Use the product and variant IDs of your store. The video and cart trackers change a Shopify `gid://` ID to its number; give `currentPageProductId` to `trackSessionStart` as a number. A `videoId` must be a UUID, because Tolstoy drops other values.
+The SDK throws an error when `appKey` or the event name is empty. It sends the events in batches: every 10 seconds, when 10 events are in the queue, and when the shopper leaves the page. Tolstoy drops an event that is larger than the limits above.
 
 ## Shopper consent
 
-The SDK sends no event and stores no shopper ID until the shopper allows analytics. It drops the events from before that; it does not keep them for later. At each event, the SDK reads the `tolstoy-cookie-policy` value in `localStorage`: `accepted` allows analytics, and `rejected` blocks it. Your widget sets this value from the consent tool of your store, before its first event and again when the shopper changes the answer. The SDK does not load a consent tool and does not wait for one. See [Cookie Consent](/storefront/cookie-consent#the-tolstoy-sdk) for what the SDK does without the value.
+The SDK sends no event and stores no shopper ID until the shopper allows analytics. It drops the events from before that; it does not keep them for later. At each event, the SDK reads the `tolstoy-cookie-policy` value in `localStorage`: `accepted` allows analytics, and `rejected` blocks it. Your page sets this value from the consent tool of your store, before the first event and again when the shopper changes the answer. The SDK does not load a consent tool and does not wait for one. See [Cookie Consent](/storefront/cookie-consent#the-tolstoy-sdk) for what the SDK does without the value.
 
 On Shopify, get the answer from Shopify's [Customer Privacy API](https://shopify.dev/docs/api/customer-privacy):
 
@@ -60,37 +44,13 @@ const passConsent = (analyticsAllowed) =>
 window.Shopify.loadFeatures([{ name: 'consent-tracking-api', version: '0.1' }], (error) => {
   if (error) throw error;
   passConsent(window.Shopify.customerPrivacy.analyticsProcessingAllowed());
-  startWidget(); // your code: create TolstoySDK and send the first events
+  startTracking(); // your code: create TolstoySDK and add the listeners that call track()
 });
 
 document.addEventListener('visitorConsentCollected', (event) => passConsent(event.detail.analyticsAllowed));
 ```
 
-Put this code after `startWidget` and the code that it uses, such as `linkCart` in [Orders](#orders): when the page already loaded the API, Shopify calls the callback at once. With a different consent tool, call `passConsent` from the consent callback of that tool.
-
-## Orders
-
-- **Shopify**: Install the Tolstoy app on the store. Your widget writes the shopper ID of the SDK, `tolstoy.anonymousId`, to the cart attribute `__tolstoyAnonymousId`, and Tolstoy reads it from the order. Write it only when the shopper allows analytics, after the SDK sends an event such as the open: at its first allowed event, the SDK uses the shopper ID that a different widget on the page stored first.
-
-  ```javascript
-  let isCartLinked = false;
-
-  const linkCart = async () => {
-    if (isCartLinked || localStorage.getItem('tolstoy-cookie-policy') !== 'accepted') return;
-    isCartLinked = true;
-    await fetch(`${window.Shopify.routes.root}cart/update.js`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ attributes: { __tolstoyAnonymousId: tolstoy.anonymousId } }),
-    });
-  };
-
-  document.querySelector('#size-quiz').addEventListener('click', linkCart);
-  ```
-
-- **Other platforms**: Add the [conversion tracking code](/storefront/installation#conversion-tracking) to your order confirmation page. It reads the shopper ID that the SDK stores.
-
-Tolstoy links an order only when the shopper used the widget in the same browser.
+Put this code after `startTracking` and the code that it uses: when the page already loaded the API, Shopify calls the callback at once. With a different consent tool, call `passConsent` from the consent callback of that tool.
 
 ## Read the results
 
@@ -102,18 +62,19 @@ With the [Tolstoy CLI](/agents/cli):
 tolstoy analytics get-store-analytics \
   --date-from 2026-11-01 \
   --date-to 2026-11-09 \
-  --outside-widgets \
+  --sections '["details"]' \
   --json
 ```
 
+In the details, `events` lists each of your events with the widget type `tolstoy-sdk`, its name, the number of events and the number of shoppers who sent it:
+
+```json
+{ "widgetType": "tolstoy-sdk", "eventName": "tolstoy-sdk.expand_product_details", "events": 412, "shoppers": 298 }
+```
+
 - `--app-url` selects a store from `tolstoy stores list`. Without it, the CLI uses your default store.
-- `--widget-ids '["01JC8Z6Q4M3T9V2X7B5N1K0RWD"]'` limits the report to some widgets.
-- `--window` (`24h`, `3d`, `7d` or `30d`) is how long after an open an order still counts.
-- `--sections '["overview","details"]'` adds the details: products, videos and your own events.
-- Without `--outside-widgets`, the command reads the widgets that Tolstoy built.
+- `--channel` (`web` or `app`) limits the report to your website or your Tapcart app.
 
-With the [Tolstoy MCP](/agents/connect), the `get_store_analytics` tool returns the same report. Pass `outsideWidgets: true` to read your outside widgets.
-
-In the report, `overview.current` holds the totals, `widgets` holds one row for each widget ID, and `daily` holds the days. An outside widget has no name, so `widgetName` is `null`.
+With the [Tolstoy MCP](/agents/connect), the `get_store_analytics` tool returns the same report. Ask for the `details` section.
 
 The CLI and the MCP read only the stores of the workspace that you signed in to.
