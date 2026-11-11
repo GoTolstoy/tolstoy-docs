@@ -39,6 +39,7 @@
             "pages": [
               "storefront/installation",
               "storefront/customize-your-widget",
+              "storefront/tolstoy-sdk",
               "storefront/cookie-consent",
               "storefront/chat-assistant"
             ]
