@@ -1,12 +1,12 @@
 ---
 name: tolstoy-analytics
-description: Measure a storefront widget that Tolstoy did not build with the Tolstoy widgets SDK, and read a store's analytics report through the Tolstoy CLI. Use when the user builds or edits their own widget and wants its shopper events, engagement and sales measured, or asks for store analytics numbers.
+description: Measure a storefront widget that Tolstoy did not build with the Tolstoy Ecom Analytics SDK, and read a store's analytics report through the Tolstoy CLI. Use when the user builds or edits their own widget and wants its shopper events, engagement and sales measured, or asks for store analytics numbers.
 ---
 
 # Store analytics and outside widgets
 
 An outside widget is a widget that Tolstoy did not build, on the merchant's own
-storefront pages. It records shopper events with the Tolstoy widgets SDK. Its
+storefront pages. It records shopper events with the Tolstoy Ecom Analytics SDK. Its
 results come from the same report as the merchant's Analytics page, read for the
 outside widgets only.
 
@@ -16,7 +16,7 @@ The Tolstoy CLI (https://developers.gotolstoy.com/agents/cli) or the Tolstoy MCP
 (https://developers.gotolstoy.com/agents/connect), signed in to the merchant's workspace.
 The developer guide is https://developers.gotolstoy.com/storefront/widgets-sdk.
 
-## Add the SDK to a widget
+## Add the Ecom Analytics SDK to a widget
 
 The SDK is an ES module on the Tolstoy CDN:
 
