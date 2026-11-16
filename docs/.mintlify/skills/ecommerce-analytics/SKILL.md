@@ -33,7 +33,7 @@ something, link them to orders, and judge each number against a baseline.
    compare the two halves.
 7. **Judge the difference, not each rate.** For two rates p₁ of n₁ shoppers
    and p₂ of n₂ shoppers, the 95% range of the difference is
-   ± 1.96 × √(p₁(1−p₁)/n₁ + p₂(1−p₂)/n₂). 30 buyers of 1,000 shoppers (3.0%)
+   (p₂ − p₁) ± 1.96 × √(p₁(1−p₁)/n₁ + p₂(1−p₂)/n₂). 30 buyers of 1,000 shoppers (3.0%)
    against 42 of 1,000 (4.2%) is a difference of 1.2 points ± 1.6, so it can
    be zero. Report it as an estimate, not as a proven effect, and collect more
    shoppers.
