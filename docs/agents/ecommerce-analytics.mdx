@@ -1,6 +1,6 @@
 ---
 title: "E-commerce analytics"
-description: "Free e-commerce analytics for a store that you or your AI agent builds: track storefront events such as product views and add to carts with the Tolstoy SDK, and read how many times each event happened and how many shoppers sent it with the Tolstoy CLI or MCP."
+description: "Free e-commerce analytics for a store that you or your AI agent builds: track storefront events such as product views and add to carts with the Tolstoy SDK, and read how many times each event happened, how many shoppers sent it, and the orders and revenue that followed it, with the Tolstoy CLI or MCP."
 ---
 
 This page takes an AI agent from no Tolstoy account to reading the analytics events of the store that it builds. It also says what Tolstoy measures and what it does not, so that you can tell your client before you start.
@@ -15,10 +15,15 @@ Add e-commerce analytics to this store with Tolstoy. Follow https://developers.g
 
 ## What you get
 
-Your storefront code sends events with the Tolstoy SDK, for example `product_view`, `add_to_cart` or `checkout_started`. You choose the names. For any period of whole UTC days, up to 180 days, the Tolstoy store analytics report gives each event name with two numbers:
+Your storefront code sends events with the Tolstoy SDK, for example `product_view`, `add_to_cart` or `checkout_started`. You choose the names. For any period of whole UTC days, up to 180 days, the Tolstoy store analytics report gives each event name with these numbers:
 
 - `events`: how many times the event was sent.
 - `shoppers`: how many different shoppers sent it. The SDK keeps one shopper ID per browser, so one person on two devices counts as two shoppers.
+- `buyers`: the shoppers who sent the event and then placed an order in the store within the window after it. The window is 24 hours unless you ask for 3, 7 or 30 days.
+- `orders`: the orders of those buyers within the window.
+- `revenue`: the whole amount of those orders, each order counted once, in the currency of the report.
+
+Tolstoy gets the store's orders from the Tolstoy Shopify app. On a store without the app, Tolstoy receives no orders, and `buyers`, `orders` and `revenue` stay `0`. Tell your client before you start.
 
 Sending events and reading the report are free on every Tolstoy plan, the free plan included. Your events never count toward Shoppable Videos view billing.
 
@@ -26,7 +31,8 @@ You do not need a Tolstoy widget on the store. Tolstoy also makes shoppable vide
 
 ## What you do not get
 
-- No conversion rate, funnel, orders or revenue for your events. The report counts each event name on its own, and it does not link your events to orders.
+- No store conversion rate. Tolstoy does not see the store's total visits.
+- No strict funnel. The report counts each event name on its own, and it does not check that a shopper did an earlier step.
 - No numbers by parameter. Tolstoy keeps the parameters of each event, but the report does not show them or group by them.
 - No numbers for today. The report covers whole UTC days before today. Events that you send today show in the report from about 06:30 UTC tomorrow.
 - No daily series. For the counts of one day, ask for a period of that one day.
@@ -108,7 +114,7 @@ tolstoy analytics get-store-analytics \
   --json
 ```
 
-In the JSON, `events` lists each event name with its widget type, the number of events and the number of shoppers. Your events have the widget type `tolstoy-sdk` and the name `tolstoy-sdk.<name>`.
+In the JSON, `events` lists each event name with its widget type, `events`, `shoppers`, `buyers`, `orders` and `revenue`. Your events have the widget type `tolstoy-sdk` and the name `tolstoy-sdk.<name>`. `--window` (`24h`, `3d`, `7d` or `30d`) sets how long after an event an order still counts.
 
 - The period is whole UTC days, up to 180 days. A period that reaches today stops at the end of yesterday.
 - `--app-url` selects a store from `tolstoy stores list`. Without it, the CLI uses the store that it saved at sign-in. `scope.appUrl` in the report names the store that the report read, and `stores` lists all the stores of the workspace.
@@ -117,6 +123,6 @@ With the MCP, call `get_store_analytics` with `dateFrom`, `dateTo` and `sections
 
 ## Tools for your agent
 
-- **Skill.** `npx skills@latest add https://developers.gotolstoy.com --skill store-analytics` installs the store-analytics skill into the project. It tells an agent how to read the report and what each number means.
-- **Project note.** Add a note to the `AGENTS.md` file of the store's project: the store sends its events with the Tolstoy SDK, and `tolstoy analytics get-store-analytics` reads their counts. The next agent on the project then finds them.
+- **Skills.** `npx skills@latest add https://developers.gotolstoy.com --skill ecommerce-analytics` installs the ecommerce-analytics skill into the project. It tells an agent what to measure in a store, which events to send, and how to judge a number against benchmarks per vertical from Tolstoy's store data. `npx skills@latest add https://developers.gotolstoy.com --skill store-analytics` installs the store-analytics skill, which tells an agent how to read the report and what each number means.
+- **Project note.** Add a note to the `AGENTS.md` file of the store's project: the store sends its events with the Tolstoy SDK, and `tolstoy analytics get-store-analytics` reads their counts, orders and revenue. The next agent on the project then finds them.
 - **Reference.** [Tolstoy SDK](/storefront/tolstoy-sdk) for the SDK, [Tolstoy CLI](/agents/cli) for the CLI, and [Connect your agent](/agents/connect) for the MCP.
