@@ -35,11 +35,10 @@ You do not need a Tolstoy widget on the store. Tolstoy also makes shoppable vide
 
 ## What needs a browser
 
-Three steps run on Tolstoy pages in a browser, not through an API:
+Two steps run on Tolstoy pages in a browser, not through an API:
 
 1. Sign-up. It uses a Google account, or an email address and a password with a 6-digit code that Tolstoy sends to that address. You need a browser and access to that inbox.
 2. The approval of the sign-in of the Tolstoy CLI or the Tolstoy MCP, on the page that the sign-in opens.
-3. The app key, if you use only the CLI: it is on a Tolstoy settings page. With the MCP, a tool returns it.
 
 If you cannot use a browser or read the inbox, ask the person that you work for to do these steps.
 
@@ -52,7 +51,7 @@ npm install -g @tolstoy-ai/cli
 tolstoy auth signup
 ```
 
-`tolstoy auth signup` opens the Tolstoy sign-up page in the browser, and prints its link in case the browser does not open. After sign-up, the browser goes to the CLI sign-in page. Click **Sign in** there, and the CLI saves its key. If the account already exists, run `tolstoy auth login` instead. `tolstoy auth status` shows the account and the store that the CLI uses.
+`tolstoy auth signup` opens the Tolstoy sign-up page in the browser, and prints its link in case the browser does not open. After sign-up, the browser goes to the CLI sign-in page. Click **Sign in** there, and the CLI saves its key. If the account already exists, run `tolstoy auth login` instead. `tolstoy auth status` shows the account, app key and store that the CLI uses.
 
 With the [Tolstoy MCP](/agents/connect), sign up at https://platform.gotolstoy.com/signup. Then add the server `https://apilb.gotolstoy.com/mcp/v1/mcp` to your MCP client, and sign in to Tolstoy when the client asks. [Connect your agent](/agents/connect) has the command for each client.
 
@@ -60,8 +59,9 @@ With the [Tolstoy MCP](/agents/connect), sign up at https://platform.gotolstoy.c
 
 The app key identifies the Tolstoy workspace. It is not a secret: it is in the code of every page that sends events.
 
-- In Tolstoy, go to **Settings** → **API, MCP & CLI** → **API**, and copy **App Key** (https://platform.gotolstoy.com/settings/api-keys). The key is there on every plan, with no widget.
+- With the CLI, copy the `App key:` value printed by `tolstoy auth signup`, `tolstoy auth login` or `tolstoy auth status`. Use it as the SDK's `appKey`, not the secret API key on the `Key:` line.
 - With the MCP, `list_workspaces` returns the app key as `currentAppKey`.
+- In Tolstoy, go to **Settings** → **API, MCP & CLI** → **API**, and copy **App Key** (https://platform.gotolstoy.com/settings/api-keys). The key is there on every plan, with no widget.
 
 ## 3. Send events
 

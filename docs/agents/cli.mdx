@@ -27,6 +27,8 @@ Both commands sign in through the browser, and print the link in case the browse
 
 On the CLI sign-in page, check the workspace and click **Sign in**. The CLI saves a new API key for that workspace and a default store. The key lasts 90 days, and **Settings** → **API, MCP & CLI** → **API** lists it. `tolstoy auth logout` revokes it.
 
+Both commands print an `App key:` line. This is the public workspace identifier used by the [Tolstoy SDK](/storefront/tolstoy-sdk), separate from the secret API key. `tolstoy auth status` shows it again.
+
 On a machine without a browser, run `tolstoy auth login --no-browser`, open the link on another device, and paste the code that the page shows into the terminal.
 
 <Warning>
@@ -70,7 +72,7 @@ To see all services, run `tolstoy --help`. To see the commands of a service, run
 
 | Command | What it does |
 | - | - |
-| `tolstoy auth status` | Checks the saved sign-in against the Tolstoy API, and shows the account, the workspace and the default store. |
+| `tolstoy auth status` | Checks the saved sign-in against the Tolstoy API, and shows the account, workspace, app key and default store. |
 | `tolstoy auth logout` | Revokes the key that `tolstoy auth login` or `tolstoy auth signup` created, and clears the saved settings. A key that you pasted is not revoked. |
 
 ## Use it with an AI coding agent
