@@ -73,7 +73,7 @@ Say for each revenue number whether it includes discounts, shipping and tax.
 - Put details, such as the product ID or the order ID, in the parameters.
   Tolstoy keeps them, but the report does not sum or group them. A value that
   you must count apart, such as the half of a test, goes in the event name:
-  `product_view_a`, `product_view_b`.
+  `size_guide_test_a`, `size_guide_test_b`.
 
 ## Give each event a meaning
 
@@ -174,19 +174,23 @@ What the counts cannot show:
 ## Measure a feature
 
 1. Write the question and its metric: "Do shoppers who see the size guide buy
-   more?" is a buyer rate per half.
-2. Split shoppers at random in the store's code when the page of the feature
-   first shows to them, and keep each shopper's half in `localStorage`. Show
-   the feature to half `a` only.
-3. Send the half in the event name: `product_view_a` or `product_view_b` on
-   the page of the feature, and at the order `order_completed_a` or
-   `order_completed_b` for a shopper who has a half.
-4. For each half, divide the `shoppers` of its order event by the `shoppers`
-   of its view event. The split is random, so the limits of the counts touch
-   both halves alike; with a period much longer than the time from view to
-   order, the edges of the period stay small. The difference between the
-   halves estimates the effect of the feature. It is an effect only when its
-   95% range (principle 7) does not include zero.
+   more?" is the buyer rate per half.
+2. Fix the test dates and the window before the test starts, for example 14
+   days and 24 hours.
+3. On the page of the feature, within the test dates, put each new shopper in
+   half `a` or `b` at random, keep the half in `localStorage`, and show the
+   feature to half `a` only. When analytics is allowed, also keep the time,
+   and send `size_guide_test_a` or `size_guide_test_b`.
+4. At the order, when a time is kept and the order comes within the window
+   after it, send `order_after_size_guide_test_a` or
+   `order_after_size_guide_test_b`, once per order.
+5. Read one report from the first test day to the last test day plus the
+   window, so it holds every shopper's start and full window. For each half,
+   divide the `shoppers` of its order event by the `shoppers` of its test
+   event: every buyer is one of the shoppers of the half, and each had the same
+   window to order. The difference between the halves estimates the effect of
+   the feature. It is an effect only when its 95% range (principle 7) does not
+   include zero.
 
 Without a split, the feature buyer rate and a comparison with the weeks before
 the launch are correlations. Report them as such.
