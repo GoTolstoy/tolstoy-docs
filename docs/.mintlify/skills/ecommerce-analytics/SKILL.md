@@ -260,9 +260,8 @@ delivery check, and what the report does not give.
 **Without them:**
 
 1. Run `npm install -g @tolstoy-ai/cli` and `tolstoy auth signup`, or
-   `tolstoy auth login` for an existing account. Sign-up and the sign-in
-   approval run in a browser. Copy the `App key:` line, not the secret `Key:`
-   line.
+   `tolstoy auth login` for an existing account. Copy the `App key:` line,
+   not the secret `Key:` line.
 2. Add the Tolstoy SDK to the store's pages, and send the events of your plan.
 3. From about 06:30 UTC the next day, run
    `tolstoy analytics get-store-analytics --sections '["details"]' --json`
