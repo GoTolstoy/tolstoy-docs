@@ -100,17 +100,23 @@ the code:
    whether one shopper sent two events. To credit an order to an action, keep
    the time of the action in `localStorage`, and at the order send a second
    event when the action came within the window. Choose the window before you
-   read any numbers; 24 hours matches Tolstoy's report. Store the time only
-   when the shopper allowed analytics, as the SDK does.
+   read any numbers; 24 hours matches Tolstoy's report. Store and use the time
+   only when the shopper allowed analytics: check the `tolstoy-cookie-policy`
+   value that the store sets from its consent tool for the SDK.
 
    ```javascript
+   const analyticsAllowed = () =>
+     localStorage.getItem('tolstoy-cookie-policy') !== 'rejected';
+
    // When the shopper opens the size guide:
-   localStorage.setItem('size_guide_opened_at', String(Date.now()));
+   if (analyticsAllowed()) {
+     localStorage.setItem('size_guide_opened_at', String(Date.now()));
+   }
    tolstoy.analytics.track('size_guide_open');
 
    // On the order confirmation page, once per order:
    const openedAt = Number(localStorage.getItem('size_guide_opened_at'));
-   if (openedAt && Date.now() - openedAt <= 24 * 60 * 60 * 1000) {
+   if (analyticsAllowed() && openedAt && Date.now() - openedAt <= 24 * 60 * 60 * 1000) {
      tolstoy.analytics.track('order_after_size_guide', { orderId });
    }
    ```
@@ -142,6 +148,12 @@ You compute every rate from these counts.
 - Ask for the whole period in one report. A shopper is counted once per
   report, so the `shoppers` of separate reports, such as one per day, do not
   add up.
+- The report counts each name on its own within the period. A shopper who
+  opened the size guide the day before the period and ordered within it adds
+  to `order_after_size_guide` but not to `size_guide_open`. So each rate is a
+  ratio of two counts, not the share of one group of shoppers. Ask for a period
+  much longer than the time from the first event to the second, such as 28 days
+  for a 24-hour window, so that these edges stay small.
 - The SDK keeps one shopper ID per browser and sends nothing for a shopper who
   rejected analytics. Each count covers the browsers that allowed analytics,
   and one person on two devices counts twice. A ratio of two events shares
@@ -149,9 +161,11 @@ You compute every rate from these counts.
 
 What the counts cannot show:
 
-- **A strict funnel.** Outside your window rule, a ratio of two events does not
-  check that the same shopper did both: a buyer can skip a step or come back
-  in another browser.
+- **A strict funnel.** A ratio of two events does not check that the same
+  shoppers did both within the period: a buyer can skip a step, come back in
+  another browser, or have done the first step before the period. The window
+  rule only makes sure that each `order_after_<feature>` comes from a browser
+  that opened the feature, maybe before the period.
 - **Revenue and AOV.** The report does not sum the order values that you send
   as parameters. Take revenue from the store's orders.
 - **Today.** The report covers whole UTC days before today. Events of today
@@ -161,16 +175,18 @@ What the counts cannot show:
 
 1. Write the question and its metric: "Do shoppers who see the size guide buy
    more?" is a buyer rate per half.
-2. Split shoppers at random in the store's code, and keep each shopper's half
-   in `localStorage`. Show the feature to half `a` only.
+2. Split shoppers at random in the store's code when the page of the feature
+   first shows to them, and keep each shopper's half in `localStorage`. Show
+   the feature to half `a` only.
 3. Send the half in the event name: `product_view_a` or `product_view_b` on
-   the page of the feature, and `order_completed_a` or `order_completed_b` at
-   the order.
+   the page of the feature, and at the order `order_completed_a` or
+   `order_completed_b` for a shopper who has a half.
 4. For each half, divide the `shoppers` of its order event by the `shoppers`
-   of its view event. The difference between the halves estimates the effect
-   of the feature. It is an effect only when its 95% range (principle 7) does
-   not include zero. Both halves share the limits of the counts, so the
-   comparison stays fair.
+   of its view event. The split is random, so the limits of the counts touch
+   both halves alike; with a period much longer than the time from view to
+   order, the edges of the period stay small. The difference between the
+   halves estimates the effect of the feature. It is an effect only when its
+   95% range (principle 7) does not include zero.
 
 Without a split, the feature buyer rate and a comparison with the weeks before
 the launch are correlations. Report them as such.
