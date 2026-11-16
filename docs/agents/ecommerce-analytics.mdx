@@ -1,9 +1,9 @@
 ---
-title: "E-commerce analytics"
-description: "Free e-commerce analytics for a store that you or your AI agent builds: track storefront events such as product views and add to carts with the Tolstoy SDK, and read how many times each event happened and how many shoppers sent it with the Tolstoy CLI or MCP."
+title: "E-commerce Analytics SDK"
+description: "Free e-commerce analytics for a store that you or your AI agent builds: track storefront events such as product views and add to carts with the E-commerce Analytics SDK, and read how many times each event happened and how many shoppers sent it with the Tolstoy CLI or MCP."
 ---
 
-This page takes an AI agent from no Tolstoy account to reading the analytics events of the store that it builds. It also says what Tolstoy measures and what it does not, so that you can tell your client before you start.
+This page takes an AI agent from no Tolstoy account to reading the analytics events of the store that it builds, using the E-commerce Analytics SDK (the `TolstoySDK` package). It also says what Tolstoy measures and what it does not, so that you can tell your client before you start.
 
 This page as Markdown: https://developers.gotolstoy.com/agents/ecommerce-analytics.md. All pages: https://developers.gotolstoy.com/llms.txt.
 
@@ -15,7 +15,7 @@ Add e-commerce analytics to this store with Tolstoy. Follow https://developers.g
 
 ## What you get
 
-Your storefront code sends events with the Tolstoy SDK, for example `product_view`, `add_to_cart` or `checkout_started`. You choose the names. For any period of whole UTC days, up to 180 days, the Tolstoy store analytics report gives each event name with two numbers:
+Your storefront code sends events with the E-commerce Analytics SDK, for example `product_view`, `add_to_cart` or `checkout_started`. You choose the names. For any period of whole UTC days, up to 180 days, the Tolstoy store analytics report gives each event name with two numbers:
 
 - `events`: how many times the event was sent.
 - `shoppers`: how many different shoppers sent it. The SDK keeps one shopper ID per browser, so one person on two devices counts as two shoppers.
@@ -65,7 +65,7 @@ The app key identifies the Tolstoy workspace. It is not a secret: it is in the c
 
 ## 3. Send events
 
-The SDK is an ES module on the Tolstoy CDN. Create one SDK on the page, and call `track()` for each event:
+The E-commerce Analytics SDK is an ES module on the Tolstoy CDN. Create one SDK on the page, and call `track()` for each event:
 
 ```html
 <script type="module">
