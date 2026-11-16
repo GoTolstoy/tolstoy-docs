@@ -1,20 +1,45 @@
 ---
 title: "Tolstoy CLI"
 sidebarTitle: "CLI"
-description: "Use the Tolstoy CLI to work with your workspace from a terminal, a script, or an AI coding agent."
+description: "Install the Tolstoy CLI, sign up or sign in through the browser with tolstoy auth signup or tolstoy auth login, and work with your workspace from a terminal, a script, or an AI coding agent, on any plan."
 ---
 
 The Tolstoy CLI is the `@tolstoy-ai/cli` package on npm. It gives you your products, brand context, media library, models, AI widgets, Meta ads, and more from the command line.
 
 The CLI is optional. The [Tolstoy MCP](/agents/connect) carries the core tools for an AI agent. Use the CLI when you work from a terminal or a script, or when your agent needs a tool that the MCP does not have. [CLI commands](/agents/reference/cli-commands) lists every command and its flags.
 
-## Create an API key
+## Install and sign in
 
-API keys are available on paid plans.
+The CLI works on every Tolstoy plan, the free plan included. Each command still checks the features and credits of your plan.
+
+```bash
+npm install -g @tolstoy-ai/cli
+tolstoy auth signup   # no Tolstoy account yet
+tolstoy auth login    # you already have an account
+```
+
+To run the CLI without installing it, use `npx @tolstoy-ai/cli` in place of `tolstoy`.
+
+Both commands sign in through the browser, and print the link in case the browser does not open:
+
+- `tolstoy auth signup` opens the Tolstoy sign-up page. Sign up with Google, or with an email address and a password and the 6-digit code that Tolstoy sends to that address. The browser then goes to the CLI sign-in page.
+- `tolstoy auth login` opens the CLI sign-in page. If you are signed out of Tolstoy, the browser shows the sign-up page first, with a link to sign in.
+
+On the CLI sign-in page, check the workspace and click **Sign in**. The CLI saves a new API key for that workspace and a default store. The key lasts 90 days, and **Settings** → **API, MCP & CLI** → **API** lists it. `tolstoy auth logout` revokes it.
+
+Both commands print an `App key:` line. This is the public workspace identifier used by the [Tolstoy SDK](/storefront/tolstoy-sdk), separate from the secret API key. `tolstoy auth status` shows it again.
+
+On a machine without a browser, run `tolstoy auth login --no-browser`, open the link on another device, and paste the code that the page shows into the terminal.
+
+<Warning>
+  A key acts as the person who created it, and it can get to all stores in the workspace. Keep it secret, as you keep a password.
+</Warning>
+
+## Use an API key in a script or CI
 
 <Steps>
   <Step title="Open the API keys page">
-    In Tolstoy, go to **Settings** → **API, MCP & CLI**.
+    In Tolstoy, go to **Settings** → **API, MCP & CLI** → **API**.
   </Step>
   <Step title="Create a key">
     Click **Create API Key**. Give the key a name, for example "CI pipeline", and select when it expires.
@@ -24,20 +49,7 @@ API keys are available on paid plans.
   </Step>
 </Steps>
 
-<Warning>
-  A key acts as the person who created it, and it can get to all stores in the workspace. Keep it secret, as you keep a password.
-</Warning>
-
-## Install and sign in
-
-```bash
-npm install -g @tolstoy-ai/cli
-tolstoy auth login <api-key>
-```
-
-To run the CLI without installing it, use `npx @tolstoy-ai/cli` in place of `tolstoy`.
-
-In a script or a CI pipeline, set the `TOLSTOY_API_KEY` environment variable, or add `--api-key <key>` to a command.
+Set the `TOLSTOY_API_KEY` environment variable to the key, or add `--api-key <key>` to a command. To save the key on your machine, run `tolstoy auth login <api-key>`.
 
 ## Run commands
 
@@ -60,8 +72,8 @@ To see all services, run `tolstoy --help`. To see the commands of a service, run
 
 | Command | What it does |
 | - | - |
-| `tolstoy auth status` | Shows the account that you are signed in with. |
-| `tolstoy auth logout` | Removes the saved key. |
+| `tolstoy auth status` | Checks the saved sign-in against the Tolstoy API, and shows the account, workspace, app key and default store. |
+| `tolstoy auth logout` | Revokes the key that `tolstoy auth login` or `tolstoy auth signup` created, and clears the saved settings. A key that you pasted is not revoked. |
 
 ## Use it with an AI coding agent
 
