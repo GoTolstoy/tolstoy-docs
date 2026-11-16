@@ -1,6 +1,6 @@
 ---
 name: store-analytics
-description: Read a store's analytics report through the Tolstoy CLI or MCP - engaged shoppers, opens, orders and attributed revenue of its Tolstoy widgets, and the events it sends with the Tolstoy SDK, with the orders and revenue that follow them. Use when the user asks how the store's widgets perform, for store analytics numbers, or for the counts, buyers, orders or revenue of the store's own SDK events.
+description: Read a store's analytics report through the Tolstoy CLI or MCP - engaged shoppers, opens, orders and attributed revenue of its Tolstoy widgets, and the events it sends with the Tolstoy SDK. Use when the user asks how the store's widgets perform, for store analytics numbers, or for counts of the store's own SDK events.
 ---
 
 # Store analytics
@@ -32,7 +32,7 @@ tolstoy analytics get-store-analytics \
 - `--widget-ids '["WIDGET_ID"]'` limits the report to some widgets, and
   `--channel` to `web` or `app` (Tapcart).
 - `--window` (`24h`, `3d`, `7d`, `30d`; default `24h`) is how long after a widget
-  open, or after an SDK event, an order still counts.
+  open an order still counts.
 - The `overview` section holds `overview` (`current` and `previous` period),
   `daily`, `widgetCatalog`, `liveWidgetTypes`, `widgetTypes` and `widgets`. The
   `details` section holds `topVideos`, `topProducts`, `events`, `tryOn` and
@@ -60,30 +60,9 @@ Setup, the shopper's consent and the API:
 https://developers.gotolstoy.com/storefront/tolstoy-sdk.
 
 The report lists these events in `events` (details section) with widget type
-`tolstoy-sdk` and the name `tolstoy-sdk.<name>`. Each of these rows has:
-
-- `events`: how many times the event was sent. `shoppers`: how many different
-  shoppers sent it.
-- `buyers`: the shoppers who sent the event and then placed an order in this
-  store within the window after it. The event and the order must both fall
-  inside the report's dates, so an order after the last day does not count.
-- `orders`: those orders. `revenue`: their whole amount, each order counted
-  once, in the report's `currency`, rounded to 2 decimals.
-
-`0` is a measured zero. Tolstoy receives the orders from the Tolstoy app on a
-Shopify store, or from Tolstoy's conversion tracking code on the order
-confirmation page of a store that is not on Shopify
-(https://developers.gotolstoy.com/storefront/installation#conversion-tracking).
-An order links to an event only when the same browser sent both. Without
-orders, `buyers`, `orders` and `revenue` stay `0`. In `stores`,
-`receivesOrders: false` marks a store that sent Tolstoy no orders in the last
-30 days.
-
-Revenue is the whole order, not the product that the event names. One order
-counts under every SDK event and widget that its shopper touched, so rows do not
-add up. On rows of other widget types the three fields are `null`. SDK events
-are never opens, engaged shoppers, try-ons, add to carts or attributed revenue
+`tolstoy-sdk`, the name `tolstoy-sdk.<name>`, and their event and shopper
+counts. They are never opens, engaged shoppers, try-ons, add to carts or revenue
 of Tolstoy's widgets.
 
-To plan which events to send and to judge the numbers against benchmarks, use
-the `ecommerce-analytics` skill.
+To plan which events to send, to work out rates from these counts, and to judge
+the numbers against benchmarks, use the `ecommerce-analytics` skill.

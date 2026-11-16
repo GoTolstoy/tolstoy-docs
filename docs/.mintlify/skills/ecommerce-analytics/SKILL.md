@@ -1,6 +1,6 @@
 ---
 name: ecommerce-analytics
-description: Plan, add and judge analytics for an online store - what to measure and why, which storefront events to send, how to judge a number against per-vertical benchmarks from Tolstoy's store data, and how to add it free with the Tolstoy SDK and read it with the Tolstoy CLI or MCP. Use when asked to add analytics or tracking to a store, to measure a store feature, page or change, to set up funnel or conversion tracking, to choose e-commerce metrics, or to judge numbers such as average order value or refund rate, even when Tolstoy is not named. To read a Tolstoy report that already exists, use store-analytics.
+description: Plan, add and judge analytics for an online store - what to measure and why, which storefront events to send and what each one means, how to work out rates from event and shopper counts, how to judge a number against per-vertical benchmarks from Tolstoy's store data, and how to add it free with the Tolstoy SDK and read it with the Tolstoy CLI or MCP. Use when asked to add analytics or tracking to a store, to measure a store feature, page or change, to set up funnel or conversion tracking, to choose e-commerce metrics, or to judge numbers such as average order value or refund rate, even when Tolstoy is not named. To read a Tolstoy report that already exists, use store-analytics.
 metadata:
   author: Tolstoy
   version: "1.0.0"
@@ -8,9 +8,10 @@ metadata:
 
 # E-commerce analytics
 
-E-commerce analytics tells a store which shopper actions lead to orders and
-revenue, and whether a change made them go up. Measure a few things that decide
-something, link them to orders, and judge each number against a baseline.
+E-commerce analytics tells a store which shopper actions lead to orders, and
+whether a change made them go up. Measure a few things that decide something,
+give each event a fixed meaning, count through to the order, and judge each
+number against a baseline.
 
 ## Principles
 
@@ -22,9 +23,10 @@ something, link them to orders, and judge each number against a baseline.
    through one of the three. Name the one that it should move, and measure that
    one.
 3. **Count shoppers, not events.** One shopper can send an event many times.
-   Rates divide shoppers, buyers or orders, never raw event counts.
-4. **Link actions to orders.** Views and clicks measure interest. Buyers, orders
-   and revenue after an action measure its value.
+   Rates divide shoppers by shoppers, never raw event counts.
+4. **Count through to the order.** Views and clicks measure interest. The share
+   of shoppers who go on to order measures value, so send an event at the order
+   too.
 5. **Compare like with like.** Compare periods of the same length, with the same
    weekdays, and no sale or launch in only one of them.
 6. **Users of a feature are not proof that it works.** Shoppers who choose a
@@ -33,10 +35,10 @@ something, link them to orders, and judge each number against a baseline.
    compare the two halves.
 7. **Judge the difference, not each rate.** For two rates p₁ of n₁ shoppers
    and p₂ of n₂ shoppers, the 95% range of the difference is
-   (p₂ − p₁) ± 1.96 × √(p₁(1−p₁)/n₁ + p₂(1−p₂)/n₂). 30 buyers of 1,000 shoppers (3.0%)
-   against 42 of 1,000 (4.2%) is a difference of 1.2 points ± 1.6, so it can
-   be zero. Report it as an estimate, not as a proven effect, and collect more
-   shoppers.
+   (p₂ − p₁) ± 1.96 × √(p₁(1−p₁)/n₁ + p₂(1−p₂)/n₂). 30 buyers of 1,000
+   shoppers (3.0%) against 42 of 1,000 (4.2%) is a difference of 1.2 points
+   ± 1.6, so it can be zero. Report it as an estimate, not as a proven effect,
+   and collect more shoppers.
 
 ## What to measure
 
@@ -45,58 +47,142 @@ something, link them to orders, and judge each number against a baseline.
 | Orders, revenue | Count and sum of the orders in the period | Does the store grow? |
 | Average order value (AOV) | Revenue ÷ orders | Do shoppers spend more per order? |
 | Conversion rate | Orders ÷ sessions | Do visits turn into orders? |
+| Buyer rate | Shoppers who ordered ÷ shoppers who visited | Do visitors become buyers? |
 | Step rate | Shoppers at a step ÷ shoppers at the step before | Where do shoppers drop out? |
-| Feature buyer rate | Buyers after the feature ÷ shoppers who saw it | Does the feature lead to orders? |
-| Revenue per shopper | Revenue after the feature ÷ shoppers who saw it | What is the feature worth? |
+| Feature buyer rate | Shoppers who ordered after the feature ÷ shoppers who used it | Does the feature lead to orders? |
 | Refund rate | Refunded orders ÷ orders | Does the revenue stay? |
 
 Say for each revenue number whether it includes discounts, shipping and tax.
-In Tolstoy's report and in the benchmarks below, revenue is the order's items
-after discounts, without shipping and tax.
 
 ## Events to send
 
 | Event | Send it when |
 |---|---|
+| `page_view` | Any page of the store shows. |
 | `product_view` | A product page shows. |
-| `add_to_cart` | The shopper adds an item to the cart. |
+| `add_to_cart` | The cart accepts an item. |
 | `checkout_started` | The shopper opens checkout. |
+| `order_completed` | The order confirmation page shows, once per order. |
 | `<feature>_view` | The feature shows to the shopper, for example `size_guide_view`. |
-| `<feature>_use` | The shopper uses the feature, for example `size_guide_open`. |
+| `<feature>_open` | The shopper opens or uses the feature, for example `size_guide_open`. |
+| `order_after_<feature>` | The order confirmation page shows within your window after `<feature>_open` (see the window rule below). |
 
-- Do not send orders as events. Tolstoy links events to the orders that it
-  receives from the store (see [Orders and revenue](#orders-and-revenue)).
-- Use one lower-case `object_action` name for one action, on every page. A new
-  name starts a new count, so do not rename events.
-- Send the view event of a feature, not only its use. Without the view, the
-  feature has users but no rate.
-- Put details, such as the product ID, in the parameters. The report does not
-  group by parameter, so a value that you must count apart, such as the half of
-  a test, goes in the event name: `product_view_a`, `product_view_b`.
+- Send `order_completed` from a page where the store's own code runs. A hosted
+  checkout that runs no store code cannot send it; there, take orders and
+  buyers from the store platform.
+- Put details, such as the product ID or the order ID, in the parameters.
+  Tolstoy keeps them, but the report does not sum or group them. A value that
+  you must count apart, such as the half of a test, goes in the event name:
+  `product_view_a`, `product_view_b`.
+
+## Give each event a meaning
+
+Tolstoy's report gives its own widget events a meaning with fixed rules. A set
+of event names counts as an open or as an add to cart. An interaction counts
+only when the shopper acted: autoplay does not. An order counts for a widget
+when the same shopper placed it within a window after an open, 24 hours by
+default, with both in the report's period. Tolstoy does not know what your
+event names mean, so you set the same kind of rules for them, and keep them in
+the code:
+
+1. **One meaning per name.** Write down each event name, what it means, and the
+   rate it feeds, before you send it. Use one lower-case name for one action
+   on every page, and never rename it: a new name starts a new count.
+2. **Only deliberate acts are actions.** Send an action event, such as
+   `size_guide_open`, on a click, a tap or a submit. A page load, autoplay,
+   scrolling past and closing are not actions. Send what shows on its own as
+   a `_view` event.
+3. **Only on success, and once.** Send `add_to_cart` after the cart accepts the
+   item, not on a click that can fail. Send `order_completed` once per order:
+   keep the order ID in `localStorage` and skip the event when the page
+   reloads.
+4. **Apply the window rule in the store's code.** The report cannot tell
+   whether one shopper sent two events. To credit an order to an action, keep
+   the time of the action in `localStorage`, and at the order send a second
+   event when the action came within the window. Choose the window before you
+   read any numbers; 24 hours matches Tolstoy's report. Store the time only
+   when the shopper allowed analytics, as the SDK does.
+
+   ```javascript
+   // When the shopper opens the size guide:
+   localStorage.setItem('size_guide_opened_at', String(Date.now()));
+   tolstoy.analytics.track('size_guide_open');
+
+   // On the order confirmation page, once per order:
+   const openedAt = Number(localStorage.getItem('size_guide_opened_at'));
+   if (openedAt && Date.now() - openedAt <= 24 * 60 * 60 * 1000) {
+     tolstoy.analytics.track('order_after_size_guide', { orderId });
+   }
+   ```
+
+5. **Start the rate where the rule starts.** Divide the shoppers of
+   `order_after_size_guide` by the shoppers of `size_guide_open`, not by all
+   visitors.
+6. **Rows do not add up.** One order can send several `order_after_<feature>`
+   events, so do not add them up across features.
+
+## Work out the numbers
+
+Read the report from your own event plan. Each `tolstoy-sdk.<name>` row means
+what your plan says: the action, the pages that send it, and its rule. For each
+event name, the report gives two counts for the period: `events`, how many
+times the event was sent, and `shoppers`, how many different shoppers sent it.
+You compute every rate from these counts.
+
+| You want | Compute it from one report |
+|---|---|
+| Orders | `events` of `order_completed` |
+| Buyers | `shoppers` of `order_completed` |
+| Orders per buyer | `events` ÷ `shoppers` of `order_completed` |
+| Buyer rate | `shoppers` of `order_completed` ÷ `shoppers` of `page_view` |
+| Step rate | `shoppers` of a step ÷ `shoppers` of the step before, such as `add_to_cart` ÷ `product_view` |
+| Buyers after a feature | `shoppers` of `order_after_<feature>` |
+| Feature buyer rate | `shoppers` of `order_after_<feature>` ÷ `shoppers` of `<feature>_open` |
+
+- Ask for the whole period in one report. A shopper is counted once per
+  report, so the `shoppers` of separate reports, such as one per day, do not
+  add up.
+- The SDK keeps one shopper ID per browser and sends nothing for a shopper who
+  rejected analytics. Each count covers the browsers that allowed analytics,
+  and one person on two devices counts twice. A ratio of two events shares
+  these limits on both sides.
+
+What the counts cannot show:
+
+- **A strict funnel.** Outside your window rule, a ratio of two events does not
+  check that the same shopper did both: a buyer can skip a step or come back
+  in another browser.
+- **Revenue and AOV.** The report does not sum the order values that you send
+  as parameters. Take revenue from the store's orders.
+- **Today.** The report covers whole UTC days before today. Events of today
+  show from about 06:30 UTC the next day.
 
 ## Measure a feature
 
 1. Write the question and its metric: "Do shoppers who see the size guide buy
-   more?" is a feature buyer rate.
+   more?" is a buyer rate per half.
 2. Split shoppers at random in the store's code, and keep each shopper's half
    in `localStorage`. Show the feature to half `a` only.
-3. On the page of the feature, send `product_view_a` or `product_view_b` for
-   the shopper's half, so that both halves have the same base.
-4. Compare `buyers ÷ shoppers` of the two events. The difference estimates
-   the effect of the feature, and it is an effect only when its 95% range
-   (principle 7) does not include zero. Read `revenue ÷ shoppers` beside it as
-   a size, not as a test: the report gives no spread for revenue.
+3. Send the half in the event name: `product_view_a` or `product_view_b` on
+   the page of the feature, and `order_completed_a` or `order_completed_b` at
+   the order.
+4. For each half, divide the `shoppers` of its order event by the `shoppers`
+   of its view event. The difference between the halves estimates the effect
+   of the feature. It is an effect only when its 95% range (principle 7) does
+   not include zero. Both halves share the limits of the counts, so the
+   comparison stays fair.
 
-Without a split, compare the feature's buyer rate with the same weeks before
-the launch, and call the result a correlation.
+Without a split, the feature buyer rate and a comparison with the weeks before
+the launch are correlations. Report them as such.
 
 ## Judge a number
 
-1. Check the definition: the period, the time zone, the currency, and what
-   revenue includes.
-2. Check the base: `null` means not measured, and `0` is a measured zero.
-   Compute the range of the difference (principle 7) before you call a change
-   real.
+1. Check the definition: the period, the time zone, the currency, what revenue
+   includes, and the rules of your events.
+2. Check the base: `0` is a measured zero. An event name that is missing from
+   the report was not sent in the period, or is not among the 120 most
+   frequent names. Compute the range of the difference (principle 7) before you
+   call a change real.
 3. Compare with the store's own previous period of the same length. The
    store's own trend beats any benchmark.
 4. Then compare with the benchmarks of the store's vertical. A number outside
@@ -142,7 +228,7 @@ Sending events and reading the report are free on every Tolstoy plan, with no
 Tolstoy widget on the store. Read
 https://developers.gotolstoy.com/agents/ecommerce-analytics.md before you write
 code: it has each step, the SDK code, the shopper's consent, the same-day
-delivery check, and what Tolstoy does not measure.
+delivery check, and what the report does not give.
 
 **With the Tolstoy tools connected** (`list_workspaces`, `get_store_analytics`):
 
@@ -162,38 +248,17 @@ delivery check, and what Tolstoy does not measure.
    `tolstoy analytics get-store-analytics --sections '["details"]' --json`
    with `--date-from` and `--date-to`.
 
-### Orders and revenue
-
-For each SDK event name, the report gives `buyers`, `orders` and `revenue`: the
-shoppers who sent the event and then ordered within the report's window
-(`24h` unless you ask for `3d`, `7d` or `30d`), their orders, and the whole
-amount of those orders. The event and the order must both fall inside the
-report's dates, so the last day of a period has fewer buyers than the days
-before it; compare periods that end the same way. Tolstoy must receive the
-store's orders:
-
-| Store | How Tolstoy receives its orders |
-|---|---|
-| Shopify store with the Tolstoy app | The app sends them. Add nothing. |
-| Store not on Shopify | Add Tolstoy's conversion tracking code, with the order's items, to the order confirmation page. The code is in the Conversion tracking section of https://developers.gotolstoy.com/storefront/installation.md |
-
-A Shopify store without the Tolstoy app sends Tolstoy no orders. An order links
-to an event only when the same browser sent both, with the shopper's consent to
-analytics. Without orders, `buyers`, `orders` and `revenue` stay `0`. In the report's `stores` list, `receivesOrders: false`
-marks a store that sent Tolstoy no orders in the last 30 days.
+Then note the events and their rules in the project's `AGENTS.md`, so that the
+next agent reads the numbers the same way.
 
 ### Take from the store platform
 
 The report does not give these; take them from the store platform, such as
-Shopify Analytics:
+Shopify Analytics, or from the store's own order data:
 
-- Total visits, sessions and the store's conversion rate.
-- Refunds and returns.
-- Repeat customers. The SDK keeps one shopper ID per browser and does not
-  identify a shopper by email or account.
-
-A ratio of the `shoppers` of two events is close to a step rate, but it is not
-a strict funnel: the report does not check that a shopper did the earlier step.
+- Sessions, and the conversion rate per session.
+- Revenue, AOV, refunds and returns.
+- Repeat customers. The SDK does not identify a shopper by email or account.
 
 ## Read the report
 

@@ -1,6 +1,6 @@
 ---
 title: "Tolstoy SDK"
-description: "Send your own storefront events, such as clicks on a button, to Tolstoy analytics with the Tolstoy SDK, and read their counts and the orders that follow them with the Tolstoy CLI or MCP."
+description: "Send your own storefront events, such as clicks on a button, to Tolstoy analytics with the Tolstoy SDK, and read their counts with the Tolstoy CLI or MCP."
 ---
 
 The Tolstoy SDK sends your own events to Tolstoy analytics. Use it to count anything that shoppers do on your storefront, for example how many times shoppers click **Expand product details**.
@@ -8,7 +8,7 @@ The Tolstoy SDK sends your own events to Tolstoy analytics. Use it to count anyt
 For the whole path from a new Tolstoy account to reading your events, and for what the report gives and does not give, see [E-commerce analytics](/agents/ecommerce-analytics).
 
 <Note>
-  Your events never count toward Shoppable Videos view billing, and they never change the numbers of your Tolstoy widgets: they are not opens, engaged shoppers, try-ons, add to carts or attributed revenue.
+  Your events never count toward Shoppable Videos view billing, and they never change the numbers of your Tolstoy widgets: they are not opens, engaged shoppers, try-ons, add to carts or revenue.
 </Note>
 
 ## Add the SDK
@@ -72,21 +72,11 @@ tolstoy analytics get-store-analytics \
   --json
 ```
 
-In the details, `events` lists each of your events with the widget type `tolstoy-sdk` and its name:
+In the details, `events` lists each of your events with the widget type `tolstoy-sdk`, its name, the number of events and the number of shoppers who sent it:
 
 ```json
-{ "widgetType": "tolstoy-sdk", "eventName": "tolstoy-sdk.expand_product_details", "events": 412, "shoppers": 298, "buyers": 21, "orders": 22, "revenue": 1874.5 }
+{ "widgetType": "tolstoy-sdk", "eventName": "tolstoy-sdk.expand_product_details", "events": 412, "shoppers": 298 }
 ```
-
-| Field | What it is |
-|---|---|
-| `events` | How many times the event was sent. |
-| `shoppers` | How many different shoppers sent it. |
-| `buyers` | The shoppers who sent the event and then placed an order in your store within the window after it: 24 hours, or the `--window` that you ask for (`3d`, `7d` or `30d`). The event and the order must both fall inside the report's dates. |
-| `orders` | The orders of those buyers within the window. |
-| `revenue` | The whole amount of those orders, each order counted once, in the report's `currency`. |
-
-Tolstoy receives your orders from the Tolstoy app on a Shopify store, or from [conversion tracking](/storefront/installation#conversion-tracking) on a store that is not on Shopify. An order links to an event only when the same browser sent both. Without orders, `buyers`, `orders` and `revenue` stay `0`. Revenue is the whole order, not the product that the event names. One order counts under each event that its shopper sent within the window before it, so the rows do not add up.
 
 - `--app-url` selects a store from `tolstoy stores list`. Without it, the CLI uses your default store.
 - `--channel` (`web` or `app`) limits the report to your website or your Tapcart app.
