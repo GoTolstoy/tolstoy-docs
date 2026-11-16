@@ -17,7 +17,8 @@
           {
             "group": "Home",
             "pages": [
-              "welcome"
+              "welcome",
+              "ecommerce-analytics"
             ]
           },
           {
@@ -139,7 +140,7 @@
     },
     {
       "source": "/javascript-sdk/events",
-      "destination": "/storefront/customize-your-widget"
+      "destination": "/storefront/tolstoy-sdk"
     },
     {
       "source": "/javascript-sdk/subscriptions",

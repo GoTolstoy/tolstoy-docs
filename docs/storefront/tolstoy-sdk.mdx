@@ -5,6 +5,8 @@ description: "Send your own storefront events, such as clicks on a button, to To
 
 The Tolstoy SDK sends your own events to Tolstoy analytics. Use it to count anything that shoppers do on your storefront, for example how many times shoppers click **Expand product details**.
 
+For the whole path from a new Tolstoy account to reading your events, and for what the report gives and does not give, see [E-commerce analytics](/ecommerce-analytics).
+
 <Note>
   Your events never count toward Shoppable Videos view billing, and they never change the numbers of your Tolstoy widgets: they are not opens, engaged shoppers, try-ons, add to carts or revenue.
 </Note>
@@ -25,7 +27,7 @@ document.querySelector('#expand-details').addEventListener('click', () => {
 
 | Value | What it is |
 |---|---|
-| `appKey` | The app key of your workspace. It is in the code that Tolstoy shows in **Website setup & tracking**: open a widget, click its status button, and then click **Website setup & tracking**. |
+| `appKey` | The app key of your workspace. In Tolstoy, go to **Settings** → **API, MCP & CLI** → **API**, and copy **App Key**. With the Tolstoy MCP, `list_workspaces` returns it as `currentAppKey`. The app key is not a secret. |
 | `eventName` | The first argument of `track()`. Tolstoy records the event as `tolstoy-sdk.<eventName>`, for example `tolstoy-sdk.expand_product_details`. With its prefix, the name can have up to 200 characters. |
 | Parameters | The optional second argument of `track()`: an object of strings, numbers and booleans. Tolstoy keeps it with the event. As JSON, it can have up to about 10,000 characters. |
 
@@ -51,6 +53,10 @@ document.addEventListener('visitorConsentCollected', (event) => passConsent(even
 ```
 
 Put this code after `startTracking` and the code that it uses: when the page already loaded the API, Shopify calls the callback at once. With a different consent tool, call `passConsent` from the consent callback of that tool.
+
+## Check delivery today
+
+The report does not show today's events, so check the requests. The SDK sends each event as one `POST` request to `https://analytics-v2.gotolstoy.com/event`. HTTP 200 means that Tolstoy received the event. The body of the request holds `eventName` and `appKey`; check that both are right. No request means that the shopper's consent blocks analytics, or that the next batch has not been sent yet.
 
 ## Read the results
 
