@@ -63,3 +63,6 @@ The report lists these events in `events` (details section) with widget type
 `tolstoy-sdk`, the name `tolstoy-sdk.<name>`, and their event and shopper
 counts. They are never opens, engaged shoppers, try-ons, add to carts or revenue
 of Tolstoy's widgets.
+
+To plan which events to send, to work out rates from these counts, and to judge
+the numbers against benchmarks, use the `ecommerce-analytics` skill.

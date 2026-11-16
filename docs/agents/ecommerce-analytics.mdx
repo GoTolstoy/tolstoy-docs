@@ -117,6 +117,6 @@ With the MCP, call `get_store_analytics` with `dateFrom`, `dateTo` and `sections
 
 ## Tools for your agent
 
-- **Skill.** `npx skills@latest add https://developers.gotolstoy.com --skill store-analytics` installs the store-analytics skill into the project. It tells an agent how to read the report and what each number means.
+- **Skills.** `npx skills@latest add https://developers.gotolstoy.com --skill ecommerce-analytics` installs the ecommerce-analytics skill into the project. It tells an agent what to measure in a store, which events to send, how to work out rates from the counts of the report, and how to judge a number against benchmarks per vertical from Tolstoy's store data. `npx skills@latest add https://developers.gotolstoy.com --skill store-analytics` installs the store-analytics skill, which tells an agent how to read the report and what each number means.
 - **Project note.** Add a note to the `AGENTS.md` file of the store's project: the store sends its events with the Tolstoy SDK, and `tolstoy analytics get-store-analytics` reads their counts. The next agent on the project then finds them.
 - **Reference.** [Tolstoy SDK](/storefront/tolstoy-sdk) for the SDK, [Tolstoy CLI](/agents/cli) for the CLI, and [Connect your agent](/agents/connect) for the MCP.
