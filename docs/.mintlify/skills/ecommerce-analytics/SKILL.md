@@ -17,9 +17,10 @@ something, link them to orders, and judge each number against a baseline.
 1. **Start from the decision.** Before you add an event, write the question it
    answers and what the store will do with the answer. An event that decides
    nothing is noise in the report.
-2. **Revenue = visitors × conversion rate × average order value.** A feature
-   can raise revenue only through one of the three. Name the one that it should
-   move, and measure that one.
+2. **Revenue = sessions × conversion rate × average order value**, with the
+   conversion rate as orders ÷ sessions. A feature can raise revenue only
+   through one of the three. Name the one that it should move, and measure that
+   one.
 3. **Count shoppers, not events.** One shopper can send an event many times.
    Rates divide shoppers, buyers or orders, never raw event counts.
 4. **Link actions to orders.** Views and clicks measure interest. Buyers, orders
@@ -30,9 +31,12 @@ something, link them to orders, and judge each number against a baseline.
    feature often were more likely to buy anyway, so a higher rate for them is a
    correlation. For proof, show the feature to a random half of shoppers and
    compare the two halves.
-7. **Small numbers are noise.** With 1,000 shoppers and 30 buyers (3%), the 95%
-   range of the rate is about 2% to 4%. A change inside that range is not a
-   change.
+7. **Judge the difference, not each rate.** For two rates p₁ of n₁ shoppers
+   and p₂ of n₂ shoppers, the 95% range of the difference is
+   ± 1.96 × √(p₁(1−p₁)/n₁ + p₂(1−p₂)/n₂). 30 buyers of 1,000 shoppers (3.0%)
+   against 42 of 1,000 (4.2%) is a difference of 1.2 points ± 1.6, so it can
+   be zero. Report it as an estimate, not as a proven effect, and collect more
+   shoppers.
 
 ## What to measure
 
@@ -40,7 +44,7 @@ something, link them to orders, and judge each number against a baseline.
 |---|---|---|
 | Orders, revenue | Count and sum of the orders in the period | Does the store grow? |
 | Average order value (AOV) | Revenue ÷ orders | Do shoppers spend more per order? |
-| Conversion rate | Orders ÷ sessions, or buyers ÷ visitors | Do visits turn into orders? |
+| Conversion rate | Orders ÷ sessions | Do visits turn into orders? |
 | Step rate | Shoppers at a step ÷ shoppers at the step before | Where do shoppers drop out? |
 | Feature buyer rate | Buyers after the feature ÷ shoppers who saw it | Does the feature lead to orders? |
 | Revenue per shopper | Revenue after the feature ÷ shoppers who saw it | What is the feature worth? |
@@ -78,9 +82,10 @@ after discounts, without shipping and tax.
    in `localStorage`. Show the feature to half `a` only.
 3. On the page of the feature, send `product_view_a` or `product_view_b` for
    the shopper's half, so that both halves have the same base.
-4. After enough days for principle 7, compare `buyers ÷ shoppers` and
-   `revenue ÷ shoppers` of the two events. The difference is the effect of the
-   feature.
+4. Compare `buyers ÷ shoppers` of the two events. The difference estimates
+   the effect of the feature, and it is an effect only when its 95% range
+   (principle 7) does not include zero. Read `revenue ÷ shoppers` beside it as
+   a size, not as a test: the report gives no spread for revenue.
 
 Without a split, compare the feature's buyer rate with the same weeks before
 the launch, and call the result a correlation.
@@ -90,7 +95,8 @@ the launch, and call the result a correlation.
 1. Check the definition: the period, the time zone, the currency, and what
    revenue includes.
 2. Check the base: `null` means not measured, and `0` is a measured zero.
-   Compute the range of principle 7 before you call a change real.
+   Compute the range of the difference (principle 7) before you call a change
+   real.
 3. Compare with the store's own previous period of the same length. The
    store's own trend beats any benchmark.
 4. Then compare with the benchmarks of the store's vertical. A number outside
@@ -161,7 +167,10 @@ delivery check, and what Tolstoy does not measure.
 For each SDK event name, the report gives `buyers`, `orders` and `revenue`: the
 shoppers who sent the event and then ordered within the report's window
 (`24h` unless you ask for `3d`, `7d` or `30d`), their orders, and the whole
-amount of those orders. Tolstoy must receive the store's orders:
+amount of those orders. The event and the order must both fall inside the
+report's dates, so the last day of a period has fewer buyers than the days
+before it; compare periods that end the same way. Tolstoy must receive the
+store's orders:
 
 | Store | How Tolstoy receives its orders |
 |---|---|

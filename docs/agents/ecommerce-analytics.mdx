@@ -19,7 +19,7 @@ Your storefront code sends events with the Tolstoy SDK, for example `product_vie
 
 - `events`: how many times the event was sent.
 - `shoppers`: how many different shoppers sent it. The SDK keeps one shopper ID per browser, so one person on two devices counts as two shoppers.
-- `buyers`: the shoppers who sent the event and then placed an order in the store within the window after it. The window is 24 hours unless you ask for 3, 7 or 30 days.
+- `buyers`: the shoppers who sent the event and then placed an order in the store within the window after it. The window is 24 hours unless you ask for 3, 7 or 30 days. The event and the order must both fall inside the report's dates, so an order after the last day does not count.
 - `orders`: the orders of those buyers within the window.
 - `revenue`: the whole amount of those orders, each order counted once, in the currency of the report.
 

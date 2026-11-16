@@ -65,7 +65,8 @@ The report lists these events in `events` (details section) with widget type
 - `events`: how many times the event was sent. `shoppers`: how many different
   shoppers sent it.
 - `buyers`: the shoppers who sent the event and then placed an order in this
-  store within the window after it.
+  store within the window after it. The event and the order must both fall
+  inside the report's dates, so an order after the last day does not count.
 - `orders`: those orders. `revenue`: their whole amount, each order counted
   once, in the report's `currency`, rounded to 2 decimals.
 
