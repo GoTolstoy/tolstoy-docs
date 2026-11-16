@@ -23,7 +23,7 @@ Your storefront code sends events with the Tolstoy SDK, for example `product_vie
 - `orders`: the orders of those buyers within the window.
 - `revenue`: the whole amount of those orders, each order counted once, in the currency of the report.
 
-Tolstoy gets the store's orders from the Tolstoy Shopify app. On a store without the app, Tolstoy receives no orders, and `buyers`, `orders` and `revenue` stay `0`. Tell your client before you start.
+Tolstoy receives the store's orders from the Tolstoy app on a Shopify store, or from conversion tracking on a store that is not on Shopify (see [Send the orders](#send-the-orders)). Without orders, `buyers`, `orders` and `revenue` stay `0`.
 
 Sending events and reading the report are free on every Tolstoy plan, the free plan included. Your events never count toward Shoppable Videos view billing.
 
@@ -88,6 +88,15 @@ The SDK is an ES module on the Tolstoy CDN. Create one SDK on the page, and call
 ```
 
 Tolstoy records each event as `tolstoy-sdk.<name>`, for example `tolstoy-sdk.add_to_cart`. Parameters are strings, numbers and booleans. The [Tolstoy SDK](/storefront/tolstoy-sdk) page has the limits of names and parameters.
+
+### Send the orders
+
+Do not send orders as events. Tolstoy links your events to the orders that it receives from the store:
+
+- On a Shopify store with the Tolstoy app, the app sends the orders.
+- On a store that is not on Shopify, add the [conversion tracking](/storefront/installation#conversion-tracking) code to the order confirmation page, with the order's items.
+
+A Shopify store without the Tolstoy app sends Tolstoy no orders. An order links to an event only when the same browser sent both, with the shopper's consent to analytics.
 
 ## 4. Follow the shopper's consent
 

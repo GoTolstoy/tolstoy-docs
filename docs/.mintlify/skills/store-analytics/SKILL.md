@@ -69,10 +69,14 @@ The report lists these events in `events` (details section) with widget type
 - `orders`: those orders. `revenue`: their whole amount, each order counted
   once, in the report's `currency`, rounded to 2 decimals.
 
-`0` is a measured zero. Tolstoy gets the orders from the Tolstoy Shopify app; on
-a store without it, Tolstoy receives no orders and `buyers`, `orders` and
-`revenue` stay `0`. In `stores`, `receivesOrders: false` marks a store that sent
-Tolstoy no orders in the last 30 days.
+`0` is a measured zero. Tolstoy receives the orders from the Tolstoy app on a
+Shopify store, or from Tolstoy's conversion tracking code on the order
+confirmation page of a store that is not on Shopify
+(https://developers.gotolstoy.com/storefront/installation#conversion-tracking).
+An order links to an event only when the same browser sent both. Without
+orders, `buyers`, `orders` and `revenue` stay `0`. In `stores`,
+`receivesOrders: false` marks a store that sent Tolstoy no orders in the last
+30 days.
 
 Revenue is the whole order, not the product that the event names. One order
 counts under every SDK event and widget that its shopper touched, so rows do not

@@ -41,37 +41,43 @@ The Tolstoy app records the orders from your Shopify store. You do not have to a
 
 ### Conversion tracking
 
-Conversion tracking tells Tolstoy about each order, so that Tolstoy can show the sales that your widgets bring. It is optional.
+Conversion tracking tells Tolstoy about each order, so that Tolstoy can show the sales that your widgets and your [Tolstoy SDK](/storefront/tolstoy-sdk) events bring. It is optional.
 
-Copy the tracking code from **Conversion tracking** in **Website setup & tracking**. Paste it into your order confirmation page, and replace the placeholder values with the data of the order:
+Copy the tracking code from **Conversion tracking** in **Website setup & tracking**, or copy it from here. Paste it into your order confirmation page, and replace the placeholder values with the data of the order:
 
-```javascript
-window.tolstoyConversion = {
-  appKey: "YOUR_APP_KEY", // already set in the code that you copy
-  appUrl: "your-store.com",
-  orderId: "1001",
-  totalPrice: "84.00",
-  currency: "USD",
-  presentmentCurrency: "EUR", // optional: the currency that the shopper paid in
-  email: "shopper@example.com",
-  items: [
-    {
-      productId: "123",
-      variantId: "456",
-      title: "Classic Tee",
-      price: "42.00",
-      quantity: 2,
-      totalPrice: "84.00", // price × quantity − discounts
-      discounts: [{ amount: "0.00" }], // optional
-    },
-  ],
-};
+```html
+<script type="text/javascript">
+(function () {
+  window.tolstoyConversion = {
+    appKey: "YOUR_APP_KEY", // already set in the code that you copy from Tolstoy
+    appUrl: "your-store.com",
+    orderId: "1001",
+    totalPrice: "84.00",
+    currency: "USD",
+    presentmentCurrency: "EUR", // optional: the currency that the shopper paid in
+    email: "shopper@example.com",
+    items: [
+      {
+        productId: "123",
+        variantId: "456",
+        title: "Classic Tee",
+        price: "42.00",
+        quantity: 2,
+        totalPrice: "84.00", // price × quantity − discounts
+        discounts: [{ amount: "0.00" }], // optional
+      },
+    ],
+  };
+  var s = document.createElement("script"); s.type = "text/javascript"; s.async = true; s.src = "https://widget.gotolstoy.com/track.js";
+  var x = document.getElementsByTagName("script")[0]; x.parentNode.insertBefore(s, x);
+})();
+</script>
 ```
 
-The tracking code then loads `https://widget.gotolstoy.com/track.js`, which sends the order to Tolstoy.
+`https://widget.gotolstoy.com/track.js` sends the order to Tolstoy.
 
 Tolstoy records an order only when:
 
-- The order has a `totalPrice`.
-- The shopper saw Tolstoy on your site in the same browser.
+- The order has a `totalPrice` and its `items`.
+- The same browser has a Tolstoy shopper ID: the shopper saw a Tolstoy widget, or your page sent an event with the [Tolstoy SDK](/storefront/tolstoy-sdk).
 - The shopper did not reject analytics cookies. See [Cookie Consent](/storefront/cookie-consent).

@@ -60,12 +60,8 @@ after discounts, without shipping and tax.
 | `<feature>_view` | The feature shows to the shopper, for example `size_guide_view`. |
 | `<feature>_use` | The shopper uses the feature, for example `size_guide_open`. |
 
-- On a store with the Tolstoy Shopify app, do not send orders as events:
-  Tolstoy links events to the store's orders (see
-  [Orders and revenue](#orders-and-revenue)). On any other store, send
-  `order_completed` on the order confirmation page, once per order. Its
-  `events` then count orders and its `shoppers` count buyers; the report has no
-  revenue for it.
+- Do not send orders as events. Tolstoy links events to the orders that it
+  receives from the store (see [Orders and revenue](#orders-and-revenue)).
 - Use one lower-case `object_action` name for one action, on every page. A new
   name starts a new count, so do not rename events.
 - Send the view event of a feature, not only its use. Without the view, the
@@ -165,11 +161,17 @@ delivery check, and what Tolstoy does not measure.
 For each SDK event name, the report gives `buyers`, `orders` and `revenue`: the
 shoppers who sent the event and then ordered within the report's window
 (`24h` unless you ask for `3d`, `7d` or `30d`), their orders, and the whole
-amount of those orders. Tolstoy gets the orders from the Tolstoy Shopify app.
-On a store without the app, Tolstoy receives no orders and these numbers stay
-`0`; tell the client this before you start. In the report's `stores` list,
-`receivesOrders: false` marks a store that sent Tolstoy no orders in the last
-30 days.
+amount of those orders. Tolstoy must receive the store's orders:
+
+| Store | How Tolstoy receives its orders |
+|---|---|
+| Shopify store with the Tolstoy app | The app sends them. Add nothing. |
+| Store not on Shopify | Add Tolstoy's conversion tracking code, with the order's items, to the order confirmation page. The code is in the Conversion tracking section of https://developers.gotolstoy.com/storefront/installation.md |
+
+A Shopify store without the Tolstoy app sends Tolstoy no orders. An order links
+to an event only when the same browser sent both, with the shopper's consent to
+analytics. Without orders, `buyers`, `orders` and `revenue` stay `0`. In the report's `stores` list, `receivesOrders: false`
+marks a store that sent Tolstoy no orders in the last 30 days.
 
 ### Take from the store platform
 

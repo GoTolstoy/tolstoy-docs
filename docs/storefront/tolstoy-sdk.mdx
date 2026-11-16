@@ -86,7 +86,7 @@ In the details, `events` lists each of your events with the widget type `tolstoy
 | `orders` | The orders of those buyers within the window. |
 | `revenue` | The whole amount of those orders, each order counted once, in the report's `currency`. |
 
-Tolstoy gets your orders from the Tolstoy Shopify app. On a store without the app, Tolstoy receives no orders, and `buyers`, `orders` and `revenue` stay `0`. Revenue is the whole order, not the product that the event names. One order counts under each event that its shopper sent within the window before it, so the rows do not add up.
+Tolstoy receives your orders from the Tolstoy app on a Shopify store, or from [conversion tracking](/storefront/installation#conversion-tracking) on a store that is not on Shopify. An order links to an event only when the same browser sent both. Without orders, `buyers`, `orders` and `revenue` stay `0`. Revenue is the whole order, not the product that the event names. One order counts under each event that its shopper sent within the window before it, so the rows do not add up.
 
 - `--app-url` selects a store from `tolstoy stores list`. Without it, the CLI uses your default store.
 - `--channel` (`web` or `app`) limits the report to your website or your Tapcart app.
