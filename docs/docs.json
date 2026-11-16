@@ -17,8 +17,7 @@
           {
             "group": "Home",
             "pages": [
-              "welcome",
-              "ecommerce-analytics"
+              "welcome"
             ]
           },
           {
@@ -32,6 +31,7 @@
               },
               "agents/creative-skills",
               "agents/cli",
+              "agents/ecommerce-analytics",
               "agents/retired-servers"
             ]
           },
