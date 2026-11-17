@@ -267,6 +267,15 @@ delivery check, and what the report does not give.
    `tolstoy analytics get-store-analytics --sections '["details"]' --json`
    with `--date-from` and `--date-to`.
 
+The report leaves out events sent from a page whose address contains
+`localhost`, `127.0.0.1` or `shopifypreview.com`, or starts with `file`, and
+events sent by headless Chrome or Lightpanda (a user agent that contains
+`HeadlessChrome` or `Lightpanda`) or by some crawlers and audit tools, such as
+Googlebot and Lighthouse. Tolstoy still answers them with HTTP 200. A test on
+your own machine, or in a headless browser such as Playwright in its default
+mode, checks delivery only. To check the report, send the events from the
+deployed store in a normal browser.
+
 Then note the events and their rules in the project's `AGENTS.md`, so that the
 next agent reads the numbers the same way.
 
