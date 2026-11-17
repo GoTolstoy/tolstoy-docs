@@ -94,11 +94,13 @@ The report does not show today's events, so check the requests. The SDK sends ea
 - **HTTP 200**: Tolstoy received the event. The body of the request holds `eventName` (`tolstoy-sdk.<name>`) and `appKey`. Check that both are right.
 - **No request**: the shopper's consent blocks analytics, or the next batch has not been sent yet. Wait 10 seconds, or leave the page.
 
-To see the requests, open the network log of the browser, or record the requests with a browser automation tool such as Playwright. On the day that you send, HTTP 200 is the only check. The report shows the counts the next day.
+To see the requests, open the network log of the browser, or record the requests with a browser automation tool such as Playwright. On the day that you send, HTTP 200 is the only check.
+
+HTTP 200 does not mean that the report counts the event. The report leaves out events sent from a page whose address contains `localhost`, `127.0.0.1` or `shopifypreview.com`, or starts with `file`, and events sent by a browser whose user agent contains `HeadlessChrome`, `Lightpanda`, `Chrome-Lighthouse`, `Bytespider`, `Shopify-Observe-Synthetic-Checks`, `+http://www.google.com/bot.html`, `(+http://www.facebook.com/externalhit_uatext.php)`, `https://naver.me/spd` or `(+https://whatis.contentkingapp.com)`. A test on your own machine, or in a headless browser such as Playwright in its default mode, checks delivery only. To check the report, send the events from the deployed store in a normal browser, one whose user agent contains none of these.
 
 ## 6. Read your events
 
-From about 06:30 UTC on the next day, ask for the report of the day that you sent the events:
+From about 06:30 UTC on the next day, ask for the report of the day that the deployed store sent the events:
 
 ```bash
 tolstoy analytics get-store-analytics \
