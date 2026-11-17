@@ -8,7 +8,6 @@
       "pages": [
         "api-reference/get-me",
         "api-reference/list-videos",
-        "api-reference/upload-video",
         "api-reference/create-video-by-url",
         "api-reference/list-projects",
         "api-reference/get-project",
