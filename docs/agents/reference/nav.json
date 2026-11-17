@@ -6,7 +6,9 @@
     "agents/reference/create-media",
     "agents/reference/creative-skill-tools",
     "agents/reference/tolstoy-agent",
+    "agents/reference/store-analytics",
     "agents/reference/uploads-and-workspace",
+    "agents/reference/widgets",
     "agents/reference/cli-commands"
   ]
 }

@@ -42,6 +42,10 @@ Sends a message to the Tolstoy Agent, the workspace's agent, and returns once th
 
 ## get_agent_chat
 
+<Note>
+  On Claude, this tool is listed only for workspaces allowed to generate media. See [Claude](/agents/connect#claude).
+</Note>
+
 Reads a Tolstoy Agent chat: whether its turn is waiting, running or done, the agent's answer for a finished turn, the images and videos that turn made, and the credits it used. It only reads.
 
 <Accordion title="Input schema">
@@ -76,6 +80,10 @@ Reads a Tolstoy Agent chat: whether its turn is waiting, running or done, the ag
 </Accordion>
 
 ## stop_agent
+
+<Note>
+  On Claude, this tool is listed only for workspaces allowed to generate media. See [Claude](/agents/connect#claude).
+</Note>
 
 Stops the running turn of a Tolstoy Agent chat, the way Stop does in the Tolstoy platform. A generation already sent to a provider still finishes and is billed.
 
