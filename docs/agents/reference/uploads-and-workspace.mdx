@@ -86,7 +86,7 @@ Finishes a Library upload after every request of its transfer plan succeeded. Re
 
 ## upload_media_from_panel
 
-Puts the user's own images and videos in the workspace Library. With files, saves each image the user attached to this chat as one Library item and returns its Library id (assetId), media id (mediaId) and image URL; generation tools take that URL as a reference image. A file that is not an image or cannot be downloaded is listed in notSaved with the reason. Without files, opens a file picker in the Tolstoy panel, where the user picks images or videos from their device. The panel uploads each file to the Library, then posts a message with the Library id and the media id of every file that arrived.
+Puts the user's own images and videos in the workspace Library. With files, saves each image or video the user attached to this chat as one Library item and returns its Library id (assetId), media id (mediaId), assetType and URL; generation tools take an image's URL as a reference image. A file that is not an image or video or cannot be downloaded is listed in notSaved with the reason. Without files, opens a file picker in the Tolstoy panel, where the user picks images or videos from their device. The panel uploads each file to the Library, then posts a message with the Library id and the media id of every file that arrived.
 
 <Accordion title="Input schema">
 
@@ -125,7 +125,7 @@ Puts the user's own images and videos in the workspace Library. With files, save
       "items": {
         "$ref": "#/$defs/OpenAIFile"
       },
-      "description": "The images the user attached to this chat, each listed once."
+      "description": "The images and videos the user attached to this chat, each listed once."
     }
   },
   "additionalProperties": false
