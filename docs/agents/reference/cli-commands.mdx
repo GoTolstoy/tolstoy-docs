@@ -834,20 +834,18 @@ FLAGS:
 
 ## memories
 
-What the agent knows about a team's client: each memory topic and how it came about
+What the agents know about a client: the memories of a team and of its projects, and how each one came about
 
 ### memories read-memory
 
-How one memory topic came about, by its id: every change with who made it, when and why, its text before and after, and the chat and date of the client words behind it. Open one of those chats with ai-widgets read-chat.
+How one memory came about, by its id: every change with who made it, when and why, its text before and after, and the chat and date of the client words behind it. Open one of those chats with ai-widgets read-chat.
 
 ```text
 USAGE:  tolstoy memories read-memory [flags]
 
 FLAGS:
   --team-id    
-  --memory-id  One memory topic by its id: its changes, newest first.
-  --run-id     
-  --limit      (number)
+  --memory-id  One memory by its id: its changes, newest first. (required)
 ```
 
 ## meta-ads
@@ -1567,7 +1565,7 @@ FLAGS:
 
 ## shopper
 
-The store's AI shopping assistant: profile, skills, chat buttons, and product top questions
+The store's AI shopping assistant: profile, skills, chat buttons, product top questions, the knowledge sources it answers from, and the Shopbots app switch
 
 ### shopper add-product-top-questions
 
@@ -1590,6 +1588,24 @@ SCHEMAS (TypeScript):
       question: string;
       answer?: string | undefined;
   }[];
+```
+
+### shopper add-shopper-knowledge-urls
+
+Add web pages, such as blog posts or help-center articles, to the Shopper Knowledge of a store. The shopper chat uses these pages to answer shoppers. The import runs in the background: the command returns the id of the import at once, before the pages are read. While list-shopper-knowledge-sources shows a row with that id, the import is in progress. When that row is gone, the import is complete: each page that was added has its own row with its url, and a URL that has no row was not added because its page could not be read. A URL that is already a source is read again and its row is updated; no second row is added. Product pages, collection pages and image URLs are rejected, and then no URL of the call is imported.
+
+```text
+USAGE:  tolstoy shopper add-shopper-knowledge-urls [flags]
+
+FLAGS:
+  --app-url     (required)
+  --url         Full page URLs, such as https://store.com/blogs/news/post. (required, json)
+  --category    (required, values: help-center, shipping-information, returns-refunds, size-guides, blog, loyalty, general-knowledge)
+  --crawl-mode  single reads only the given pages. recursive also reads the pages they link to on the same site. (values: single, recursive, default: "single")
+
+SCHEMAS (TypeScript):
+  --url
+  type url = string[];
 ```
 
 ### shopper delete-collection-top-question
@@ -1641,6 +1657,28 @@ USAGE:  tolstoy shopper get-product-top-questions [flags]
 FLAGS:
   --product-id  (required)
   --app-url     (required)
+```
+
+### shopper get-shopbots-app
+
+Show whether the store is turned on in the Shopbots app, the iPhone app where shoppers chat with the store's AI shopping assistant. `enabled` is true when the store is on and false when it is off. `url` is the store's Shopbots link. A store that is turned off still has its link, so do not use `url` to decide whether the store is on.
+
+```text
+USAGE:  tolstoy shopper get-shopbots-app [flags]
+
+FLAGS:
+  --app-url         (required)
+  --supports-popup  (boolean)
+  --invitation      (json)
+  --device          (values: iphone, android, desktop)
+
+SCHEMAS (TypeScript):
+  --invitation
+  type invitation = {
+      source: "website" | "email" | "loyalty" | "try-on" | "video" | "post-purchase" | "packaging" | "in-store" | "customer-account";
+      style: "modern" | "retro";
+      task: "find-products" | "style-owned-item" | "plan-occasion" | "use-my-purchase";
+  };
 ```
 
 ### shopper get-shopper-agent-profile
@@ -1709,6 +1747,17 @@ FLAGS:
   --app-url  (required)
 ```
 
+### shopper list-shopper-knowledge-sources
+
+List the Shopper Knowledge sources of a store: the web pages and files that the shopper chat uses to answer shoppers. A web page row has its url. An uploaded file row has no url. A row whose id starts with temp- is a URL import that is in progress, and its url holds the URLs of that import, separated by commas. A page url is stored without its #fragment and trailing slash, with its query parameters sorted.
+
+```text
+USAGE:  tolstoy shopper list-shopper-knowledge-sources [flags]
+
+FLAGS:
+  --app-url  (required)
+```
+
 ### shopper save-collection-top-questions
 
 Add questions to the top questions of collections. Existing questions stay; pass oldQuestionWithAnswer to replace that one question. enabled applies only to collections that have no questions yet.
@@ -1762,6 +1811,18 @@ SCHEMAS (TypeScript):
       question: string;
       answer?: string | undefined;
   }[];
+```
+
+### shopper save-shopbots-app-enabled
+
+Turn the store on or off in the Shopbots app. Off hides the store from every shopper in the app, and keeps its link and printed QR codes: they work again when the store is turned on. Turning a store on for the first time creates its link.
+
+```text
+USAGE:  tolstoy shopper save-shopbots-app-enabled [flags]
+
+FLAGS:
+  --app-url  (required)
+  --enabled  (required, boolean)
 ```
 
 ### shopper save-shopper-agent-profile
