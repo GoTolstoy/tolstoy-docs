@@ -834,20 +834,18 @@ FLAGS:
 
 ## memories
 
-What the agent knows about a team's client: each memory topic and how it came about
+What the agents know about a client: the memories of a team and of its projects, and how each one came about
 
 ### memories read-memory
 
-How one memory topic came about, by its id: every change with who made it, when and why, its text before and after, and the chat and date of the client words behind it. Open one of those chats with ai-widgets read-chat.
+How one memory came about, by its id: every change with who made it, when and why, its text before and after, and the chat and date of the client words behind it. Open one of those chats with ai-widgets read-chat.
 
 ```text
 USAGE:  tolstoy memories read-memory [flags]
 
 FLAGS:
   --team-id    
-  --memory-id  One memory topic by its id: its changes, newest first.
-  --run-id     
-  --limit      (number)
+  --memory-id  One memory by its id: its changes, newest first. (required)
 ```
 
 ## meta-ads
@@ -1567,7 +1565,7 @@ FLAGS:
 
 ## shopper
 
-The store's AI shopping assistant: profile, skills, chat buttons, and product top questions
+The store's AI shopping assistant: profile, skills, chat window and buttons, sizing fields, coupons, product top questions, product sizing notes and size data, the knowledge it answers from (sources, files, notes, summary, unanswered questions), and the Shopbots app switch and push notifications
 
 ### shopper add-product-top-questions
 
@@ -1592,6 +1590,53 @@ SCHEMAS (TypeScript):
   }[];
 ```
 
+### shopper add-shopper-knowledge-file
+
+Add local files to the Shopper Knowledge of a store. Category: help-center (default), shipping-information, returns-refunds, size-guides, blog, loyalty or general-knowledge. Each file must be smaller than 50 MB. A file with the same name and type replaces the old file. Run it only after the merchant said yes.
+
+```text
+USAGE:  tolstoy shopper add-shopper-knowledge-file [flags]
+
+FLAGS:
+  --app-url   Store domain, from tolstoy stores list (required)
+  --files     Local file paths, as a JSON list (required, json)
+  --category  (values: help-center, shipping-information, returns-refunds, size-guides, blog, loyalty, general-knowledge, default: "help-center")
+
+SCHEMAS (TypeScript):
+  --files
+  type files = string[];
+```
+
+### shopper add-shopper-knowledge-urls
+
+Add web pages, such as blog posts or help-center articles, to the Shopper Knowledge of a store. The shopper chat uses these pages to answer shoppers. The import runs in the background: the command returns the id of the import at once, before the pages are read. While list-shopper-knowledge-sources shows a row with that id, the import is in progress. When that row is gone, the import is complete: each page that was added has its own row with its url, and a URL that has no row was not added because its page could not be read. A URL that is already a source is read again and its row is updated; no second row is added. Product pages, collection pages and image URLs are rejected, and then no URL of the call is imported.
+
+```text
+USAGE:  tolstoy shopper add-shopper-knowledge-urls [flags]
+
+FLAGS:
+  --app-url     (required)
+  --url         Full page URLs, such as https://store.com/blogs/news/post. (required, json)
+  --category    (required, values: help-center, shipping-information, returns-refunds, size-guides, blog, loyalty, general-knowledge)
+  --crawl-mode  single reads only the given pages. recursive also reads the pages they link to on the same site. (values: single, recursive, default: "single")
+
+SCHEMAS (TypeScript):
+  --url
+  type url = string[];
+```
+
+### shopper cancel-shopbots-app-notification
+
+Cancel a ShopBot app push notification by its id from list-shopbots-app-notifications. A scheduled notification is cancelled for all shoppers. A notification that is sending stops only for the shoppers who did not get it yet.
+
+```text
+USAGE:  tolstoy shopper cancel-shopbots-app-notification [flags]
+
+FLAGS:
+  --app-url       (required)
+  --broadcast-id  (required)
+```
+
 ### shopper delete-collection-top-question
 
 Remove one question from the given collections.
@@ -1613,6 +1658,78 @@ SCHEMAS (TypeScript):
       question: string;
       answer?: string | undefined;
   };
+```
+
+### shopper delete-shopper-coupon
+
+Delete a coupon by its couponId from list-shopper-coupons. Shoppers stop getting its code. The discount in Shopify does not change. Run it only after the merchant said yes.
+
+```text
+USAGE:  tolstoy shopper delete-shopper-coupon [flags]
+
+FLAGS:
+  --app-url    (required)
+  --coupon-id  (required)
+```
+
+### shopper delete-shopper-knowledge-note
+
+Delete a knowledge note by its noteId from list-shopper-knowledge-notes. Run it only after the merchant said yes.
+
+```text
+USAGE:  tolstoy shopper delete-shopper-knowledge-note [flags]
+
+FLAGS:
+  --app-url  (required)
+  --note-id  (required)
+```
+
+### shopper delete-shopper-knowledge-source
+
+Delete a Shopper Knowledge source: a web page or an uploaded file. Pass the `id` and the `fileName` of its row from list-shopper-knowledge-sources. An uploaded file is deleted for good. The delete does not start a knowledge sync: the shopper chat can still find the text until the next sync, which starts when knowledge is added. To read a web page again later, add it again with add-shopper-knowledge-urls. Run it only after the merchant said yes.
+
+```text
+USAGE:  tolstoy shopper delete-shopper-knowledge-source [flags]
+
+FLAGS:
+  --app-url    (required)
+  --file-name  (required)
+  --id         
+```
+
+### shopper delete-shopper-knowledge-summary
+
+Delete the pasted summary of the store, the text in Paste a summary on the Knowledge page. The shopper chat stops using it after the knowledge sync that the delete starts. Run it only after the merchant said yes.
+
+```text
+USAGE:  tolstoy shopper delete-shopper-knowledge-summary [flags]
+
+FLAGS:
+  --app-url  (required)
+```
+
+### shopper delete-shopper-product-knowledge
+
+Delete the sizing notes of one product. The shopper chat stops using them at once. Run it only after the merchant said yes.
+
+```text
+USAGE:  tolstoy shopper delete-shopper-product-knowledge [flags]
+
+FLAGS:
+  --app-url              (required)
+  --external-product-id  (required)
+```
+
+### shopper delete-shopper-unanswered-question
+
+Delete an unanswered question by its gapId. Its answer, if it has one, is deleted too. Run it only after the merchant said yes.
+
+```text
+USAGE:  tolstoy shopper delete-shopper-unanswered-question [flags]
+
+FLAGS:
+  --app-url  (required)
+  --gap-id   (required)
 ```
 
 ### shopper get-collection-top-questions
@@ -1643,6 +1760,39 @@ FLAGS:
   --app-url     (required)
 ```
 
+### shopper get-shopbots-app
+
+Show whether the store is turned on in the Shopbots app, the iPhone app where shoppers chat with the store's AI shopping assistant. `enabled` is true when the store is on and false when it is off. `url` is the store's Shopbots link. A store that is turned off still has its link, so do not use `url` to decide whether the store is on.
+
+```text
+USAGE:  tolstoy shopper get-shopbots-app [flags]
+
+FLAGS:
+  --app-url         (required)
+  --supports-popup  (boolean)
+  --invitation      (json)
+  --device          (values: iphone, android, desktop)
+
+SCHEMAS (TypeScript):
+  --invitation
+  type invitation = {
+      source: "website" | "email" | "loyalty" | "try-on" | "video" | "post-purchase" | "packaging" | "in-store" | "customer-account";
+      style: "modern" | "retro";
+      task: "find-products" | "style-owned-item" | "plan-occasion" | "use-my-purchase";
+  };
+```
+
+### shopper get-shopbots-app-notification-audience
+
+Count the shoppers who added the store in the ShopBot app and did not block it. A notification sent now reaches each of them as a chat message. Only shoppers with notifications on also get a push.
+
+```text
+USAGE:  tolstoy shopper get-shopbots-app-notification-audience [flags]
+
+FLAGS:
+  --app-url  (required)
+```
+
 ### shopper get-shopper-agent-profile
 
 Get the profile of the store's AI shopping assistant: name, role, image, background, goal, tone, communication style and custom prompt. Global for the store: every shopper surface uses it. A store with no profile gets a generated one.
@@ -1665,6 +1815,28 @@ FLAGS:
   --app-url  (required)
 ```
 
+### shopper get-shopper-chat-settings
+
+Get the chat window settings of the Agent tab. The welcome message (assistantInitialMessage) opens every new shopper chat of the store. The other fields set the look of the older Tolstoy chat widget: input placeholder, colors, font, customer profile (enableProfile), product click (modal or navigate), product image shape (square, 2:3, 3:4), display mode (corner or centered), and the size (pixels) and position of the centered window. A widget made from the Shopper chat template does not read them: its look is in its code.
+
+```text
+USAGE:  tolstoy shopper get-shopper-chat-settings [flags]
+
+FLAGS:
+  --app-url  (required)
+```
+
+### shopper get-shopper-knowledge-summary
+
+Get the pasted summary of the store: the text in Paste a summary on the Knowledge page, often a ChatGPT answer about the brand. The shopper chat uses it to answer shoppers. A store with no summary gets a not-found error.
+
+```text
+USAGE:  tolstoy shopper get-shopper-knowledge-summary [flags]
+
+FLAGS:
+  --app-url  (required)
+```
+
 ### shopper get-shopper-marketplace-tryon-config
 
 Get whether shoppers can try on this store's products in the Tolstoy Shopper app for Claude and ChatGPT (enabled), and the daily try-on cap (dailyCap). These try-ons are billed to the merchant.
@@ -1674,6 +1846,41 @@ USAGE:  tolstoy shopper get-shopper-marketplace-tryon-config [flags]
 
 FLAGS:
   --app-url  (required)
+```
+
+### shopper get-shopper-measurement-fields
+
+Get the body measurement fields that shoppers fill in for size advice. A store with no saved fields gets the defaults: height, chest/bust, waist and hips. `dual_input` asks for two numbers (feet and inches, or meters and centimeters); `single_input` asks for one.
+
+```text
+USAGE:  tolstoy shopper get-shopper-measurement-fields [flags]
+
+FLAGS:
+  --app-url  (required)
+```
+
+### shopper get-shopper-product-knowledge
+
+Get the sizing notes of one product (the merchant's fit notes, such as runs small), which the shopper chat uses for size advice. `externalProductId` is the Shopify product id. null: no notes.
+
+```text
+USAGE:  tolstoy shopper get-shopper-product-knowledge [flags]
+
+FLAGS:
+  --app-url              (required)
+  --external-product-id  (required)
+```
+
+### shopper get-shopper-product-size-data
+
+Get the size data of one product: `model_information` (each model's name, measurements and size worn), `size_guide.sizes` (each size and its measurements) and `details` (not read by the shopper chat). The shopper chat uses it for size advice when a measurement holds a number. `productId` is the Shopify product id. null: no saved data. `status` EMPTY: no measurement.
+
+```text
+USAGE:  tolstoy shopper get-shopper-product-size-data [flags]
+
+FLAGS:
+  --app-url     (required)
+  --product-id  (required)
 ```
 
 ### shopper get-shopper-quick-actions
@@ -1698,6 +1905,17 @@ FLAGS:
   --app-url  (required)
 ```
 
+### shopper get-top-questions-appearance
+
+Get the Top questions settings of the store. `disableAiGeneratedQuestions` true stops AI from writing questions, and `generationContext` (at most 1000 characters) guides the questions AI writes. The other fields set the look of the older Tolstoy Top questions block: title, colors, borders, font sizes (pixels), button width (percent or fit-content), animation, search bar, mobile overrides, blocked collections. A widget made from the Shopper chat template does not read the look: it is in its code. `enabled` is the store-wide switch of save-top-questions-switch: do not send it back with save-top-questions-appearance.
+
+```text
+USAGE:  tolstoy shopper get-top-questions-appearance [flags]
+
+FLAGS:
+  --app-url  (required)
+```
+
 ### shopper get-top-questions-switch
 
 Get whether top questions are on for the whole store (published): the Show top questions switch of the Top Questions tab. This is not the enabled flag of one product's questions.
@@ -1707,6 +1925,89 @@ USAGE:  tolstoy shopper get-top-questions-switch [flags]
 
 FLAGS:
   --app-url  (required)
+```
+
+### shopper list-shopbots-app-notifications
+
+List the store's last 50 ShopBot app push notifications, newest first. Each notification has its topic, its send time (`now`, or `local_time` with a date and an hour in each shopper's own time zone), and its status: `scheduled`, `sending`, `finished` or `cancelled`. `results` counts the shoppers in each delivery state and how many of them opened the push.
+
+```text
+USAGE:  tolstoy shopper list-shopbots-app-notifications [flags]
+
+FLAGS:
+  --app-url  (required)
+```
+
+### shopper list-shopper-coupons
+
+List the store's coupons. `discount` is a percent off. `displayText` is what the shopper chat says about the coupon. A coupon with `disabled` false is active: the shopper chat gives a shopper one active code, picked at random, when the Coupon skill is on, and the ShopBot app adds the active coupon with the highest discount to every checkout, also when the Coupon skill is off. Only `disabled` true or a delete stops that. A coupon is only a code saved in Tolstoy: the same code must exist as a discount in Shopify.
+
+```text
+USAGE:  tolstoy shopper list-shopper-coupons [flags]
+
+FLAGS:
+  --app-url  (required)
+```
+
+### shopper list-shopper-knowledge-notes
+
+List the knowledge notes of a store: short facts the shopper chat uses to answer shoppers, from Notes on the Knowledge page. `author` is `merchant` for a note a person wrote and `agent` for a note the shopper agent worked out from store data, with its `source`.
+
+```text
+USAGE:  tolstoy shopper list-shopper-knowledge-notes [flags]
+
+FLAGS:
+  --app-url  (required)
+```
+
+### shopper list-shopper-knowledge-sources
+
+List the Shopper Knowledge sources of a store: the web pages and files that the shopper chat uses to answer shoppers. A web page row has its url. An uploaded file row has no url. A row whose id starts with temp- is a URL import that is in progress, and its url holds the URLs of that import, separated by commas. A page url is stored without its #fragment and trailing slash, with its query parameters sorted.
+
+```text
+USAGE:  tolstoy shopper list-shopper-knowledge-sources [flags]
+
+FLAGS:
+  --app-url  (required)
+```
+
+### shopper list-shopper-products-size-data
+
+Check which products have size data, for up to 100 Shopify product ids in one call. Each product that has size data returns `status` (SUCCESS when the data holds a measurement, else EMPTY) and `hasSizeGuide`. A product with no size data is not in the answer.
+
+```text
+USAGE:  tolstoy shopper list-shopper-products-size-data [flags]
+
+FLAGS:
+  --app-url      (required)
+  --product-ids  (required, json)
+
+SCHEMAS (TypeScript):
+  --product-ids
+  type productIds = string[];
+```
+
+### shopper list-shopper-unanswered-questions
+
+List the questions the shopper chat could not answer, from the Unanswered questions tab of the Knowledge page. `reason` tells why the agent could not answer. `resolved` true means the question has an answer in `resolution`. `productId` is the product the question is about, and `pageProductId` is the product page the shopper asked from.
+
+```text
+USAGE:  tolstoy shopper list-shopper-unanswered-questions [flags]
+
+FLAGS:
+  --app-url  (required)
+```
+
+### shopper regenerate-product-top-questions
+
+Write new top questions for one product with AI, from the product, the brand, and questions shoppers asked. They replace all the saved questions of that product, also questions the merchant wrote, and the product's questions turn on. productId is the Shopify product id (numbers only). Fails when AI questions are off for the store. Run it only after the merchant said yes.
+
+```text
+USAGE:  tolstoy shopper regenerate-product-top-questions [flags]
+
+FLAGS:
+  --product-id  (required)
+  --app-url     (required)
 ```
 
 ### shopper save-collection-top-questions
@@ -1764,9 +2065,21 @@ SCHEMAS (TypeScript):
   }[];
 ```
 
+### shopper save-shopbots-app-enabled
+
+Turn the store on or off in the Shopbots app. Off hides the store from every shopper in the app, and keeps its link and printed QR codes: they work again when the store is turned on. Turning a store on for the first time creates its link.
+
+```text
+USAGE:  tolstoy shopper save-shopbots-app-enabled [flags]
+
+FLAGS:
+  --app-url  (required)
+  --enabled  (required, boolean)
+```
+
 ### shopper save-shopper-agent-profile
 
-Save the shopper agent profile of a store. Every profile field is required, so start from get-shopper-agent-profile and change only what the merchant asked. Global for the store: every shopper surface uses it.
+Save the shopper agent profile of a store. Start from get-shopper-agent-profile and change only what the merchant asked. Global for the store: every shopper surface uses it. `image` is the avatar of the assistant and needs a public image URL that does not expire. A chat attachment link is temporary: download the file into the sandbox, save it with save-to-library and set the `url` it returns. A media library URL can be set as it is.
 
 ```text
 USAGE:  tolstoy shopper save-shopper-agent-profile [flags]
@@ -1786,7 +2099,7 @@ FLAGS:
 
 ### shopper save-shopper-agent-skills
 
-Replace the shopper agent skills of a store. The list replaces the saved one, so send every skill from get-shopper-agent-skills with your changes. Global for the store: every shopper surface uses it.
+Replace the shopper agent skills of a store. The list replaces the saved one, so send every skill from get-shopper-agent-skills with your changes. Global for the store: every shopper surface uses it. `VirtualTryOn.stylingReferenceImageUrl` is the try-on styling reference image. A chat attachment link is temporary: save it with save-to-library first and set the URL it returns. A media library URL can be set as it is.
 
 ```text
 USAGE:  tolstoy shopper save-shopper-agent-skills [flags]
@@ -1886,6 +2199,80 @@ SCHEMAS (TypeScript):
   })[];
 ```
 
+### shopper save-shopper-chat-settings
+
+Replace all the chat window settings of the shopper chat. A field you leave out goes back to its default, except inputPlaceholder, chatModalDisplayMode and the centered window fields, which keep their saved values. Start from get-shopper-chat-settings and change only what the merchant asked. centeredModalMaxWidth is 300 to 1400 pixels and centeredModalMaxHeight is 400 to 1000 pixels; they apply only when chatModalDisplayMode is centered. The welcome message applies to every new shopper chat of the store at once.
+
+```text
+USAGE:  tolstoy shopper save-shopper-chat-settings [flags]
+
+FLAGS:
+  --app-url        (required)
+  --chat-settings  (required, json)
+
+SCHEMAS (TypeScript):
+  --chat-settings
+  type chatSettings = {
+      userMessageColor?: string;
+      userMessageFontColor?: string;
+      modalBackgroundColor?: string;
+      fontStyle?: string;
+      enableSevenEighthScreen?: boolean;
+      enableProfile?: boolean;
+      hideMinimizeButton?: boolean;
+      assistantInitialMessage?: string;
+      chatModalDisplayMode?: ("corner" | "centered") | undefined;
+      centeredModalMaxWidth?: number | undefined;
+      centeredModalMaxHeight?: number | undefined;
+      centeredModalVerticalPosition?: ("center" | "bottom") | undefined;
+      keepOpenOnNavigation?: boolean;
+      inputPlaceholder?: string | undefined;
+      productClickBehavior?: "modal" | "navigate";
+      productImageAspectRatio?: "square" | "2:3" | "3:4";
+  };
+```
+
+### shopper save-shopper-coupon
+
+Add a coupon, or replace one. An empty couponId adds a new coupon. A couponId from list-shopper-coupons replaces all fields of that coupon, so send every field. `discount` is a percent off. `disabled` true keeps the coupon but stops shoppers getting it. Use a code that exists as a discount in Shopify. An active coupon reaches shoppers at once: the shopper chat can give it when the Coupon skill is on, and the ShopBot app adds the active coupon with the highest discount to every checkout, also when the Coupon skill is off. Only `disabled` true or a delete stops that. Run it only after the merchant approved the exact code, discount and text.
+
+```text
+USAGE:  tolstoy shopper save-shopper-coupon [flags]
+
+FLAGS:
+  --app-url       (required)
+  --coupon-id     (required)
+  --code          (required)
+  --discount      (number)
+  --display-text  
+  --disabled      (required, boolean)
+```
+
+### shopper save-shopper-knowledge-note
+
+Add a knowledge note, or replace the text of one. Leave out `noteId` to add a new note. A `noteId` from list-shopper-knowledge-notes replaces all the text of that note, and the note becomes a merchant note. The shopper chat uses notes to answer shoppers.
+
+```text
+USAGE:  tolstoy shopper save-shopper-knowledge-note [flags]
+
+FLAGS:
+  --app-url  (required)
+  --note-id  
+  --text     (required)
+```
+
+### shopper save-shopper-knowledge-summary
+
+Replace the pasted summary of the store with `chatGptResponse`. The new text replaces all of the old text, so read it first with get-shopper-knowledge-summary. The shopper chat uses the new text after the knowledge sync that the save starts. Run it only after the merchant said yes.
+
+```text
+USAGE:  tolstoy shopper save-shopper-knowledge-summary [flags]
+
+FLAGS:
+  --app-url            (required)
+  --chat-gpt-response  (required)
+```
+
 ### shopper save-shopper-marketplace-tryon-config
 
 Turn on or off try-on of this store's products in the Tolstoy Shopper app for Claude and ChatGPT, or change its daily cap. These try-ons are billed to the merchant. Only the fields you send change.
@@ -1897,6 +2284,70 @@ FLAGS:
   --app-url    (required)
   --enabled    (boolean, default: false)
   --daily-cap  (number, default: 100)
+```
+
+### shopper save-shopper-measurement-fields
+
+Replace the body measurement fields that shoppers fill in for size advice: at most 10. The list replaces the saved one, so read it first. Each field has a unique `id`, a `label`, a `type` (dual_input or single_input) and a `sortOrder` (0 shows first). An empty list goes back to the defaults.
+
+```text
+USAGE:  tolstoy shopper save-shopper-measurement-fields [flags]
+
+FLAGS:
+  --app-url  (required)
+  --fields   (required, json)
+
+SCHEMAS (TypeScript):
+  --fields
+  type fields = {
+      id: string;
+      label: string;
+      type: "dual_input" | "single_input";
+      sortOrder: number;
+  }[];
+```
+
+### shopper save-shopper-product-knowledge
+
+Save the sizing notes of one product. `sizingNotes` replaces all the old notes of the product, so read them first with get-shopper-product-knowledge. At most 2000 characters. The shopper chat uses the new notes for this product at once. Run it only after the merchant approved the exact text.
+
+```text
+USAGE:  tolstoy shopper save-shopper-product-knowledge [flags]
+
+FLAGS:
+  --app-url              (required)
+  --external-product-id  (required)
+  --sizing-notes         (required)
+```
+
+### shopper save-shopper-product-size-data
+
+Save the size data of one product. `data` replaces all the old size data of the product, so start from get-shopper-product-size-data and change only what the merchant asked. After a save, Tolstoy no longer reads the size data of this product from the product page, so the saved data stays until the next save. The shopper chat uses the new data at once. Run it only after the merchant approved the exact sizes and measurements.
+
+```text
+USAGE:  tolstoy shopper save-shopper-product-size-data [flags]
+
+FLAGS:
+  --app-url     (required)
+  --product-id  (required)
+  --data        (required, json)
+
+SCHEMAS (TypeScript):
+  --data
+  type data = {
+      model_information: {
+          name: string;
+          measurements: string;
+          size_wearing: string;
+      }[];
+      size_guide: {
+          sizes: {
+              size: string;
+              measurements: string;
+          }[];
+      };
+      details: string;
+  };
 ```
 
 ### shopper save-shopper-quick-actions
@@ -1946,6 +2397,120 @@ SCHEMAS (TypeScript):
   })[];
 ```
 
+### shopper save-shopper-unanswered-question
+
+Answer an unanswered question, or mark it as needing an answer again. `resolved` true saves the answer and needs `resolution`. The answer goes into the store's knowledge, so the shopper chat can use it for any shopper question; it also reads the answer for questions about the product of the question. A question with no product reaches shoppers only through the knowledge. `resolved` false clears the answer and moves the question back to the questions that need an answer. Run it only after the merchant approved the answer.
+
+```text
+USAGE:  tolstoy shopper save-shopper-unanswered-question [flags]
+
+FLAGS:
+  --app-url     (required)
+  --gap-id      (required)
+  --resolved    (required, boolean)
+  --resolution  
+```
+
+### shopper save-top-questions-appearance
+
+Change the Top questions settings of the store. Send only the fields to change; the other fields keep their saved values. A nested object (titlePadding, titleMargin, mobile) replaces its saved object, so send all of its fields. See get-top-questions-appearance for what each field does. Do not send `enabled`: it is the store-wide switch of save-top-questions-switch.
+
+```text
+USAGE:  tolstoy shopper save-top-questions-appearance [flags]
+
+FLAGS:
+  --app-url   (required)
+  --settings  (required, json)
+
+SCHEMAS (TypeScript):
+  --settings
+  type settings = {
+      enabled?: boolean | undefined;
+      title?: string | undefined;
+      disableAiGeneratedQuestions?: boolean | undefined;
+      generationContext?: string | undefined;
+      buttonWidth?: (number | "fit-content") | undefined;
+      backgroundColor?: ((string | "transparent")) | undefined;
+      borderColor?: ((string | "transparent")) | undefined;
+      borderWidth?: (number) | undefined;
+      textColor?: ((string | "inherit")) | undefined;
+      hoverBackgroundColor?: ((string | "transparent")) | undefined;
+      hoverBorderColor?: ((string | "transparent")) | undefined;
+      hoverTextColor?: ((string | "inherit")) | undefined;
+      buttonFont?: (string | undefined) | undefined;
+      buttonFontSize?: (number) | undefined;
+      titleFontSize?: (number) | undefined;
+      titleColor?: (string) | undefined;
+      borderRadius?: (number) | undefined;
+      showIcon?: (boolean) | undefined;
+      animationSpeed?: (number) | undefined;
+      enableAnimation?: boolean | undefined;
+      enableSearchBar?: boolean | undefined;
+      isHeaderBold?: (boolean) | undefined;
+      inheritBrandFont?: (boolean) | undefined;
+      useEmbeddedChat?: boolean | undefined;
+      blockedCollections?: string[] | undefined;
+      includeTemplates?: string[] | undefined;
+      titleVisible?: (boolean) | undefined;
+      titleAlignment?: ("left" | "center" | "right") | undefined;
+      titlePadding?: ({
+          top?: number;
+          left?: number;
+          right?: number;
+          bottom?: number;
+      }) | undefined;
+      titleMargin?: ({
+          top?: number;
+          left?: number;
+          right?: number;
+          bottom?: number;
+      }) | undefined;
+      useDifferentMobileSettings?: boolean | undefined;
+      mobile?: ({
+          enabled?: boolean | undefined;
+          title?: string | undefined;
+          disableAiGeneratedQuestions?: boolean | undefined;
+          generationContext?: string | undefined;
+          buttonWidth?: (number | "fit-content") | undefined;
+          backgroundColor?: ((string | "transparent")) | undefined;
+          borderColor?: ((string | "transparent")) | undefined;
+          borderWidth?: (number) | undefined;
+          textColor?: ((string | "inherit")) | undefined;
+          hoverBackgroundColor?: ((string | "transparent")) | undefined;
+          hoverBorderColor?: ((string | "transparent")) | undefined;
+          hoverTextColor?: ((string | "inherit")) | undefined;
+          buttonFont?: (string | undefined) | undefined;
+          buttonFontSize?: (number) | undefined;
+          titleFontSize?: (number) | undefined;
+          titleColor?: (string) | undefined;
+          borderRadius?: (number) | undefined;
+          showIcon?: (boolean) | undefined;
+          animationSpeed?: (number) | undefined;
+          enableAnimation?: boolean | undefined;
+          enableSearchBar?: boolean | undefined;
+          isHeaderBold?: (boolean) | undefined;
+          inheritBrandFont?: (boolean) | undefined;
+          useEmbeddedChat?: boolean | undefined;
+          blockedCollections?: string[] | undefined;
+          includeTemplates?: string[] | undefined;
+          titleVisible?: (boolean) | undefined;
+          titleAlignment?: ("left" | "center" | "right") | undefined;
+          titlePadding?: ({
+              top?: number;
+              left?: number;
+              right?: number;
+              bottom?: number;
+          }) | undefined;
+          titleMargin?: ({
+              top?: number;
+              left?: number;
+              right?: number;
+              bottom?: number;
+          }) | undefined;
+      } | undefined) | undefined;
+  };
+```
+
 ### shopper save-top-questions-switch
 
 Turn top questions on or off for the whole store: the Show top questions switch of the Top Questions tab. While it is off, no product shows its top questions on any shopper surface of the store: not in a Top questions block, not as the first chips of the shopper chat.
@@ -1956,6 +2521,29 @@ USAGE:  tolstoy shopper save-top-questions-switch [flags]
 FLAGS:
   --app-url  (required)
   --enabled  (required, boolean)
+```
+
+### shopper send-shopbots-app-notification
+
+Send a notification to every shopper who added the store in the ShopBot app and did not block it. The store's assistant writes each shopper a personal message about `topic` in the chat. Only shoppers with notifications on also get a push to their iPhone. `send` is \{"mode":"now"\}, or \{"mode":"local_time","localDate":"YYYY-MM-DD","localHour":0-23\} to send at that hour in each shopper's own time zone. A local time is refused when that hour has already started in some time zone. Cancel stops a notification that is sending only for the shoppers it did not reach yet, and a push that a shopper got cannot be taken back. Run it only after the merchant approved the exact topic and time.
+
+```text
+USAGE:  tolstoy shopper send-shopbots-app-notification [flags]
+
+FLAGS:
+  --app-url  (required)
+  --topic    (required)
+  --send     (required, json)
+
+SCHEMAS (TypeScript):
+  --send
+  type send = {
+      mode: "now";
+  } | {
+      mode: "local_time";
+      localDate: string;
+      localHour: number;
+  };
 ```
 
 ## stores
