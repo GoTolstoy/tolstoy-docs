@@ -7,10 +7,6 @@ description: "Tools that generate images, videos, music, sound effects and speec
 
 ## generate_image
 
-<Note>
-  On Claude, this tool is listed only for workspaces allowed to generate media. See [Claude](/agents/connect#claude).
-</Note>
-
 Renders a new image from a brief and reference images: products in scenes, people, light, backgrounds, and edits that must look photographed. A change to a photograph, such as a new frame, a different product size or a correction, is a new render from the original sources. Spends credits; saves to the media library.
 
 Tolstoy's creative skills carry its creative direction for this work: before any generation, the skill that matches the request is found and loaded, and the prompt follows it.
@@ -253,10 +249,6 @@ When users ask for these changes, regenerate with the original product/model inp
 </Accordion>
 
 ## generate_video
-
-<Note>
-  On Claude, this tool is listed only for workspaces allowed to generate media. See [Claude](/agents/connect#claude).
-</Note>
 
 Renders a new video clip from text, an image, keyframes or references. Output varies between calls, and exact text, timing and framing are not guaranteed. Spends credits per second; saves to the media library.
 
@@ -695,10 +687,6 @@ The roster splits by what a model does to its source — some carry its idiom, s
 
 ## generate_audio
 
-<Note>
-  On Claude, this tool is listed only for workspaces allowed to generate media. See [Claude](/agents/connect#claude).
-</Note>
-
 Generates new music or a sound effect from a brief; output varies between calls. Spends credits; returns an audio URL, not a library item.
 
 Generate audio from a text description using ElevenLabs.
@@ -775,10 +763,6 @@ Music max 300 seconds. SFX max 30 seconds. Output is MP3 audio. forceInstrumenta
 </Accordion>
 
 ## text_to_speech
-
-<Note>
-  On Claude, this tool is listed only for workspaces allowed to generate media. See [Claude](/agents/connect#claude).
-</Note>
 
 Speaks an exact script in a cast voice; the delivery varies between calls. Spends credits; returns an audio URL, not a library item.
 
@@ -865,10 +849,6 @@ Max ~5000 characters per call. Output is MP3 audio. Uses Eleven v3 model (70+ la
 
 ## list_voices
 
-<Note>
-  On Claude, this tool is listed only for workspaces allowed to generate media. See [Claude](/agents/connect#claude).
-</Note>
-
 Search the voice library to cast a voice before text-to-speech
 
 Search the ElevenLabs voice library (10,000+ voices) to cast the voice for a UGC video. Voice selection is the highest-impact decision you make for UGC quality — a mismatched voice destroys the illusion even if the visuals are perfect (an East Asian woman on screen with an Indian-accented voiceover is not UGC, it is a bug). Treat this like casting a real actor: filter by the feeling and demographic that match what will appear on screen (gender, age, accent, use_case, descriptives), then LISTEN to the preview_url of the top 2-3 candidates before committing. The text description and labels are hints; preview_url is ground truth. Always call this before text_to_speech unless the user specified a voice or account memory has a saved preference.
@@ -950,10 +930,6 @@ Returns shared/library voices only. Results are limited to page_size (max 100).
 
 ## remove_background
 
-<Note>
-  On Claude, this tool is listed only for workspaces allowed to generate media. See [Claude](/agents/connect#claude).
-</Note>
-
 Cuts the subject of an image out onto a transparent background with a segmentation model; the subject's pixels stay, the edge is the model's call. Spends credits; saves to the media library.
 
 Remove the background from an image, producing a PNG with transparent background.
@@ -1007,10 +983,6 @@ Images only. May struggle with transparent/glass objects or very complex edges. 
 </Accordion>
 
 ## refine_image
-
-<Note>
-  On Claude, this tool is listed only for workspaces allowed to generate media. See [Claude](/agents/connect#claude).
-</Note>
 
 Regenerate one or more image rectangles in order, each with surrounding context and sinusoidal blending.
 

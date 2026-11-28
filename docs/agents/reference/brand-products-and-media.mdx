@@ -200,8 +200,8 @@ Reads Library items by id, as they are saved now. Each item has its status, its 
 Use this when the user wants to rename, star, credit a creator on, set an expiration date on, or tag products on a media item. Updates one media item's name, star, creator, expiration date, and product tags. Fields left out keep their current value.
 The creator is a handle on TikTok or Instagram, stored without the leading @, and is the credit the Library and widgets show for that media.
 The expiration date is not a label. From that day Tolstoy hides the item from the Library and from every widget filled from a Library search, so a wrong date silently removes it from the storefront, and a date already past hides it at once.
-A product tag makes media shoppable: the item shows with that product, joins the product-tagged media most widgets are filled from, and can appear on the product's own page. A new tag is added beside the existing ones unless replaceExistingProductTags removes them. Product tagging belongs to the Main workspace.
-Creator, expiration date and product tags belong to the user's own Library media; an AI draft (source studio) takes only name and favorite. Repeating the same call changes nothing further.
+A product tag makes media shoppable: the item shows with that product, joins the product-tagged media most widgets are filled from, and can appear on the product's own page. A new tag is added beside the existing ones unless replaceExistingProductTags removes them. Draft approval and team visibility remain unchanged.
+Creator and expiration date belong to the user's own Library media. Product tags apply to accessible Library media and Studio drafts. Repeating the same call changes nothing further.
 
 <Accordion title="Input schema">
 
@@ -254,7 +254,7 @@ Creator, expiration date and product tags belong to the user's own Library media
     "externalProductId": {
       "type": "string",
       "minLength": 1,
-      "description": "The externalProductId of a store product to tag on the item. Library media only."
+      "description": "The externalProductId of a store product to tag on the item, including a Studio draft."
     },
     "variantId": {
       "type": "string",
